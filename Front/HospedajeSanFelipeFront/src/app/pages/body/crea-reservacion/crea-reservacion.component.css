@@ -1,0 +1,32 @@
+/* .mat-mdc-form-field,
+.mat-mdc-floating-label {
+  transform: scale(1);
+} */
+
+#row-info-cliente {
+  --bs-gutter-x: 0.5em !important;
+}
+
+
+.mat-mdc-form-field-infix {
+  /*Posición X del cursor del Input*/
+  padding-top: 0.7em !important;
+}
+.mat-mdc-text-field-wrapper {
+  /*Tamaño de fuente*/
+  height: 45px !important;
+}
+
+.mdc-text-field .mdc-floating-label {
+  /*Posición X del label*/
+  top: 50% !important;
+}
+
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
+  /*Posición X del float label*/
+  /*rem afecta a celular / vh afecta pantalla*/
+  /* height: calc(7rem + 8.1vh) !important; */
+  --mat-mdc-form-field-label-transform: translateY(calc(-1.15em + -1.15vh)) scale(var(--mat-mdc-form-field-floating-label-scale, 0.75)) !important;
+  transform: var(--mat-mdc-form-field-label-transform);
+}
+

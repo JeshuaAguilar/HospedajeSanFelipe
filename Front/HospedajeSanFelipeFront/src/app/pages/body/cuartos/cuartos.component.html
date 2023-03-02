@@ -1,0 +1,172 @@
+<div class="container px-3 px-md-5">
+  <div class="d-grid gap-2 mt-2">
+    <button class="btn btn-primary" type="button" (click)="cambiarVista()">Vista completa</button>
+  </div>
+  <div class="row row-cols-2 mt-3">
+    <div class="col">
+      <mat-form-field>
+        <mat-label class="required">Días</mat-label>
+        <input type="text" matInput name="dias" autocomplete="disabled">
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field>
+        <mat-label class="required">No. personas</mat-label>
+        <input type="text" matInput name="noPersonas" autocomplete="disabled">
+      </mat-form-field>
+    </div>
+    <div class="col-12">
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="button" (click)="cambiarVista()">Buscar habitaciones</button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <ng-container *ngFor="let piso of pisos">
+        <div class="separator display-5 fs-4 my-3">{{piso.descPiso}}</div>
+        <!-- <div class="row gx-3 row-cols-3 row-cols-md-5 row-cols-lg-8 row-cols-xl-9 row-cols-xxl-10"> -->
+
+          <!-- <div class="col mb-3" *ngFor="let habitacion of piso.habitaciones"> -->
+            <div *ngIf="isVistaCompleta" data-simplebar>
+              <div class="d-flex flex-row">
+                <app-card-cuarto class="m-2" *ngFor="let habitacion of piso.habitaciones" [habitacion]="habitacion" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="setDatosHabitacion(habitacion)"></app-card-cuarto>
+              </div>
+            </div>
+            <ng-container *ngIf="!isVistaCompleta">
+              <div class="d-inline-flex justify-content-center align-items-cente m-2" *ngFor="let habitacion of piso.habitaciones">
+                <app-card-cuarto [habitacion]="habitacion" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="setDatosHabitacion(habitacion)"></app-card-cuarto>
+              </div>
+            </ng-container>
+          <!-- </div> -->
+
+        <!-- </div> -->
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="false" style="display: none; background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title display-6 fs-4 fw-semibold" id="exampleModalLabel">{{'Habitación ' + habitacionSelected.noHabitacion}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="card-text">Esta habitación cuenta con muchas cosas.</p>
+
+        <div class="row">
+          <div class="col-auto">
+            <div class="position-relative">
+              <img class="icon" src="../../../../assets/icons/svg/doubleBed.svg" title="Cama Matrimonial" alt="Cama Matrimonial">
+              <span class="position-absolute top-0 start-90 translate-middle badge rounded-pill bg-primary">2</span>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="position-relative">
+              <img class="icon" src="../../../../assets/icons/svg/singleBed.svg" title="Cama Individual" alt="Cama Matrimonial">
+              <span class="position-absolute top-0 start-90 translate-middle badge rounded-pill bg-primary">1</span>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="position-relative">
+              <img class="icon" src="../../../../assets/icons/svg/hotwater.svg" title="Agua Caliente" alt="Cama Matrimonial">
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="position-relative">
+              <img class="icon" src="../../../../assets/icons/svg/fan.svg" title="Ventilador" alt="Cama Matrimonial">
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="position-relative">
+              <img class="icon" src="../../../../assets/icons/svg/wc.svg" title="Baño Privado " alt="Cama Matrimonial">
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="position-relative">
+              <img class="icon" src="../../../../assets/icons/svg/wifi.svg" title="WI-FI" alt="Cama Matrimonial">
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="position-relative">
+              <img class="icon" src="../../../../assets/icons/svg/tv.svg" title="TV" alt="Cama Matrimonial">
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4" >
+          <div class="col">
+            <mat-stepper linear="true" #stepper>
+              <mat-step>
+                <ng-template matStepLabel>Reservación</ng-template>
+                <mat-calendar class="mb-1" [dateClass]="dateClass" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)"></mat-calendar>
+                <input type="hidden" aria-label="Fecha Inicio">
+                <input type="hidden" aria-label="Fecha Fin">
+                <div class="row mt-2">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-primary col-12" type="button" matStepperNext>Siguiente</button>
+                  </div>
+                </div>
+              </mat-step>
+              <mat-step label="Datos cliente">
+                  <app-crea-reservacion class="mt-4"></app-crea-reservacion>
+                  <!-- <div class="col">
+                    <span class="has-float-label">
+                      <input class="form-control" id="nombre" type="text" placeholder="Nombre"/>
+                      <label class="required" for="nombre">Nombre</label>
+                    </span>
+                  </div>
+                  <div class="col">
+                    <span class="has-float-label">
+                      <input class="form-control" id="apellido" type="text" placeholder="Apellido"/>
+                      <label class="required" for="apellido">Apellido</label>
+                    </span>
+                  </div>
+                  <div class="col">
+                    <span class="has-float-label">
+                      <select class="form-select mb-3" id="numeros" placeholder="Números">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+                      <label for="numeros">Números</label>
+                    </span>
+                  </div>
+                  <div class="col">
+                    <span class="has-float-label">
+                      <input class="form-control" id="mas info" type="text" placeholder="Más info"/>
+                      <label for="mas info">Más info</label>
+                    </span>
+                  </div> -->
+                <div class="row">
+                  <div class="col-6">
+                    <button class="btn btn-primary col-12" type="button" matStepperPrevious>Regresar</button>
+                  </div>
+                  <div class="col-6">
+                    <button class="btn btn-primary col-12" type="button" (click)="stepper.reset()">Limpiar</button>
+                  </div>
+                </div>
+            </mat-step>
+            </mat-stepper>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+<!-- <ng-container *ngFor="let habitacion of habitaciones">
+            <ng-container *ngIf="piso.idx === habitacion.piso">
+              <div class="col mb-3" *ngFor="let habitacion of habitaciones.habitaciones">
+                <app-card-cuarto [habitacion]="habitacion" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="setDatosHabitacion(habitacion)"></app-card-cuarto>
+              </div>
+            </ng-container>
+          </ng-container> -->

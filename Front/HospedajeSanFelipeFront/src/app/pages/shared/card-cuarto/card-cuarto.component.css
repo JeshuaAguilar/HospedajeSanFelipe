@@ -1,0 +1,28 @@
+.callout {
+  border-left: 0.30rem solid #0d6efd;
+}
+
+img {
+  width: 50px;
+  /* height: 50px; */
+  opacity: 0.3;
+}
+
+hr {
+  margin: 0 !important;
+}
+
+.card {
+  /*rem afecta a celular / vh afecta pantalla*/
+  height: calc(7rem + 8.1vh) !important;
+  width: calc(5.3rem + 1.5vw) !important;
+}
+
+/* --bs-primary: #0d6efd; */
+/* --bs-secondary: #6c757d; */
+/* --bs-success: #198754; */
+/* --bs-info: #0dcaf0; */
+/* --bs-warning: #ffc107; */
+/* --bs-danger: #dc3545; */
+/* --bs-light: #f8f9fa; */
+/* --bs-dark: #212529; */

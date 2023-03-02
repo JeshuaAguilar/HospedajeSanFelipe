@@ -1,0 +1,161 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+}
+
+html,
+body {
+  margin: 0;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  background-color: #f8f9fe !important;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.required::before {
+    color: #d00;
+    content: "*";
+    margin-right: 1px;
+}
+
+.form-control {
+  margin-bottom: 2em;
+}
+
+input:focus,
+input.form-control:focus,
+textarea:focus,
+textarea.form-control.focus,
+textarea.form-control.is-invalid:focus,
+select:focus,
+select.form-control.is-invalid:focus
+select.form-select:focus,
+select.form-select.is-invalid:focus {
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+
+mat-form-field {
+  width: 100% !important;
+}
+
+button.reservado {
+  background: #e35d6a;
+  border-radius: 100%;
+}
+
+.fs-10 {
+  font-size:calc(1rem + 0.2vw) !important;
+}
+
+.modal {
+  --bs-modal-zindex: 999 !important;
+}
+
+/* sm */
+@media (min-width: 576px) {
+  .row-cols-sm-7 > * {
+    flex: 0 0 auto !important;
+    width: 14.28571428571429% !important;
+  }
+  .row-cols-sm-8 > * {
+    flex: 0 0 auto !important;
+    width: 12.5% !important;
+  }
+  .row-cols-sm-9 > * {
+    flex: 0 0 auto !important;
+    width: 11.11111111111111% !important;
+  }
+  .row-cols-sm-10 > * {
+    flex: 0 0 auto !important;
+    width: 10% !important;
+  }
+}
+/* md */
+@media (min-width: 768px) {
+  .row-cols-md-7 > * {
+    flex: 0 0 auto !important;
+    width: 14.28571428571429% !important;
+  }
+  .row-cols-md-8 > * {
+    flex: 0 0 auto !important;
+    width: 12.5% !important;
+  }
+  .row-cols-md-9 > * {
+    flex: 0 0 auto !important;
+    width: 11.11111111111111% !important;
+  }
+  .row-cols-md-10 > * {
+    flex: 0 0 auto !important;
+    width: 10% !important;
+  }
+}
+/* lg */
+@media (min-width: 992px) {
+  .row-cols-lg-7 > * {
+    flex: 0 0 auto !important;
+    width: 14.28571428571429% !important;
+  }
+  .row-cols-lg-8 > * {
+    flex: 0 0 auto !important;
+    width: 12.5% !important;
+  }
+  .row-cols-lg-9 > * {
+    flex: 0 0 auto !important;
+    width: 11.11111111111111% !important;
+  }
+  .row-cols-lg-10 > * {
+    flex: 0 0 auto !important;
+    width: 10% !important;
+  }
+}
+/* xl */
+@media (min-width: 1200px) {
+  .row-cols-xl-7 > * {
+    flex: 0 0 auto !important;
+    width: 14.28571428571429% !important;
+  }
+  .row-cols-xl-8 > * {
+    flex: 0 0 auto !important;
+    width: 12.5% !important;
+  }
+  .row-cols-xl-9 > * {
+    flex: 0 0 auto !important;
+    width: 11.11111111111111% !important;
+  }
+  .row-cols-xl-10 > * {
+    flex: 0 0 auto !important;
+    width: 10% !important;
+  }
+}
+/* xxl */
+@media (min-width: 1400px) {
+  .row-cols-xxl-7 > * {
+    flex: 0 0 auto !important;
+    width: 14.28571428571429% !important;
+  }
+  .row-cols-xxl-8 > * {
+    flex: 0 0 auto !important;
+    width: 12.5% !important;
+  }
+  .row-cols-xxl-9 > * {
+    flex: 0 0 auto !important;
+    width: 11.11111111111111% !important;
+  }
+  .row-cols-xxl-10 > * {
+    flex: 0 0 auto !important;
+    width: 10% !important;
+  }
+}
+
+/******PrimeNg******/
+p-autocomplete.ng-dirty.ng-valid>.p-autocomplete>.p-inputtext {
+  border-color: #198754;
+}
+/******PrimeNg******/

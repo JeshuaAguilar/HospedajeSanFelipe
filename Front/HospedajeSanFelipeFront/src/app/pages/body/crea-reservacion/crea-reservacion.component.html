@@ -1,0 +1,72 @@
+<br>
+<form [formGroup]="reservacionForm">
+    <div class="row row-cols-2" id="row-info-cliente">
+      <div class="col">
+          <mat-form-field>
+            <mat-label class="required">Nombre(s)</mat-label>
+            <input type="text" matInput name="nombre" formControlName="nombre" autocomplete="disabled">
+            <mat-error *ngIf="isNombreValid">Ingrese un nombre</mat-error>
+          </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-label class="required">Apellidos</mat-label>
+          <input type="text" matInput name="apellidos" formControlName="apellidos" placeholder="Apellidos" autocomplete="disabled">
+          <mat-error *ngIf="isApellidosValid">Ingrese los apellidos</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-label class="required">Número Celular</mat-label>
+          <input type="text" matInput name="noCelular" formControlName="noCelular" placeholder="Número celular" autocomplete="disabled">
+          <mat-error *ngIf="isNoCelularValid">Ingrese un número celular</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-label>E-Mail</mat-label>
+          <input type="text" matInput name="email" formControlName="email" placeholder="E-Mail" autocomplete="disabled">
+          <mat-error *ngIf="isEmailValid">Ingrese un E-Mail</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-lg-6">
+        <mat-form-field class="example-full-width">
+          <mat-label class="required">Estado</mat-label>
+          <input type="text"
+                 placeholder="Seleccione un estado"
+                 aria-label="Seleccione un estado"
+                 matInput
+                 name="estado"
+                 formControlName="estado"
+                 (blur)="setEstado()"
+                 [matAutocomplete]="estadoAuto">
+          <mat-icon matSuffix>arrow_drop_down</mat-icon>
+          <mat-autocomplete autoActiveFirstOption #estadoAuto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredEstados | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="isEstadoValid">Seleccione un estado</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-lg-6">
+        <mat-form-field class="example-full-width">
+          <mat-label class="required">Municipio</mat-label>
+          <input type="text"
+                 placeholder="Seleccione un municipio"
+                 aria-label="Seleccione un municipio"
+                 matInput
+                 name="municipio"
+                 formControlName="municipio"
+                 [matAutocomplete]="municipioAuto">
+          <mat-icon matSuffix>arrow_drop_down</mat-icon>
+          <mat-autocomplete autoActiveFirstOption #municipioAuto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMunicipios | async" [value]="option">
+              {{option}}
+            </mat-option>
+            <mat-error *ngIf="isMunicipioValid">Seleccione un municipio</mat-error>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+</form>

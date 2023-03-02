@@ -1,0 +1,62 @@
+<br>
+<div class="container">
+    <form autocomplete="off" name="formulario" [formGroup]="datosClienteForm">
+        <div class="row row-cols-4">
+            <div class="col mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="Nombre" formControlName="nombre">
+                    <label for="floatingInput">Nombre</label>
+                </div>
+            </div>
+            <div class="col mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control" [class.is-invalid]="isValidAlgo" id="floatingInput" placeholder="Apellido" formControlName="apellido">
+                    <label for="floatingInput" class="required">Apellido</label>
+                </div>
+            </div>
+            <div class="col mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="No. Celular" formControlName="noCelular">
+                    <label for="floatingInput">No. Celular</label>
+                </div>
+            </div>
+            <div class="col mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="exampleDataList" list="datalistOptions" placeholder="Seleccione un estado..." formControlName="estado" (change)="obtieneMunicipio(estado.value)" #estado>
+                    <datalist id="datalistOptions">
+                        <option *ngFor="let estado of ESTADOS_MUNICIPIOS" value="{{estado.estado}}">
+                    </datalist>
+                    <label for="exampleDataList">Estado</label>
+                </div>
+            </div>
+            <div class="col mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="exampleDataList2" list="datalistOptions2" placeholder="Seleccione un municipio..." formControlName="municipio">
+                    <datalist id="datalistOptions2">
+                        <option *ngFor="let municipio of municipios" value="{{municipio}}">
+                    </datalist>
+                    <label for="exampleDataList2">Municipio</label>
+                </div>
+            </div>
+            <div class="col mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="No. Habitación" formControlName="noHabitacion">
+                    <label for="floatingInput">No. Habitación</label>
+                </div>
+            </div>
+            <div class="col mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="Fecha Entrada / Salida" formControlName="fechaES">
+                    <label for="floatingInput">Fecha Entrada / Salida</label>
+                </div>
+            </div>
+            <div class="col mb-3">
+            </div>
+        </div>
+    </form>
+</div>
+<br>
+
+<div style="height: 80%">
+</div>
+
