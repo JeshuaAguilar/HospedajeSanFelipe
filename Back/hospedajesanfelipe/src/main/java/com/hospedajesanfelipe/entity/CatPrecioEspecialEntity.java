@@ -1,32 +1,34 @@
 package com.hospedajesanfelipe.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "cat_precios_especiales")
 public class CatPrecioEspecialEntity {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_especiales")
-	private Long idEspecial;
+	@Column(name = "id_precio_especial")
+	private Long idPrecioEspecial;
 	@Column(name = "fecha_inicio")
 	private Date fecha_inicio;
 	@Column(name = "fecha_fin")
 	private Date fecha_fin;
+	@Column(name = "precio")
+	private BigDecimal precio;
 	@Column(name = "descripcion")
 	private String descripcion;
 	
-	public Long getIdEspecial() {
-		return idEspecial;
+	public Long getIdPrecioEspecial() {
+		return idPrecioEspecial;
 	}
-	public void setIdEspecial(Long idEspecial) {
-		this.idEspecial = idEspecial;
+	public void setIdPrecioEspecial(Long idPrecioEspecial) {
+		this.idPrecioEspecial = idPrecioEspecial;
 	}
 	public Date getFecha_inicio() {
 		return fecha_inicio;
@@ -39,6 +41,12 @@ public class CatPrecioEspecialEntity {
 	}
 	public void setFecha_fin(Date fecha_fin) {
 		this.fecha_fin = fecha_fin;
+	}
+	public BigDecimal getPrecio() {
+		return precio;
+	}
+	public void setPrecio(BigDecimal precio) {
+		this.precio = precio;
 	}
 	public String getDescripcion() {
 		return descripcion;

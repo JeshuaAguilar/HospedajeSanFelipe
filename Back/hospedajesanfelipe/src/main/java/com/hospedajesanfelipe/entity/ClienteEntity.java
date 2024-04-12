@@ -10,9 +10,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "clientes")
 public class ClienteEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_clientes")
+	@Column(name = "id_cliente")
 	private Long idCliente;
 	@Column(name = "nombre")
 	private String nombre;
@@ -26,8 +27,6 @@ public class ClienteEntity {
 	private String estado;
 	@Column(name = "municipio")
 	private String municipio;
-	@Column(name = "fk_comentario")
-	private Long fkComentario;
 	
 	public Long getIdCliente() {
 		return idCliente;
@@ -70,11 +69,5 @@ public class ClienteEntity {
 	}
 	public void setMunicipio(String municipio) {
 		this.municipio = municipio;
-	}
-	public Long getFkComentario() {
-		return fkComentario;
-	}
-	public void setFkComentario(Long fkComentario) {
-		this.fkComentario = fkComentario;
 	}
 }

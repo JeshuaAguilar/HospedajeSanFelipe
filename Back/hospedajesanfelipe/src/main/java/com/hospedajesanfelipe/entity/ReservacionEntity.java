@@ -2,12 +2,18 @@ package com.hospedajesanfelipe.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,17 +33,28 @@ public class ReservacionEntity {
 	private int noPersonaExtra;
 	@Column(name = "total")
 	private BigDecimal total;
-	@Column(name = "fk_id_estado")
-	private Long fkIdEstado;
-	@Column(name = "fk_id_habitacion")
-	private Long fkIdHabitacion;
-	@Column(name = "fk_id_cliente")
-	private Long fkIdCliente;
-	@Column(name = "fk_id_empleado")
-	private Long fkIdEmpleado;
-	@Column(name = "fk_id_comentario")
-	private Long fkIdComentario;
-	
+	@ManyToOne
+    @JoinColumn(name = "fk_id_estado")
+	private CatEstadoHabitacionEntity estado;
+	@ManyToOne
+    @JoinColumn(name = "fk_id_cliente")
+	private ClienteEntity cliente;
+	@ManyToOne
+    @JoinColumn(name = "fk_id_empleado")
+	private EmpleadoEntity empleado;
+	@OneToOne
+	@JoinColumn(name = "fk_id_comentario")
+    private ComentarioEntity comentario;
+	@ManyToOne
+    @JoinColumn(name = "fk_id_precio_especial")
+	private CatPrecioEspecialEntity precioEspecial;
+	@ManyToMany
+    @JoinTable(
+            name = "reservaciones_habitaciones",
+            joinColumns = @JoinColumn(name = "id_reservacion"),
+            inverseJoinColumns = @JoinColumn(name = "id_habitacion")
+    )
+    private List<HabitacionEntity> habitaciones;
 	
 	public Long getIdReservacion() {
 		return idReservacion;
@@ -75,34 +92,40 @@ public class ReservacionEntity {
 	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
-	public Long getFkIdEstado() {
-		return fkIdEstado;
+	public CatEstadoHabitacionEntity getEstado() {
+		return estado;
 	}
-	public void setFkIdEstado(Long fkIdEstado) {
-		this.fkIdEstado = fkIdEstado;
+	public void setEstado(CatEstadoHabitacionEntity estado) {
+		this.estado = estado;
 	}
-	public Long getFkIdHabitacion() {
-		return fkIdHabitacion;
+	public List<HabitacionEntity> getHabitaciones() {
+		return habitaciones;
 	}
-	public void setFkIdHabitacion(Long fkIdHabitacion) {
-		this.fkIdHabitacion = fkIdHabitacion;
+	public void setHabitaciones(List<HabitacionEntity> habitaciones) {
+		this.habitaciones = habitaciones;
 	}
-	public Long getFkIdCliente() {
-		return fkIdCliente;
+	public ClienteEntity getCliente() {
+		return cliente;
 	}
-	public void setFkIdCliente(Long fkIdCliente) {
-		this.fkIdCliente = fkIdCliente;
+	public void setCliente(ClienteEntity cliente) {
+		this.cliente = cliente;
 	}
-	public Long getFkIdEmpleado() {
-		return fkIdEmpleado;
+	public EmpleadoEntity getEmpleado() {
+		return empleado;
 	}
-	public void setFkIdEmpleado(Long fkIdEmpleado) {
-		this.fkIdEmpleado = fkIdEmpleado;
+	public void setEmpleado(EmpleadoEntity empleado) {
+		this.empleado = empleado;
 	}
-	public Long getFkIdComentario() {
-		return fkIdComentario;
+	public ComentarioEntity getComentario() {
+		return comentario;
 	}
-	public void setFkIdComentario(Long fkIdComentario) {
-		this.fkIdComentario = fkIdComentario;
+	public void setComentario(ComentarioEntity comentario) {
+		this.comentario = comentario;
+	}
+	public CatPrecioEspecialEntity getPrecioEspecial() {
+		return precioEspecial;
+	}
+	public void setPrecioEspecial(CatPrecioEspecialEntity precioEspecial) {
+		this.precioEspecial = precioEspecial;
 	}
 }

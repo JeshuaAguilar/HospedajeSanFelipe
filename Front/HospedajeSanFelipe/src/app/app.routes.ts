@@ -1,17 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdministradoresComponent } from './components/Administrador/administradores/administradores.component';
-import { PersonalComponent } from './components/Administrador/personal/personal.component';
 import { UsuariosComponent } from './components/Administrador/usuarios/usuarios.component';
 import { ComentariosComponent } from './components/Administrador/comentarios/comentarios.component';
 import { HabitacionesComponent } from './components/Administrador/habitaciones/habitaciones.component';
 import { InicioComponent } from './components/Administrador/inicio/inicio.component';
 import { ReservacionesComponent } from './components/Administrador/reservaciones/reservaciones.component';
+import { EmpleadosComponent } from './components/Administrador/empleados/empleados.component';
 
 export const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
-  { path: 'administradores', component: AdministradoresComponent },
-  { path: 'personal', component: PersonalComponent },
+  { path: 'empleados', component: EmpleadosComponent },
   { path: 'habitaciones', component: HabitacionesComponent },
   { path: 'usuarios', component: UsuariosComponent },
   { path: 'comentarios', component: ComentariosComponent },

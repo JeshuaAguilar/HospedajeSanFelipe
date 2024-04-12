@@ -1,21 +1,18 @@
 package com.hospedajesanfelipe.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "cat_pisos")
 public class CatPisoEntity {
+	
 		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		@Column(name = "id_piso")
 		private Long idPiso;
 		@Column(name = "descripcion")
 		private String descripcion;
-		
 		
 		public Long getIdPiso() {
 			return idPiso;
