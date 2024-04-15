@@ -1,5 +1,7 @@
 package com.hospedajesanfelipe.entity;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,11 +14,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "empleados")
-public class EmpleadoEntity {
+public class EmpleadoEntity implements UserDetails {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +52,44 @@ public class EmpleadoEntity {
 	private List<ReservacionEntity> reservaciones;
 	@Column(name = "url_foto")
 	private String urlFoto;
+	
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (rol == null) {
+            return Collections.emptyList();
+        }
+        return Collections.singletonList(new SimpleGrantedAuthority(rol.getTipo()));
+    }
+    
+    @Override
+    public String getUsername() {
+        return userName;
+    }
+    
+    @Override
+	public String getPassword() {
+		return contrasenia;
+	}
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 	
 	public Long getIdEmpleado() {
 		return idEmpleado;

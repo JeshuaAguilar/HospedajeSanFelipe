@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.hospedajesanfelipe.entity.EmpleadoEntity;
 import com.hospedajesanfelipe.repository.EmpleadosRepository;
-import com.hospedajesanfelipe.request.LoginRequest;
-import com.hospedajesanfelipe.response.LoginResponse;
 
 /*
  * Esta clase es el dao, y se encarga de llamar los método del repository de JPA
@@ -32,9 +30,6 @@ public class EmpleadosDao {
 		try {
 			response = empleadosRepository.findByUserName(userName);
 		} catch (DataAccessException ex) {
-			/*
-			 * Con esto imprimimos en el log, el detalle del error
-			 */
 			System.out.println(ex.getMessage() + ex);
 		}
 		

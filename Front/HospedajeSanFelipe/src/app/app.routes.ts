@@ -18,8 +18,8 @@ export const routes: Routes = [
   { path: 'reservaciones', component: ReservacionesComponent },
   { path: 'clientes', component: ClientesComponent },
 
-  { path: '', redirectTo: 'inicio', pathMatch: 'full' }, // redirect to `first-component`
-  { path: '**', component: InicioComponent }, // Redirecciona a una página cuando no encuentra el path
+  { path: '', redirectTo: 'Login', pathMatch: 'full' }, // redirect to `first-component`
+  { path: '**', component: LoginComponent }, // Redirecciona a una página cuando no encuentra el path
 ];
 
 @NgModule({

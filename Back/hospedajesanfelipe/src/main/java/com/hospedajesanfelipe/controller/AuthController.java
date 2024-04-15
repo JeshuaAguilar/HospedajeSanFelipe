@@ -29,7 +29,8 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Autowired
+    @SuppressWarnings("unused")
+	@Autowired
     private UserDetailsService userDetailsService;
     
     @Autowired

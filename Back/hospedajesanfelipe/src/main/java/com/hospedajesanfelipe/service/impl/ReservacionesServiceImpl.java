@@ -15,8 +15,10 @@ import com.hospedajesanfelipe.entity.ComentarioEntity;
 import com.hospedajesanfelipe.entity.EmpleadoEntity;
 import com.hospedajesanfelipe.entity.HabitacionEntity;
 import com.hospedajesanfelipe.entity.ReservacionEntity;
+import com.hospedajesanfelipe.request.EmpleadoRequest;
 import com.hospedajesanfelipe.request.HabitacionRequest;
 import com.hospedajesanfelipe.request.ReservacionRequest;
+import com.hospedajesanfelipe.response.ReservacionResponse;
 import com.hospedajesanfelipe.service.ReservacionesService;
 
 @Service
@@ -26,8 +28,36 @@ public class ReservacionesServiceImpl implements ReservacionesService{
 	ReservacionesDao reservacionesDao;
 	
 	@Override
-	public List<ReservacionEntity> getAllReservaciones() {
-		return reservacionesDao.getAllReservaciones();
+	public List<ReservacionResponse> getAllReservaciones() {
+		List<ReservacionResponse> response = null;
+		List<ReservacionEntity> reservaciones = reservacionesDao.getAllReservaciones();
+		
+		if (reservaciones != null && !reservaciones.isEmpty()) {
+			response = new ArrayList<ReservacionResponse>();
+			for (ReservacionEntity reservacionEntity : reservaciones) {
+				ReservacionResponse reservacion = new ReservacionResponse();
+				
+				reservacion.setIdReservacion(reservacionEntity.getIdReservacion());
+				reservacion.setFechaEntrada(reservacionEntity.getFechaEntrada());
+				reservacion.setFechaSalida(reservacionEntity.getFechaSalida());
+				reservacion.setNoPersonas(reservacionEntity.getNoPersonas());
+				reservacion.setNoPersonaExtra(reservacionEntity.getNoPersonaExtra());
+				reservacion.setTotal(reservacionEntity.getTotal());
+				reservacion.setEstado(reservacionEntity.getEstado().getDescripcion());
+				reservacion.setCliente(reservacionEntity.getCliente());
+				EmpleadoRequest empleado = new EmpleadoRequest();
+				empleado.setIdEmpleado(reservacionEntity.getEmpleado().getIdEmpleado());
+				empleado.setNombre(reservacionEntity.getEmpleado().getNombre());
+				empleado.setPrimerApellido(reservacionEntity.getEmpleado().getPrimerApellido());
+				reservacion.setEmpleado(empleado);
+				reservacion.setComentario(reservacionEntity.getComentario());
+				reservacion.setPrecioEspecial(reservacionEntity.getPrecioEspecial());
+				
+				response.add(reservacion);
+			}
+		}
+		
+		return response;
 	}
 
 	@Override

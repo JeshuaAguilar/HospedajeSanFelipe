@@ -16,9 +16,9 @@ public class CatPrecioEspecialEntity {
 	@Column(name = "id_precio_especial")
 	private Long idPrecioEspecial;
 	@Column(name = "fecha_inicio")
-	private Date fecha_inicio;
+	private Date fechaInicio;
 	@Column(name = "fecha_fin")
-	private Date fecha_fin;
+	private Date fechaFin;
 	@Column(name = "precio")
 	private BigDecimal precio;
 	@Column(name = "descripcion")
@@ -30,17 +30,17 @@ public class CatPrecioEspecialEntity {
 	public void setIdPrecioEspecial(Long idPrecioEspecial) {
 		this.idPrecioEspecial = idPrecioEspecial;
 	}
-	public Date getFecha_inicio() {
-		return fecha_inicio;
+	public Date getFechaInicio() {
+		return fechaInicio;
 	}
-	public void setFecha_inicio(Date fecha_inicio) {
-		this.fecha_inicio = fecha_inicio;
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
 	}
-	public Date getFecha_fin() {
-		return fecha_fin;
+	public Date getFechaFin() {
+		return fechaFin;
 	}
-	public void setFecha_fin(Date fecha_fin) {
-		this.fecha_fin = fecha_fin;
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 	public BigDecimal getPrecio() {
 		return precio;

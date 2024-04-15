@@ -1,17 +1,19 @@
 package com.hospedajesanfelipe.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hospedajesanfelipe.dao.EmpleadosDao;
 import com.hospedajesanfelipe.entity.CatRolEntity;
 import com.hospedajesanfelipe.entity.EmpleadoEntity;
 import com.hospedajesanfelipe.request.EmpleadoRequest;
-import com.hospedajesanfelipe.request.LoginRequest;
-import com.hospedajesanfelipe.response.LoginResponse;
+import com.hospedajesanfelipe.response.EmpleadoResponse;
 import com.hospedajesanfelipe.service.EmpleadosService;
 
 /*
@@ -33,15 +35,31 @@ public class EmpeladosServiceImpl implements EmpleadosService {
 	
 	@Override
 	public EmpleadoEntity getEmpleadoByUserName(String userName) {
-		Optional<EmpleadoEntity> response = empleadosDao.getEmpleadoByUserName(userName);
+		Optional<EmpleadoEntity> entity = empleadosDao.getEmpleadoByUserName(userName);
 		
-		return response.get();
+		if (entity.isPresent()) {
+			return entity.get();
+		} else {
+			return null;
+		}
 	}
 	
 	//Con el @Override implementamos el métod de la interfaz
 	@Override
-	public List<EmpleadoEntity> getAllEmpleados() {
-		return empleadosDao.getAllEmpleados();
+	public List<EmpleadoResponse> getAllEmpleados() {
+		List<EmpleadoResponse> response = null;
+		List<EmpleadoEntity> empleados = empleadosDao.getAllEmpleados();
+		
+		if (empleados != null && !empleados.isEmpty()) {
+			response = new ArrayList<EmpleadoResponse>();
+			for (EmpleadoEntity empleadoEntity : empleados) {
+				EmpleadoResponse empleado = new EmpleadoResponse();
+				empleado = mapperRempleadoResponse(empleadoEntity);
+				response.add(empleado);
+			}
+			
+		}
+		return response;
 	}
 
 	/*
@@ -114,7 +132,13 @@ public class EmpeladosServiceImpl implements EmpleadosService {
 			 * Para poder guardarlo en la base de datos
 			 */
 			empleadoEntity = new EmpleadoEntity();
+			
+			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			String encodedPassword = passwordEncoder.encode(empleado.getContrasenia());
+			empleado.setContrasenia(encodedPassword);
 		}
+		
+		
 		
 		empleadoEntity.setIdEmpleado(empleado.getIdEmpleado());
 		empleadoEntity.setUserName(validaNull(empleado.getUserName(), empleadoEntity.getUserName()));
@@ -140,6 +164,20 @@ public class EmpeladosServiceImpl implements EmpleadosService {
 		 * Retornamos el empleado entity que es lo que se va a guardar en la base de datos.
 		 */
 		return empleadoEntity;
+	}
+	
+	private EmpleadoResponse mapperRempleadoResponse(EmpleadoEntity empleado) {
+		EmpleadoResponse response = new EmpleadoResponse();
+		
+		response.setIdEmpleado(empleado.getIdEmpleado());
+		response.setUserName(empleado.getUserName());
+		response.setNombre(empleado.getNombre());
+		response.setPrimerApellido(empleado.getPrimerApellido());
+		response.setSegundoApellido(empleado.getSegundoApellido());
+		response.setNoTelefono(empleado.getNoTelefono());
+		response.setRol(empleado.getRol());
+		
+		return response;
 	}
 	
 	private String validaNull(String parametro, String actual) {

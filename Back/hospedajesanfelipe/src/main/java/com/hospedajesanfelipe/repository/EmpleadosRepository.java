@@ -3,7 +3,6 @@ package com.hospedajesanfelipe.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -22,9 +21,6 @@ import com.hospedajesanfelipe.entity.EmpleadoEntity;
  */
 @Repository
 public interface EmpleadosRepository  extends JpaRepository<EmpleadoEntity, Long> {
-	
-	@Query(nativeQuery = true, value = "select * from empleados where user_name = :userName and contrasenia = :contrasenia")
-	public Optional<EmpleadoEntity> login(@Param("userName") String userName, @Param("contrasenia") String contrasenia);
 	
 	public Optional<EmpleadoEntity> findByUserName(@Param("userName") String userName);
 }

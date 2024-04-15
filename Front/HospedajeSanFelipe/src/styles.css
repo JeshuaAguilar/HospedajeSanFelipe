@@ -17,15 +17,18 @@
 }
 
 .form-floating-label input:focus+label,
-.form-floating-label input:not(:placeholder-shown)+label {
+.form-floating-label input:not(:placeholder-shown)+label,
+.form-floating-label select:focus+label,
+.form-floating-label select:not(:placeholder-shown)+label
+{
   top: 0;
   opacity: 1;
   transform: translateY(-53%) scale(0.75);
   left: -0.80rem;
 }
 
-input.form-control:focus,
-input.form-control.is-invalid:focus {
+.form-control:focus,
+.form-control.is-invalid:focus {
   outline: none !important;
   outline-width: 0 !important;
   box-shadow: none !important;

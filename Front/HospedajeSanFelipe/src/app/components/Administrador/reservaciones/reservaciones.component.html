@@ -11,61 +11,37 @@
           <th scope="col">Estado</th>
           <th scope="col">Cliente</th>
           <th scope="col">Empleado</th>
-          <th scope="col">Num Personas</th>
-          <th scope="col">Num Personas ext</th>
+          <th scope="col">No personas</th>
+          <th scope="col">No personas ext</th>
           <th scope="col">Entrada</th>
           <th scope="col">Salida</th>
           <th scope="col">Total</th>
-          <th scope="col">Precio Especial</th>
+          <th scope="col">Precio especial</th>
           <th scope="col">Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td><button type="button" class="btn btn-primary">Editar</button>
+        @for (reservacion of reservaciones; track $index) {
+          <tr>
+            <th scope="row">{{reservacion.idReservacion}}</th>
+            <td>{{reservacion.estado}}</td>
+            <td>{{reservacion.cliente.nombre + " " + reservacion.cliente.primerApellido}}</td>
+            <td>{{reservacion.empleado.nombre + " " + reservacion.empleado.primerApellido}}</td>
+            <td>{{reservacion.noPersonas}}</td>
+            <td>{{reservacion.noPersonaExtra}}</td>
+            <td>{{reservacion.fechaEntrada | date: 'dd/MM/yyyy'}}</td>
+            <td>{{reservacion.fechaSalida | date: 'dd/MM/yyyy'}}</td>
+            <td>{{reservacion.total}}</td>
+            <td>
+              <button type="button" class="btn btn-primary">Editar</button>
               <button type="button" class="btn btn-danger">Eliminar</button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>fat</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td><button type="button" class="btn btn-primary">Editar</button>
-              <button type="button" class="btn btn-danger">Eliminar</button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry the Bird</td>
-          <td>twitter</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td>mdo</td>
-          <td><button type="button" class="btn btn-primary">Editar</button>
-              <button type="button" class="btn btn-danger">Eliminar</button>
-          </td>
-        </tr>
+            </td>
+          </tr>
+        }@empty {
+          <tr class="text-center">
+            <td colspan="11">No hay ninguna reservación por el momento</td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

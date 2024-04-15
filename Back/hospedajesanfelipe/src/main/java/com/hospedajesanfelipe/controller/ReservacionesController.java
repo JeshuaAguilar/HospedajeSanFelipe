@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.hospedajesanfelipe.entity.ReservacionEntity;
 import com.hospedajesanfelipe.request.ReservacionRequest;
+import com.hospedajesanfelipe.response.ReservacionResponse;
 import com.hospedajesanfelipe.service.ReservacionesService;
 
 @RestController
@@ -25,7 +25,7 @@ public class ReservacionesController {
 	ReservacionesService reservacionesService;
 	
 	@GetMapping()
-	public List<ReservacionEntity> allReservaciones() {
+	public List<ReservacionResponse> allReservaciones() {
 		return reservacionesService.getAllReservaciones();
 	}
 	

@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hospedajesanfelipe.entity.EmpleadoEntity;
 import com.hospedajesanfelipe.request.EmpleadoRequest;
-import com.hospedajesanfelipe.request.LoginRequest;
-import com.hospedajesanfelipe.response.LoginResponse;
+import com.hospedajesanfelipe.response.EmpleadoResponse;
 import com.hospedajesanfelipe.service.EmpleadosService;
 
 //Esto hace que sea un controlador y pueda invocarse sus métodos
@@ -30,24 +29,12 @@ public class EmpleadosController {
 	@Autowired
 	EmpleadosService empleadosService;
 	
-//	@PostMapping("/login")
-//	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-//		
-//		LoginResponse response = empleadosService.login(request);
-//		
-//		if (response != null) {
-//			return new ResponseEntity<>(response, HttpStatus.OK);
-//		} else {
-//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//		}
-//	}
-	
 	/*Get es el verbo para obntener cosas
 	 * En este caso sólo tiene @GetMapping() y no @GetMapping("obtenerEmpleados"), porque al invoca la url /hospedaje/api/empleados,
 	 * ya sea en postman o en el front cuando le enviemos la petición de tipo get, ya sabe que tiene que buscar este verbo get 
 	 */
 	@GetMapping()
-	public List<EmpleadoEntity> getAllEmpleados() {
+	public List<EmpleadoResponse> getAllEmpleados() {
 		return empleadosService.getAllEmpleados();
 	}
 
@@ -68,23 +55,38 @@ public class EmpleadosController {
 	 * 
 	 */
 	@PostMapping()
-	public EmpleadoEntity createEmpleado(@RequestBody EmpleadoRequest empleado) {
-		return empleadosService.createEmpleado(empleado);
+	public ResponseEntity<String> createEmpleado(@RequestBody EmpleadoRequest empleado) {
+		
+		EmpleadoEntity response = empleadosService.createEmpleado(empleado); 
+		
+		if (response != null) {
+			return ResponseEntity.status(HttpStatus.CREATED).body("El empleado se ha creado exitosamente");
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el empleado");
+		}
 	}
 	
 	/* El verbo Put, es muy similar al Post, básicamente la difencia es el nombre del vebo pero es para identificar únicamente lo que hace el método
 	 * Y esa para saber que este método es para update y el otro para insert
 	 */
 	@PutMapping()
-	public EmpleadoEntity updateEmpleado(@RequestBody EmpleadoRequest empleado) {
-		return empleadosService.updateEmpleado(empleado);
+	public ResponseEntity<String> updateEmpleado(@RequestBody EmpleadoRequest empleado) {
+		
+		EmpleadoEntity response = empleadosService.updateEmpleado(empleado); 
+		
+		if (response != null) {
+			return ResponseEntity.status(HttpStatus.CREATED).body("El empleado se ha modificado exitosamente");
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al modificar el empleado");
+		}
 	}
 	
 	/* El verbo Delete, es para eliminar un registro, es similar al verbo Get, porque recibe el parámetro por medio de la url
 	 * Puedes usar la misma explicación que el del getById
 	 */
 	@DeleteMapping("/{idEmpleado}")
-	public void deleteEmpleado(@PathVariable("idEmpleado") Long idEmpleado) {
+	public ResponseEntity<String> deleteEmpleado(@PathVariable("idEmpleado") Long idEmpleado) {
 		empleadosService.deleteEmpleado(idEmpleado);
+		return ResponseEntity.status(HttpStatus.OK).body("El empleado se ha eliminado exitosamente");
 	}
 }

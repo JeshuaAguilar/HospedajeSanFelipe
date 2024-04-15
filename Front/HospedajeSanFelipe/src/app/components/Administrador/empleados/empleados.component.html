@@ -1,7 +1,8 @@
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="defineForm()">
   Agregar
 </button>
+
 
 <button type="button" class="btn btn-danger">PDF</button>
 <div class="card">
@@ -9,153 +10,177 @@
     Empleados
   </div>
   <div class="card-body">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Usuario</th>
-          <th scope="col">Contraseña</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Apellido Paterno</th>
-          <th scope="col">Apellidos Materno</th>
-          <th scope="col">Telefono</th>
-          <th scope="col">Rol</th>
-          <th scope="col">Foto</th>
-          <th scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Angel.TLVNG</td>
-          <td>Aetl2411</td>
-          <td>Angel</td>
-          <td>Trujillo</td>
-          <td>Lopez</td>
-          <td>9611724435</td>
-          <td></td>
-          <td></td>
-          <td><button type="button" class="btn btn-primary">Editar</button>
-              <button type="button" class="btn btn-danger">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    @if (isLoadedEmpleados) {
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Usuario</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido Paterno</th>
+            <th scope="col">Apellidos Materno</th>
+            <th scope="col">Telefono</th>
+            <th scope="col">Rol</th>
+            <th scope="col">Foto</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (empleado of empleados; track $index) {
+            <tr>
+              <th scope="row">{{empleado.idEmpleado}}</th>
+              <td>{{empleado.userName}}</td>
+              <td>{{empleado.nombre}}</td>
+              <td>{{empleado.primerApellido}}</td>
+              <td>{{empleado.segundoApellido}}</td>
+              <td>{{empleado.noTelefono}}</td>
+              <td>{{empleado.rol.tipo}}</td>
+              <td></td>
+              <td>
+                <div class="row gx-0">
+                  <div class="col">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modificarEmpleado(empleado.idEmpleado)">Editar</button>
+                  </div>
+                  <div class="col">
+                    <button type="button" class="btn btn-danger"  (click)="eliminarEmpleado(empleado.idEmpleado)">Eliminar</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <p>
+              No se encontraron registros
+            </p>
+          }
+        </tbody>
+      </table>
+    }
   </div>
   <div class="card-footer text-center">
     Hola Administradores
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar/Modificar empleado</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row row-cols-1">
-          <form id="">
-            <div class="col mb-3">
-              <div class="form-floating-label">
-                <input type="text" class="form-control" id="usr" formControlName="usr" placeholder="">
-                <label for="usr">Usuario</label>
-              </div>
-              @if (isFieldInvalid('usr')) {
-                <small class="text-danger">
-                  Ingrese un usuario
-                </small>
-              }
-            </div>
-            <div class="col mb-3">
-              <div class="form-floating-label">
-                <input type="password" class="form-control" id="psw" formControlName="psw" placeholder="">
-                <label for="psw">Contraseña</label>
-              </div>
-              @if (isFieldInvalid('psw')) {
-                <small class="text-danger">
-                  Ingrese una contraseña
-                </small>
-              }
-            </div>
-            <div class="col mb-3">
-              <div class="form-floating-label">
-                <input type="text" class="form-control" id="nombre" formControlName="nombre" placeholder="">
-                <label for="nombre">Nombre</label>
-              </div>
-              @if (isFieldInvalid('nombre')) {
-                <small class="text-danger">
-                  Ingrese un usuario
-                </small>
-              }
-            </div>
-            <div class="col mb-3">
-              <div class="form-floating-label">
-                <input type="text" class="form-control" id="primerA" formControlName="primerA" placeholder="">
-                <label for="primerA">Apellido paterno</label>
-              </div>
-              @if (isFieldInvalid('primerA')) {
-                <small class="text-danger">
-                  Ingrese un usuario
-                </small>
-              }
-            </div>
-            <div class="col mb-3">
-              <div class="form-floating-label">
-                <input type="text" class="form-control" id="segundoA" formControlName="segundoA" placeholder="">
-                <label for="segundoA">Apellido materno</label>
-              </div>
-              @if (isFieldInvalid('segundoA')) {
-                 <small class="text-danger">
-                  Ingrese un usuario
-                </small>
-              }
-            </div>
-            <div class="col mb-3">
-              <div class="form-floating-label">
-                <input type="text" class="form-control" id="noTel" formControlName="noTel" placeholder="">
-                <label for="noTel">Telefono</label>
-              </div>
-              @if (isFieldInvalid('noTel')) {
-                <small class="text-danger">
-                  Ingrese un usuario
-                </small>
-              }
-            </div>
-            <div class="col mb-3">
-              <div class="form-floating-label">
-                <input type="text" class="form-control" id="rol" formControlName="rol" placeholder="">
-                <label for="rol">Rol</label>
-              </div>
-              @if (isFieldInvalid('rol')) {
-                <small class="text-danger">
-                  Ingrese un usuario
-                </small>
-              }
-            </div>
-            <div class="col mb-3">
-              <div class="form-floating-label">
-                <input type="text" class="form-control" id="foto" formControlName="foto" placeholder="">
-                <label for="foto">Foto</label>
-              </div>
-              @if (isFieldInvalid('foto')) {
-                <small class="text-danger">
-                  Ingrese un usuario
-                </small>
-              }
-            </div>
+@if (roles) {
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">{{isEditing ? "Modificar empleado" : "Agregar empleado"}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="empleadoForm">
+            <div class="row row-cols-2 row-cols-lg-3">
+              <div class="col mb-3">
+                <input type="hidden" formControlName="idEmpleado">
 
+                <div class="form-floating-label">
+                  <input type="text" class="form-control" [class.is-valid]="isValid('usr')" [class.is-invalid]="isFieldInvalid('usr')" id="usr" formControlName="usr" placeholder="">
+                  <label for="usr">Usuario</label>
+                </div>
+                @if (isFieldInvalid('usr')) {
+                  <small class="text-danger">
+                    Ingrese un usuario
+                  </small>
+                }
+              </div>
+              <div class="col mb-3">
+                <div class="form-floating-label">
+                  <input type="password" class="form-control" [class.is-valid]="isValid('psw')" [class.is-invalid]="isFieldInvalid('psw')" id="psw" formControlName="psw" placeholder="">
+                  <label for="psw">Contraseña</label>
+                </div>
+                @if (isFieldInvalid('psw')) {
+                  <small class="text-danger">
+                    Ingrese una contraseña
+                  </small>
+                }
+              </div>
+              <div class="col mb-3">
+                <div class="form-floating-label">
+                  <input type="text" class="form-control" [class.is-valid]="isValid('nombre')" [class.is-invalid]="isFieldInvalid('nombre')" id="nombre" formControlName="nombre" placeholder="">
+                  <label for="nombre">Nombre</label>
+                </div>
+                @if (isFieldInvalid('nombre')) {
+                  <small class="text-danger">
+                    Ingrese un nombre
+                  </small>
+                }
+              </div>
+              <div class="col mb-3">
+                <div class="form-floating-label">
+                  <input type="text" class="form-control" [class.is-valid]="isValid('primerA')" [class.is-invalid]="isFieldInvalid('primerA')" id="primerA" formControlName="primerA" placeholder="">
+                  <label for="primerA">Apellido paterno</label>
+                </div>
+                @if (isFieldInvalid('primerA')) {
+                  <small class="text-danger">
+                    Ingrese un apellido
+                  </small>
+                }
+              </div>
+              <div class="col mb-3">
+                <div class="form-floating-label">
+                  <input type="text" class="form-control" [class.is-valid]="isValid('segundoA')" [class.is-invalid]="isFieldInvalid('segundoA')" id="segundoA" formControlName="segundoA" placeholder="">
+                  <label for="segundoA">Apellido materno</label>
+                </div>
+                @if (isFieldInvalid('segundoA')) {
+                    <small class="text-danger">
+                    Ingrese un apellido
+                  </small>
+                }
+              </div>
+              <div class="col mb-3">
+                <div class="form-floating-label">
+                  <input type="text" class="form-control" [class.is-valid]="isValid('noTel')" [class.is-invalid]="isFieldInvalid('noTel')" id="noTel" formControlName="noTel" placeholder="">
+                  <label for="noTel">Teléfono</label>
+                </div>
+                @if (isFieldInvalid('noTel')) {
+                  <small class="text-danger">
+                    Ingrese un teléfono
+                  </small>
+                }
+              </div>
+              <div class="col mb-3">
 
+                  <div class="form-floating-label">
+                    <select class="form-control" [class.is-valid]="isValid('rol')" [class.is-invalid]="isFieldInvalid('rol')" id="rol" formControlName="rol" placeholder="">
+                      <!-- <option disabled selected>Seleccione un rol</option> -->
+                      @for (rol of roles; track $index) {
+                        <option [value]="rol.idRol">{{rol.tipo}}</option>
+                      }@empty {
+                        <option disabled selected>No hay roles configurados</option>
+                      }
+                    </select>
+                    <label for="rol">Rol</label>
+                  </div>
+                  @if (isFieldInvalid('rol')) {
+                    <small class="text-danger">
+                      Seleccione un rol
+                    </small>
+                  }
 
+              </div>
+              <div class="col mb-3">
+                <div class="form-floating-label">
+                  <input type="text" class="form-control" [class.is-valid]="isValid('foto')" [class.is-invalid]="isFieldInvalid('foto')" id="foto" formControlName="foto" placeholder="">
+                  <label for="foto">Foto</label>
+                </div>
+                @if (isFieldInvalid('foto')) {
+                  <small class="text-danger">
+                    Seleccione una foto
+                  </small>
+                }
+              </div>
+            </div>
           </form>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary " (click)="agregarEmpleado()">Agregar</button>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary " data-bs-dismiss="modal" (click)="resetForm()">Cerrar</button>
+          <button type="button" class="btn btn-primary " (click)="validaFormEmpleado()">{{isEditing ? "Modificar" : "Agregar"}}</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+}

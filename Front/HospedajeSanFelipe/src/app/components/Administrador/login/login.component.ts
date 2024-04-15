@@ -3,6 +3,7 @@ import { FormBuilder, FormsModule, FormGroup, Validators, ReactiveFormsModule } 
 import { PeticionesService } from '../../../services/peticiones/peticiones.service';
 import { LoginResponse } from '../../../model/login-response';
 import { Router } from '@angular/router';
+import { UtilsService } from '../../../services/utils.service';
 
 @Component({
   selector: 'app-login',
@@ -15,10 +16,15 @@ export class LoginComponent implements OnInit {
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
   private _peticiones = inject(PeticionesService);
+  private _util = inject(UtilsService);
 
   loginForm!: FormGroup;
 
-  constructor() {}
+  constructor() {
+    if (this._util.isLogged) {
+      this.redirectHome();
+    }
+  }
 
   private defineForm(): void {
     this.loginForm = this.formBuilder.group({
@@ -51,7 +57,7 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('user', JSON.stringify(response));
         // this._alerts.toastLogin('¡Ha iniciado sesión correctamente!');
-        this.router.navigate(["/inicio"]);
+        this.redirectHome();
       },
       error: (err: any) => {
         console.error(err);
@@ -63,5 +69,9 @@ export class LoginComponent implements OnInit {
   public isFieldInvalid(control: string): boolean {
     const formControl = this.loginForm.get(control);
     return formControl!.invalid && (formControl!.dirty || formControl!.touched);
+  }
+
+  private redirectHome(): void {
+    this.router.navigate(["/inicio"]);
   }
 }

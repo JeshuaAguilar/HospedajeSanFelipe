@@ -28,7 +28,7 @@ public class HabitacionEntity {
 	@Column(name = "no_max_ocupantes")
 	private int noMaxOcupante;
 	@ManyToOne
-	@JoinColumn(name = "fk_piso", insertable = false, updatable = false)
+	@JoinColumn(name = "fk_piso")
 	private CatPisoEntity piso;
 	@ManyToOne
 	@JoinColumn(name = "fk_estado")

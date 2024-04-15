@@ -4,8 +4,7 @@ import java.util.List;
 
 import com.hospedajesanfelipe.entity.EmpleadoEntity;
 import com.hospedajesanfelipe.request.EmpleadoRequest;
-import com.hospedajesanfelipe.request.LoginRequest;
-import com.hospedajesanfelipe.response.LoginResponse;
+import com.hospedajesanfelipe.response.EmpleadoResponse;
 
 /*
  * Esta interfaz únicamente contiene las definiciones de los métodos que vamos a utilizar, tanto sus request como sus response
@@ -19,7 +18,7 @@ public interface EmpleadosService {
 	 No rebine parámetros porque tiene que traer todos y no 1 en específico
 	 Retorna una lista con todos los empleados de tipo empleados entity, porque aquí sí me puede trar sus reservaciones y comentarios 
 	 */
-	public List<EmpleadoEntity> getAllEmpleados();
+	public List<EmpleadoResponse> getAllEmpleados();
 	/*Este método busca a un empleado por su id, y únicamente regresa 1 empleado, que conincida con el id de búsqueda
 	  Y recibe el idEmpledo por parámetro para poder buscarlo
 	  Y retorna un objeto tipo empleado con la información del empleado encontrada de tipo empleados entity, porque aquí sí me puede trar sus reservaciones y comentarios

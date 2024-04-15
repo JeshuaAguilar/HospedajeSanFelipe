@@ -58,18 +58,11 @@ export class PeticionesService {
     }
   }
 
-  public getPetition(): Observable<any> {
-    const url = 'http://localhost:8080/hospedaje/api/empleados';
+  public getPeticion(url: string): Observable<any> {
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-        'Content-Type': 'application/json'
-      }),
-      withCredentials: true
-    };
+    const nuevoHeader = this.headerConfigJson();
 
-    return this.httpClient.get<any>(url, httpOptions).pipe(
+    return this.httpClient.get<any>(url, nuevoHeader).pipe(
       map((response: any) => {
         return this.convertResponse(response);
       }),
@@ -77,8 +70,8 @@ export class PeticionesService {
     );
   }
 
-  public postPeticion(url: string, parametros: any): Observable<any> {
-    const nuevoHeader = this.headerConfigJson();
+  public postPeticion(url: string, parametros: any, isJsonResponse: boolean): Observable<any> {
+    const nuevoHeader = isJsonResponse ? this.headerConfigJson() : this.headerConfigText();
 
     return this.httpClient.post(url, parametros, nuevoHeader).pipe(
       map((response: any) => {
@@ -88,9 +81,9 @@ export class PeticionesService {
     );
   }
 
-  public putPetition(url: string, params: any ): Observable<any> {
+  public putPeticion(url: string, params: any ): Observable<any> {
 
-    const nuevoHeader = this.headerConfigJson();
+    const nuevoHeader = this.headerConfigText();
 
     return this.httpClient.put(url, params, nuevoHeader).pipe(
       map((response: any) => {
@@ -100,9 +93,9 @@ export class PeticionesService {
     );
   }
 
-  public deletePetition(url: string): Observable<any> {
+  public deletePeticion(url: string): Observable<any> {
 
-    return this.httpClient.delete(url, this.headerConfigJson()).pipe(
+    return this.httpClient.delete(url, this.headerConfigText()).pipe(
       map((response: any) => {
         return this.convertResponse(response);
       }),
