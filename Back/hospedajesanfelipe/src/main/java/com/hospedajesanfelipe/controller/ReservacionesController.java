@@ -2,6 +2,7 @@ package com.hospedajesanfelipe.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,34 +14,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.hospedajesanfelipe.entity.ReservacionEntity;
+import com.hospedajesanfelipe.request.ReservacionRequest;
 import com.hospedajesanfelipe.service.ReservacionesService;
 
 @RestController
 @RequestMapping("/hospedaje/api/reservaciones")
 public class ReservacionesController {
 	
+	@Autowired
 	ReservacionesService reservacionesService;
 	
 	@GetMapping()
-	public List<ReservacionesController> allReservaciones(){
-//		return repository.findAll();
-		return null;
+	public List<ReservacionEntity> allReservaciones() {
+		return reservacionesService.getAllReservaciones();
+	}
+	
+	@GetMapping("/{idReservacion}")
+	public ReservacionEntity getReservacion(Long idReservacion) {
+		return reservacionesService.getReservacion(idReservacion);
 	}
 	
 	@PostMapping()
-	public ReservacionEntity createReservacion(@RequestBody ReservacionEntity reservacion) {
-//		return repository.save();
-		return null;
+	public ReservacionEntity createReservacion(@RequestBody ReservacionRequest reservacion) {
+		return reservacionesService.saveReservaciones(reservacion);
 	}
 	
-	@PutMapping("/{idReservacion}")
-	public ReservacionEntity updateReservacion(@PathVariable int idReservacion ,@RequestBody ReservacionEntity reservacion) {
-//		return repository.save(person);
-		return null;
+	@PutMapping()
+	public ReservacionEntity updateReservacion(@RequestBody ReservacionRequest reservacion) {
+		return reservacionesService.updateReservaciones(reservacion);
 	}
 	
 	@DeleteMapping("/{idReservacion}")
 	public void deleteReservacion(@PathVariable("idReservacion") Long idReservacion) {
-//		repository.deleteById(id);
+		reservacionesService.deleteReservaciones(idReservacion);
 	}
 }

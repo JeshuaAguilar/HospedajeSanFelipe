@@ -11,30 +11,29 @@
     </button>
 
     <!-- Contenido del menú -->
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="inicio">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="habitaciones">Habitaciones</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="reservaciones">Reservaciones</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="empleados">Empleados</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="comentarios">Comentarios</a>
-        </li>
-      </ul>
-
-      <!-- Barra de búsqueda -->
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
-        <button class="btn btn-outline-success" type="submit">Buscar</button>
-      </form>
-    </div>
+    @if (_utils.isLogged) {
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02" >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="inicio">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="habitaciones">Habitaciones</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="reservaciones">Reservaciones</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="empleados">Empleados</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="clientes">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="comentarios">Comentarios</a>
+          </li>
+        </ul>
+      </div>
+    }
   </div>
 </nav>

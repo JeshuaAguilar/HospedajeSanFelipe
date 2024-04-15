@@ -22,7 +22,7 @@ public class ClienteEntity {
 	@Column(name = "segundo_apellido")
 	private String segundoApellido;
 	@Column(name = "telefono")
-	private long telefono;
+	private String telefono;
 	@Column(name = "estado")
 	private String estado;
 	@Column(name = "municipio")
@@ -52,10 +52,10 @@ public class ClienteEntity {
 	public void setSegundoApellido(String segundoApellido) {
 		this.segundoApellido = segundoApellido;
 	}
-	public long getTelefono() {
+	public String getTelefono() {
 		return telefono;
 	}
-	public void setTelefono(long telefono) {
+	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
 	public String getEstado() {

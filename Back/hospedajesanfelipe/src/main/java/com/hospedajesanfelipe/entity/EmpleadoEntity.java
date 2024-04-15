@@ -12,13 +12,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "empleados")
 public class EmpleadoEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_empleado")
+	@Column(name = "id_empleado", updatable = false)
 	private Long idEmpleado;
 	@Column(name = "user_name")
 	private String userName;
@@ -30,14 +32,15 @@ public class EmpleadoEntity {
 	private String primerApellido;
 	@Column(name = "segundo_apellido")
 	private String segundoApellido;
-	@Column(name = "no_telefono")
-	private long noTelefono;
+	@Column(name = "telefono")
+	private String noTelefono;
 	@ManyToOne
     @JoinColumn(name = "fk_rol")
 	private CatRolEntity rol;
 	@OneToMany(mappedBy = "empleado")
 	private List<ComentarioEntity> comentarios;
 	@OneToMany(mappedBy = "empleado")
+	@JsonIgnore
 	private List<ReservacionEntity> reservaciones;
 	@Column(name = "url_foto")
 	private String urlFoto;
@@ -78,10 +81,10 @@ public class EmpleadoEntity {
 	public void setSegundoApellido(String segundoApellido) {
 		this.segundoApellido = segundoApellido;
 	}
-	public long getNoTelefono() {
+	public String getNoTelefono() {
 		return noTelefono;
 	}
-	public void setNoTelefono(long noTelefono) {
+	public void setNoTelefono(String noTelefono) {
 		this.noTelefono = noTelefono;
 	}
 	public CatRolEntity getRol() {

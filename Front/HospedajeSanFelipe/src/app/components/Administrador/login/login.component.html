@@ -1,0 +1,36 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+
+      </div>
+    </div>
+    <div class="row row-cols-1">
+      <form [formGroup]="loginForm">
+        <div class="col mb-3">
+          <div class="form-floating-label">
+            <input type="text" class="form-control" id="usr" formControlName="usr" placeholder="">
+            <label for="usr">Usuario</label>
+          </div>
+          @if (isFieldInvalid('usr')) {
+            <small class="text-danger">
+              Ingrese un usuario
+            </small>
+          }
+        </div>
+        <div class="col">
+          <div class="form-floating-label">
+            <input type="password" class="form-control" id="psw" formControlName="psw" placeholder="">
+            <label for="psw">Contraseña</label>
+          </div>
+          @if (isFieldInvalid('psw')) {
+            <small class="text-danger">
+              Ingrese una contraseña
+            </small>
+          }
+        </div>
+      </form>
+      <button type="button" class="btn btn-primary mt-3" (click)="validarLogin()">Login</button>
+    </div>
+  </div>
+</div>

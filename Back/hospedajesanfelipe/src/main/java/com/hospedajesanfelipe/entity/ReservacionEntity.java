@@ -43,7 +43,7 @@ public class ReservacionEntity {
     @JoinColumn(name = "fk_id_empleado")
 	private EmpleadoEntity empleado;
 	@OneToOne
-	@JoinColumn(name = "fk_id_comentario")
+	@JoinColumn(name = "fk_id_comentario", nullable = true)
     private ComentarioEntity comentario;
 	@ManyToOne
     @JoinColumn(name = "fk_id_precio_especial")

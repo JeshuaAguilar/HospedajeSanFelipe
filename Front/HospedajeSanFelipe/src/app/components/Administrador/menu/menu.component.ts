@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { UtilsService } from '../../../services/utils.service';
 
 @Component({
   selector: 'app-menu',
@@ -8,4 +9,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
 })
-export class MenuComponent {}
+export class MenuComponent {
+  _utils = inject(UtilsService);
+}

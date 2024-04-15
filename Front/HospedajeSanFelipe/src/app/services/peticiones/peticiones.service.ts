@@ -1,0 +1,165 @@
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable, catchError, map, throwError } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class PeticionesService {
+  private httpClient = inject(HttpClient);
+
+  constructor() {}
+
+  private headerConfigText(): any {
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      }),
+      withCredentials: true,
+      responseType: 'text',
+    };
+  }
+
+  private headerConfigJson(): any {
+    return {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true,
+    };
+  }
+
+  private handlePostError(error: HttpErrorResponse) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Error del lado del cliente
+      console.error('Error del lado del cliente:', error.error.message);
+      errorMessage = error.error.message;
+    } else if (error.status == 404) {
+      console.error('Error del lado del servidor:', error.message);
+      errorMessage =
+        'problemas de conectividad con el servidor, intente más tarde.';
+    } else {
+      // El servidor devolvió un código de error
+      console.error(`Código de error ${error.status}, cuerpo: `, error.error);
+      errorMessage = error.error;
+    }
+
+    // Devolver un observable con un mensaje de error legible
+    return throwError(errorMessage);
+  }
+
+  private convertResponse(response: any): any {
+    try {
+      return JSON.parse(response);
+    } catch {
+      return response;
+    }
+  }
+
+  public getPetition(): Observable<any> {
+    const url = 'http://localhost:8080/hospedaje/api/empleados';
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    };
+
+    return this.httpClient.get<any>(url, httpOptions).pipe(
+      map((response: any) => {
+        return this.convertResponse(response);
+      }),
+      catchError(this.handlePostError)
+    );
+  }
+
+  public postPeticion(url: string, parametros: any): Observable<any> {
+    const nuevoHeader = this.headerConfigJson();
+
+    return this.httpClient.post(url, parametros, nuevoHeader).pipe(
+      map((response: any) => {
+        return this.convertResponse(response);
+      }),
+      catchError(this.handlePostError)
+    );
+  }
+
+  public putPetition(url: string, params: any ): Observable<any> {
+
+    const nuevoHeader = this.headerConfigJson();
+
+    return this.httpClient.put(url, params, nuevoHeader).pipe(
+      map((response: any) => {
+        return this.convertResponse(response);
+      }),
+      catchError(this.handlePostError)
+    );
+  }
+
+  public deletePetition(url: string): Observable<any> {
+
+    return this.httpClient.delete(url, this.headerConfigJson()).pipe(
+      map((response: any) => {
+        return this.convertResponse(response);
+      }),
+      catchError(this.handlePostError)
+    );
+  }
+
+  public login(params: any): Observable<any> {
+    const url = `http://localhost:8080/hospedaje/api/empleados/login`;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    };
+
+    return this.httpClient.post<any>(url, params, httpOptions).pipe(catchError(this.handlePostError));
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  public empleado(params: any): Observable<any> {
+    const url = `http://localhost:8080/hospedaje/api/empleados`;
+
+    return this.httpClient.post<any>(url, params, this.headerConfigJson()).pipe(catchError(this.handlePostError));
+  }
+  public cliente(params: any): Observable<any> {
+    const url = `http://localhost:8080/hospedaje/api/clientes`;
+
+    return this.httpClient.post<any>(url, params, this.headerConfigJson()).pipe(catchError(this.handlePostError));
+  }
+  public comentario(params: any): Observable<any> {
+    const url = `http://localhost:8080/hospedaje/api/comentarios`;
+
+    return this.httpClient.post<any>(url, params, this.headerConfigJson()).pipe(catchError(this.handlePostError));
+  }
+  public habitacion(params: any): Observable<any> {
+    const url = `http://localhost:8080/hospedaje/api/habitaciones`;
+
+    return this.httpClient.post<any>(url, params, this.headerConfigJson()).pipe(catchError(this.handlePostError));
+  }
+  public reservacion(params: any): Observable<any> {
+    const url = `http://localhost:8080/hospedaje/api/reservaciones`;
+
+    return this.httpClient.post<any>(url, params, this.headerConfigJson()).pipe(catchError(this.handlePostError));
+  }
+}
