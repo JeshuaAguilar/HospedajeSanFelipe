@@ -1,4 +1,5 @@
-<button type="button" class="btn btn-success ">Agregar</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
+
 <div class="card">
   <div class="card-header text-center">
     Reservaciones
@@ -50,3 +51,44 @@
   </div>
 </div>
 
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Reservaciones</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <mat-stepper #stepper>
+          <mat-step>
+            <form>
+              <ng-template matStepLabel>Reservación</ng-template>
+              <div>
+                <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)" [dateClass]="dateClass" [dateFilter]="myFilter"></mat-calendar>
+                <input type="text" aria-label="Fecha Inicio" [value]="selectedRangeValue?.start | date: 'shortDate'" readonly>
+                <input type="text" aria-label="Fecha Fin" [value]="selectedRangeValue?.end | date: 'shortDate'" readonly>
+              </div>
+              <div>
+                <button type="button" class="btn btn-primary" matStepperNext>Siguiente</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step>
+            <form>
+              <ng-template matStepLabel>Datos del cliente</ng-template>
+              <div>
+                <button type="button" class="btn btn-primary" matStepperPrevious>Atrás</button>
+              </div>
+            </form>
+          </mat-step>
+        </mat-stepper>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary " data-bs-dismiss="modal" >Cerrar</button>
+        <button type="button" class="btn btn-primary ">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
