@@ -10,6 +10,10 @@
     Empleados
   </div>
   <div class="card-body">
+    <!--
+      Este ese el if que detecta, cuando la variable de isLoadedEmpleados está en true
+      muestra la tabla
+     -->
     @if (isLoadedEmpleados) {
       <table class="table">
         <thead>
@@ -26,7 +30,18 @@
           </tr>
         </thead>
         <tbody>
+          <!--
+            Ponemos el for en el tr del body, porque el for va a ciclar el objeto empleados, y va a imprimir los tr necesarios
+            hasta recorrer toda la lista de empleados
+           -->
           @for (empleado of empleados; track $index) {
+            <!--
+              El form recorre la lista de empleados 1 x 1, y los va guardando en empleado, así  que por cada vuelta que de
+              tenemos la información del empleado, como se puede ver accedemos a los atributos del empleado empleado.userName
+              de esa manera, porque en el for, así definimos que vamos a user individualmente con la variable "empleado"
+              Pero esta variable "empleado" es una variable de llaves, o sea, sólo se puede usar siempre y cuando esté dentro
+              de las llaves del ciclo @for
+            -->
             <tr>
               <th scope="row">{{empleado.idEmpleado}}</th>
               <td>{{empleado.userName}}</td>
@@ -39,15 +54,24 @@
               <td>
                 <div class="row gx-0">
                   <div class="col">
+                    <!--
+                      El botón de editar, abre el modal, y manda llamar el método modificarEmpleado() y le pasa por parámetro el idEmpleado del empleado de esa fila
+                     -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modificarEmpleado(empleado.idEmpleado)">Editar</button>
                   </div>
                   <div class="col">
+                    <!--
+                      El botón de eliminar, manda llamar al método eliminarEmpleado() y le pasa por parámetro el idEmpleado del empleado de esa fila
+                     -->
                     <button type="button" class="btn btn-danger"  (click)="eliminarEmpleado(empleado.idEmpleado)">Eliminar</button>
                   </div>
                 </div>
               </td>
             </tr>
           } @empty {
+            <!--
+              Lo que hace el @empty, es que si el objeto "empleados" está vacíom muestra el mensaje de "No se encontraron registros"
+             -->
             <p>
               No se encontraron registros
             </p>
@@ -57,16 +81,24 @@
     }
   </div>
   <div class="card-footer text-center">
-    Hola Administradores
+    Hola empleados
   </div>
 </div>
 
+<!--
+  Lo que hace acá, es que no se va a cargar el modal, si objeto/variable, roles, no tiene nada, hasta que tenga
+  información va a mostrar todo este bloque de código, pero recuerda que sólo lo imprime en el html, pero como es
+  un modal, sólo se muestra hasta que den clic en los botones de agregar o editar empleados, pero también recuerda
+  Que si el objeto/variable roles, no tienen nada, aunque den clic en esos botones, no se va a mostrar el modal
+  porque no va a estar cargado en el html
+ -->
 @if (roles) {
   <!-- Modal -->
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
         <div class="modal-header">
+          <!-- Utilizo la variable global isEditing, par saber qué mensaje mostrar en el modal -->
           <h1 class="modal-title fs-5" id="staticBackdropLabel">{{isEditing ? "Modificar empleado" : "Agregar empleado"}}</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -77,9 +109,14 @@
                 <input type="hidden" formControlName="idEmpleado">
 
                 <div class="form-floating-label">
+                  <!--
+                    Esto [class.is-valid] aplica la clase is-valid de bootstrap, es el color verde si el método isValid() regresa true
+                    Esto [class.is-invalid] aplica la clase is-invalid de bootstrap, es el color rojo, si el método isFieldInvalid() regresa true
+                  -->
                   <input type="text" class="form-control" [class.is-valid]="isValid('usr')" [class.is-invalid]="isFieldInvalid('usr')" id="usr" formControlName="usr" placeholder="">
                   <label for="usr">Usuario</label>
                 </div>
+                <!-- es la misma validación de poner en rojo si isFieldInvalid(), pero aquí si este método regresa true, mostrarmos el mensajito de error -->
                 @if (isFieldInvalid('usr')) {
                   <small class="text-danger">
                     Ingrese un usuario
@@ -146,9 +183,12 @@
                   <div class="form-floating-label">
                     <select class="form-control" [class.is-valid]="isValid('rol')" [class.is-invalid]="isFieldInvalid('rol')" id="rol" formControlName="rol" placeholder="">
                       <!-- <option disabled selected>Seleccione un rol</option> -->
+
+                      <!-- Aquí cargamos la lista de roles, esta lista la mandamos traer del api, en el onInit al principio -->
                       @for (rol of roles; track $index) {
                         <option [value]="rol.idRol">{{rol.tipo}}</option>
                       }@empty {
+                        <!-- el @empty valida que si la lista está vacía, va a mostrar lo de abajo -->
                         <option disabled selected>No hay roles configurados</option>
                       }
                     </select>
@@ -177,7 +217,12 @@
         </div>
 
         <div class="modal-footer">
+          <!-- Cada que cierro el modal, mando resetear el formulario, par que lo limpie -->
           <button type="button" class="btn btn-secondary " data-bs-dismiss="modal" (click)="resetForm()">Cerrar</button>
+          <!--
+            Aquí también uso la variable global isEditing, para saber qué texto ponerle al botón
+            Y este botón manda llamar al método validaFormEmpleado()
+          -->
           <button type="button" class="btn btn-primary " (click)="validaFormEmpleado()">{{isEditing ? "Modificar" : "Agregar"}}</button>
         </div>
       </div>
