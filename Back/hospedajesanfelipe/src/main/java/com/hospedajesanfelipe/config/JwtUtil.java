@@ -51,7 +51,7 @@ public class JwtUtil {
    }
 
    @SuppressWarnings("deprecation")
-public String extractUsername(String jwt) {
+   public String extractUsername(String jwt) {
 	   return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwt).getBody().getSubject();
 	   
    }

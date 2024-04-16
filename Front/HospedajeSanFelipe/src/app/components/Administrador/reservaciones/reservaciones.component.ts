@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, Input, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { Component, EventEmitter, Input, LOCALE_ID, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PeticionesService } from '../../../services/peticiones/peticiones.service';
 import { Reservacion } from '../../../model/reservaciones.model';
@@ -7,42 +7,14 @@ import { Reservaciones } from '../../../model/constantes';
 import { AlertsService } from '../../../services/alerts.service';
 import { CommonModule } from '@angular/common';
 
-import { DateRange, MatCalendarCellClassFunction, MatDateRangePicker, MatDateRangeSelectionStrategy, MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { DateRange, MatCalendar, MatCalendarCellClassFunction, MatDatepickerModule } from '@angular/material/datepicker';
+import { RangeSelectionStrategyService } from '../../../services/range-selection-strategy.service';
+import { MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { NativeDateAdapter, provideNativeDateAdapter } from '@angular/material/core';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
-import { MatCalendar } from '@angular/material/datepicker';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
-import { MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
-
-@Injectable()
-export class FiveDayRangeSelectionStrategy<D> implements MatDateRangeSelectionStrategy<D> {
-  constructor(private _dateAdapter: DateAdapter<D>) {}
-
-  selectionFinished(date: D | null): DateRange<D> {
-    console.log(date);
-    return this._createFiveDayRange(date, null);
-  }
-
-  createPreview(activeDate: D | null, currentRange: DateRange<D>): DateRange<D> {
-    return this._createFiveDayRange(activeDate, currentRange);
-  }
-
-  private _createFiveDayRange(activeDate: D | null, currentRange: DateRange<D>): DateRange<D> {
-    if (activeDate) {
-
-      const start = this._dateAdapter.addCalendarDays(currentRange.start, 0);
-      const diferencia = Math.round((new Date(activeDate as Date).getTime() - new Date(currentRange.start as Date).getTime()) / (1000 * 60 * 60 * 24));
-      const end = this._dateAdapter.addCalendarDays(currentRange.start, diferencia);
-
-      return new DateRange<D>(start as D, end as D);
-    }
-
-    return new DateRange<D>(null, null);
-  }
-}
 
 @Component({
   selector: 'app-reservaciones',
@@ -50,7 +22,8 @@ export class FiveDayRangeSelectionStrategy<D> implements MatDateRangeSelectionSt
   standalone: true,
   providers: [
     provideNativeDateAdapter(),
-    {provide: MAT_DATE_RANGE_SELECTION_STRATEGY, useClass: FiveDayRangeSelectionStrategy},
+    {provide: LOCALE_ID, useValue: 'es'},
+    {provide: MAT_DATE_RANGE_SELECTION_STRATEGY, useClass: RangeSelectionStrategyService},
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, MatDatepickerModule, MatStepperModule, MatFormFieldModule],
   templateUrl: './reservaciones.component.html',
@@ -60,15 +33,15 @@ export class ReservacionesComponent {
 
   private readonly URL_RESERVACIONES = `${environment.apiHost}${Reservaciones.RESERVACIONES}`;
 
-  private fomrBuilder = inject(FormBuilder)
-  private _peticiones = inject(PeticionesService)
-  private _alerta = inject(AlertsService)
-  private dateAdapter = inject(DateAdapter<Date>);
+  private fomrBuilder = inject(FormBuilder);
+  private _peticiones = inject(PeticionesService);
+  private _alerta = inject(AlertsService);
 
   public reservacionForm: FormGroup;
   public campaignOne: FormGroup;
   public reservaciones: Reservacion[];
 
+  publicresetCalendar = true;
 
   constructor() {
     this.ayer = new Date();
@@ -151,27 +124,45 @@ export class ReservacionesComponent {
   }
 
   /*Métodos de Datepicker*/
+  @ViewChild(MatCalendar, {static: false}) calendar!: MatCalendar<Date>;
   @Input() selectedRangeValue: DateRange<Date> | undefined;
   @Output() selectedRangeValueChange = new EventEmitter<DateRange<Date>>();
 
   ayer: Date;
 
+  // private isDateInRangeDisabled(startDate: Date, endDate: Date): boolean {
+  //   let day = new Date(startDate);
+  //   while (day <= endDate) {
+  //     if (!this.myFilter(day)) { // Utiliza el filtro existente para verificar si la fecha está deshabilitada
+  //       return true;
+  //     }
+  //     day.setDate(day.getDate() + 1); // Incrementa el día
+  //   }
+  //   return false;
+  // }
+
   selectedChange(event: Date): void {
     if (!this.selectedRangeValue || this.selectedRangeValue.end) {
-        this.selectedRangeValue = new DateRange(event, null);
+      this.selectedRangeValue = new DateRange(event, null);
     } else {
-        this.selectedRangeValue = new DateRange(this.selectedRangeValue.start, event);
+      if (event >= this.selectedRangeValue.start) {
+        // Verifica si el rango es válido antes de establecerlo
+        // if (!this.isDateInRangeDisabled(this.selectedRangeValue.start, event)) {
+          this.selectedRangeValue = new DateRange(this.selectedRangeValue.start, event);
+        // } else {
+        //   // Manejar el error cuando hay fechas deshabilitadas en el rango
+        //   this._alerta.toastAdvertencia("No puede seleccionar un rango que incluya fechas reservadas.");
+        //   // Opcionalmente, puedes restablecer la selección o manejar de otra manera
+        // }
+      } else {
+        this._alerta.toastAdvertencia("La fecha final debe ser después de la fecha inicial.");
+      }
     }
     this.selectedRangeValueChange.emit(this.selectedRangeValue);
   }
 
-  predefinedRanges = [
-    new DateRange(new Date(new Date().getFullYear(), new Date().getMonth(), 10), new Date(new Date().getFullYear(), new Date().getMonth(), 15)),
-    new DateRange(new Date(new Date().getFullYear(), 4, 1), new Date(new Date().getFullYear(), 4, 10))
-  ];
-
   readonly fechasReservadas = [
-    new Date("04/16/2024"),
+    new Date("04/24/2024"),
     new Date("04/27/2024"),
     new Date("05/15/2024"),
     new Date("05/16/2024"),
@@ -180,25 +171,27 @@ export class ReservacionesComponent {
     new Date("05/28/2024"),
   ];
 
-  dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
-    let clase = '';
-    for(const fecha of this.fechasReservadas){
-      if(fecha.getTime() == cellDate.getTime()) {
-        clase = 'example-custom-date-class';
-      }
-    }
-    return clase;
-  };
+  // dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
+  //   let clase = '';
+  //   for(const fecha of this.fechasReservadas){
+  //     if(fecha.getTime() == cellDate.getTime()) {
+  //       clase = 'example-custom-date-class';
+  //     }
+  //   }
+  //   return clase;
+  // };
 
-  myFilter = (d: Date | null): boolean => {
-    let esReservada = true;
-    for(const fecha of this.fechasReservadas){
-      if(fecha.getTime() == d.getTime()) {
-        esReservada = false;
-      }
-    }
-    return esReservada;
-};
+  // myFilter = (d: Date | null): boolean => {
+  //   let esReservada = true;
+  //   for(const fecha of this.fechasReservadas){
+  //     if(fecha.getTime() == d.getTime()) {
+  //       esReservada = false;
+  //       break;
+  //     }
+  //   }
+
+  //   return esReservada;
+  // };
+
   /*Métodos de Datepicker*/
-
 }

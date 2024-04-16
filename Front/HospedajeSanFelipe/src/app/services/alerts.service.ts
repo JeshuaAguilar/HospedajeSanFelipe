@@ -79,6 +79,13 @@ export class AlertsService {
     });
   }
 
+  public toastAdvertencia(mensaje: string): void {
+    this.toast.fire({
+       icon: 'warning',
+       html: mensaje
+    });
+  }
+
   public toastError(mensaje: string): void {
     this.toast.fire({
        icon: 'error',

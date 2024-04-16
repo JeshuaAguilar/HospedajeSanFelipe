@@ -13,3 +13,7 @@ button.example-custom-date-class {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 100%;
 }
+
+fieldset {
+  height: 70px !important;
+}

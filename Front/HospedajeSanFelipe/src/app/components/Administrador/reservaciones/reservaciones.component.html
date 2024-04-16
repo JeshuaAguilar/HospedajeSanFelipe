@@ -65,11 +65,35 @@
             <form>
               <ng-template matStepLabel>Reservación</ng-template>
               <div>
-                <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)" [dateClass]="dateClass" [dateFilter]="myFilter"></mat-calendar>
-                <input type="text" aria-label="Fecha Inicio" [value]="selectedRangeValue?.start | date: 'shortDate'" readonly>
-                <input type="text" aria-label="Fecha Fin" [value]="selectedRangeValue?.end | date: 'shortDate'" readonly>
+                <!-- <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)" [dateClass]="dateClass" [dateFilter]="myFilter"></mat-calendar> -->
+                <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)"></mat-calendar>
+                <div class="row">
+                  <div class="col">
+                    <fieldset class="card p-2 pt-1 shadow-sm">
+                      <legend class="float-none w-auto px-1 fs-7">Fecha de entrada</legend>
+                      <span class="fs-7">{{selectedRangeValue?.start | date: 'fullDate'}}</span>
+                    </fieldset>
+                    <!-- <input type="text" aria-label="Fecha Inicio" [value]="selectedRangeValue?.start | date: 'shortDate'" readonly> -->
+                  </div>
+                  <div class="col">
+                    <fieldset class="card p-2 pt-1 shadow-sm">
+                      <legend class="float-none w-auto px-1 fs-7">Fecha de salida</legend>
+                      <span class="fs-7">{{selectedRangeValue?.end | date: 'fullDate'}}</span>
+                    </fieldset>
+                    <!-- <input type="text" aria-label="Fecha Fin"  readonly> -->
+                  </div>
+                </div>
               </div>
+              <div class="mt-3">
+                <button type="button" class="btn btn-primary" matStepperNext>Siguiente</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step>
+            <form>
+              <ng-template matStepLabel>Habitaciones disponibles</ng-template>
               <div>
+                <button type="button" class="btn btn-primary" matStepperPrevious>Atrás</button>
                 <button type="button" class="btn btn-primary" matStepperNext>Siguiente</button>
               </div>
             </form>
@@ -86,8 +110,8 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary " data-bs-dismiss="modal" >Cerrar</button>
-        <button type="button" class="btn btn-primary ">Aceptar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Aceptar</button>
       </div>
     </div>
   </div>
