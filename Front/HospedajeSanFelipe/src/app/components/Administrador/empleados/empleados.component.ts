@@ -60,14 +60,15 @@ export class EmpleadosComponent implements OnInit {
        * las comillas simples '', están así, porque no tienen un valor inicial, las inicializamos como vacías
        * Porque es un nuevo empleado, así que todos los inputs, tienen que estar vacíos para que puedan escribir
        */
-      usr:      ['' , [Validators.required, Validators.minLength(3)]],
-      psw:      ['' , [Validators.required, Validators.minLength(3)]],
-      nombre:   ['' , [Validators.required, Validators.minLength(3)]],
-      primerA:  ['' , [Validators.required, Validators.minLength(3)]],
-      segundoA: ['' , [Validators.required, Validators.minLength(3)]],
-      noTel:    ['' , [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^-?\d+$/)]],
-      rol:      ['' , [Validators.required]],
-      foto:     ['' , [Validators.required, Validators.minLength(3)]]
+      idEmpleado: [''],
+      usr:        ['' , [Validators.required, Validators.minLength(3)]],
+      psw:        ['' , [Validators.required, Validators.minLength(3)]],
+      nombre:     ['' , [Validators.required, Validators.minLength(3)]],
+      primerA:    ['' , [Validators.required, Validators.minLength(3)]],
+      segundoA:   ['' , [Validators.required, Validators.minLength(3)]],
+      noTel:      ['' , [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^-?\d+$/)]],
+      rol:        ['' , [Validators.required]],
+      foto:       ['' , [Validators.required, Validators.minLength(3)]]
     })
   }
 

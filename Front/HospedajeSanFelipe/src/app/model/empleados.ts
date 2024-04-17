@@ -25,3 +25,5 @@ export interface CatRol {
 	tipo       : string;
 	descripcion: string;
 }
+
+

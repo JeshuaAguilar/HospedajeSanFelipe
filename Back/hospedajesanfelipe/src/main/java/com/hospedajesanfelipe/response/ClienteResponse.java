@@ -1,11 +1,10 @@
-package com.hospedajesanfelipe.request;
+package com.hospedajesanfelipe.response;
 
 import java.io.Serializable;
 
-public class ClienteRequest implements Serializable {
+public class ClienteResponse implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
 	
 	private Long idCliente;
 	private String nombre;
@@ -14,7 +13,6 @@ public class ClienteRequest implements Serializable {
 	private String telefono;
 	private String estado;
 	private String municipio;
-	
 	
 	public Long getIdCliente() {
 		return idCliente;
@@ -58,5 +56,7 @@ public class ClienteRequest implements Serializable {
 	public void setMunicipio(String municipio) {
 		this.municipio = municipio;
 	}
+	
+	
 	
 }

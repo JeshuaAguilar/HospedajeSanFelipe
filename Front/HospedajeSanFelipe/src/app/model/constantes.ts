@@ -7,3 +7,6 @@ export enum Roles {
 export enum Reservaciones {
   RESERVACIONES = '/hospedaje/api/reservaciones'
 }
+export enum Clientes {
+  CLIENTES = '/hospedaje/api/clientes'
+}
