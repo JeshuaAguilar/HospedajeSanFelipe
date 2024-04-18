@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MenuComponent } from './components/Administrador/menu/menu.component';
+import { MenuComponent } from './components/administrador/menu/menu.component';
 
 @Component({
   selector: 'app-root',

@@ -24,3 +24,24 @@ export interface CatPiso {
   idPiso     : number;
   descripcion: string;
 }
+
+export interface HabitacionRequest{
+	noHabitacion  :  number     ;
+	noOcupante    :  number     ;
+	noMaxOcupante :  number     ;
+	urlFoto       :  string     ;
+  piso          :  number     ;
+	estado        :  number     ;
+  idHabitacion  ?:  number    ;
+}
+
+export interface HabitacionResponse{
+  idHabitacion  :  number              ;
+  noHabitacion  :  number              ;
+  noOcupante    :  number              ;
+  noMaxOcupante :  number              ;
+  urlFoto       :  string              ;
+  piso          :  CatPiso             ;
+  estado        :  CatEstadoHabitacion ;
+}
+

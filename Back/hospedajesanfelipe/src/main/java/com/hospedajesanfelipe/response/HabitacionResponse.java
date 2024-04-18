@@ -1,18 +1,20 @@
-package com.hospedajesanfelipe.request;
+package com.hospedajesanfelipe.response;
 
 import java.io.Serializable;
+import com.hospedajesanfelipe.entity.CatEstadoHabitacionEntity;
+import com.hospedajesanfelipe.entity.CatPisoEntity;
 
-public class HabitacionRequest implements Serializable {
-
+public class HabitacionResponse implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	private Long idHabitacion;
 	private String noHabitacion;
 	private int noOcupante;
 	private int noMaxOcupante;
 	private String urlFoto;
-    private Long piso;
-	private Long estado;
+    private CatPisoEntity piso;
+	private CatEstadoHabitacionEntity estado;
 	public Long getIdHabitacion() {
 		return idHabitacion;
 	}
@@ -43,19 +45,18 @@ public class HabitacionRequest implements Serializable {
 	public void setUrlFoto(String urlFoto) {
 		this.urlFoto = urlFoto;
 	}
-	public Long getPiso() {
+	public CatPisoEntity getPiso() {
 		return piso;
 	}
-	public void setPiso(Long piso) {
+	public void setPiso(CatPisoEntity piso) {
 		this.piso = piso;
 	}
-	public Long getEstado() {
+	public CatEstadoHabitacionEntity getEstado() {
 		return estado;
 	}
-	public void setEstado(Long estado) {
+	public void setEstado(CatEstadoHabitacionEntity estado) {
 		this.estado = estado;
 	}
 	
-    
 	
 }

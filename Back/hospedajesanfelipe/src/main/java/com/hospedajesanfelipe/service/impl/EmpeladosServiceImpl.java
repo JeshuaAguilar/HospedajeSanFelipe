@@ -157,7 +157,10 @@ public class EmpeladosServiceImpl implements EmpleadosService {
 			 * Una vez creada la instancia de Rol ya ya no es nula, podemos asignarle el rol correspondiente
 			 */
 			empleadoEntity.getRol().setIdRol(empleado.getRol());
+			
+			
 		}
+		
 		empleadoEntity.setUrlFoto(empleado.getUrlFoto());
 		
 		/*

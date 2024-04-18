@@ -17,7 +17,7 @@ import com.hospedajesanfelipe.entity.CatPisoEntity;
 import com.hospedajesanfelipe.service.PisosService;
 
 @RestController
-@RequestMapping("/hospedaje/api/piso")
+@RequestMapping("/hospedaje/api/pisos")
 public class PisoController {
 
 	@Autowired

@@ -24,7 +24,7 @@ public class HabitacionEntity {
 	@Column(name = "no_habitacion")
 	private String noHabitacion;
 	@Column(name = "no_ocupantes")
-	private int noOcupantes;
+	private int noOcupante;
 	@Column(name = "no_max_ocupantes")
 	private int noMaxOcupante;
 	@ManyToOne
@@ -35,6 +35,7 @@ public class HabitacionEntity {
 	private CatEstadoHabitacionEntity estado;
 	@Column(name = "url_foto")
 	private String urlFoto;
+	
 	@ManyToMany()
     @JoinTable(
             name = "habitaciones_servicios",
@@ -43,8 +44,7 @@ public class HabitacionEntity {
     )
     private List<CatServicioEntity> servicios;
 	@ManyToMany(mappedBy = "habitaciones")
-    private List<ReservacionEntity> reservaciones; 
-
+    private List<ReservacionEntity> reservaciones;
 	public Long getIdHabitacion() {
 		return idHabitacion;
 	}
@@ -57,11 +57,11 @@ public class HabitacionEntity {
 	public void setNoHabitacion(String noHabitacion) {
 		this.noHabitacion = noHabitacion;
 	}
-	public int getNoOcupantes() {
-		return noOcupantes;
+	public int getNoOcupante() {
+		return noOcupante;
 	}
-	public void setNoOcupantes(int noOcupantes) {
-		this.noOcupantes = noOcupantes;
+	public void setNoOcupante(int noOcupante) {
+		this.noOcupante = noOcupante;
 	}
 	public int getNoMaxOcupante() {
 		return noMaxOcupante;
@@ -99,4 +99,7 @@ public class HabitacionEntity {
 	public void setReservaciones(List<ReservacionEntity> reservaciones) {
 		this.reservaciones = reservaciones;
 	}
+	
+
+	
 }

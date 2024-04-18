@@ -1,9 +1,13 @@
-<button type="button" class="btn btn-success ">Agregar</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="defineForm()">
+  Agregar
+</button>
 <div class="card">
   <div class="card-header text-center">
     Habitaciones
   </div>
   <div class="card-body">
+    @if (isLoadedHabitaciones) {
+
     <table class="table">
       <thead>
         <tr>
@@ -18,47 +22,153 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td><button type="button" class="btn btn-primary">Editar</button>
-              <button type="button" class="btn btn-danger">Eliminar</button>
+        @for (habitacion of habitaciones; track $index) {
+          <tr>
+            <th scope="row">{{habitacion.idHabitacion}}</th>
+            <td>{{habitacion.noHabitacion}}</td>
+            <td>{{habitacion.noOcupante}}</td>
+            <td>{{habitacion.noMaxOcupante}}</td>
+            <td>{{habitacion.piso.descripcion}}</td>
+            <td>{{habitacion.estado.descripcion}}</td>
+            <td></td>
+            <td>
+            <div class="row gx-0">
+              <div class="col">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modificarHabitacion(habitacion.idHabitacion)">Editar</button>
+              </div>
+              <div class="col">
+                <button type="button" class="btn btn-danger"  (click)="eliminarHabitacion(habitacion.idHabitacion)">Eliminar</button>
+              </div>
+            </div>
           </td>
         </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td><button type="button" class="btn btn-primary">Editar</button>
-              <button type="button" class="btn btn-danger">Eliminar</button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td >Larry the Bird</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>mdo</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td><button type="button" class="btn btn-primary">Editar</button>
-              <button type="button" class="btn btn-danger">Eliminar</button>
-          </td>
-        </tr>
+      } @empty {
+        <p>
+          No se encontraron registros
+        </p>
+      }
       </tbody>
     </table>
+  }
   </div>
   <div class="card-footer text-center">
-    Hola Administradores
+    Hola administradores
   </div>
 </div>
 
+@if(this.estados) {
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">{{isEditing ? "Modificar habitacion" : "Agregar habitacion"}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="habitacionesForm">
+            <div class="row row-cols-2 row-cols-lg-3">
+              <div class="col mb-3">
+                <input type="hidden" formControlName="idHabitacion">
+
+                <div class="form-floating-label">
+                  <input type="text" class="form-control" [class.is-valid]="isValid('noHabitacion')" [class.is-invalid]="isFieldInvalid('noHabitacion')" id="noHabitacion" formControlName="noHabitacion" placeholder="">
+                  <label for="noHabitacion">Habitacion</label>
+                </div>
+
+                @if (isFieldInvalid('noHabitacion')) {
+                  <small class="text-danger">
+                    Ingrese el numero de la Habitacion
+                  </small>
+                }
+              </div>
+              <div class="col mb-3">
+                <div class="form-floating-label">
+                  <input type="text" class="form-control" [class.is-valid]="isValid('noOcupante')" [class.is-invalid]="isFieldInvalid('noOcupante')" id="noOcupante" formControlName="noOcupante" placeholder="">
+                  <label for="noOcupante">Ocupantes</label>
+                </div>
+                @if (isFieldInvalid('noOcupante')) {
+                  <small class="text-danger">
+                    Ingrese los ocupantes
+                  </small>
+                }
+              </div>
+              <div class="col mb-3">
+                <div class="form-floating-label">
+                  <input type="text" class="form-control" (input)="validaNumero($event)" [class.is-valid]="isValid('noMaxOcupante')" [class.is-invalid]="isFieldInvalid('noMaxOcupante')" id="noMaxOcupante" formControlName="noMaxOcupante" placeholder="">
+                  <label for="noMaxOcupante">Ocupantes Maximos</label>
+                </div>
+                @if (isFieldInvalid('noMaxOcupante')) {
+                  <small class="text-danger">
+                    Ingrese el maximo de ocupantes
+                  </small>
+                }
+              </div>
+
+
+              <div class="col mb-3">
+
+                  <div class="form-floating-label">
+                    <select class="form-control" [class.is-valid]="isValid('piso')" [class.is-invalid]="isFieldInvalid('piso')" id="piso" formControlName="piso" placeholder="">
+
+                      @for (piso of pisos; track $index) {
+                        <option [value]="piso.idPiso">{{piso.descripcion}}</option>
+                      }@empty {
+
+                        <option disabled selected>No hay pisos configurados</option>
+                      }
+                    </select>
+                    <label for="piso">piso</label>
+                  </div>
+                  @if (isFieldInvalid('piso')) {
+                    <small class="text-danger">
+                      Seleccione un piso
+                    </small>
+                  }
+
+              </div>
+              <div class="col mb-3">
+
+                <div class="form-floating-label">
+                  <select class="form-control" [class.is-valid]="isValid('estado')" [class.is-invalid]="isFieldInvalid('estado')" id="estado" formControlName="estado" placeholder="">
+
+                    @for (estado of estados; track $index) {
+                      <option [value]="estado.idEstado">{{estado.descripcion}}</option>
+                    }@empty {
+
+                      <option disabled selected>No hay estados configurados</option>
+                    }
+                  </select>
+                  <label for="estado">estado</label>
+                </div>
+                @if (isFieldInvalid('estado')) {
+                  <small class="text-danger">
+                    Seleccione el estado de la habitacion
+                  </small>
+                }
+
+            </div>
+              <div class="col mb-3">
+                <div class="form-floating-label">
+                  <input type="text" class="form-control" [class.is-valid]="isValid('urlFoto')" [class.is-invalid]="isFieldInvalid('urlFoto')" id="urlFoto" formControlName="urlFoto" placeholder="">
+                  <label for="urlFoto">Foto</label>
+                </div>
+                @if (isFieldInvalid('urlFoto')) {
+                  <small class="text-danger">
+                    Seleccione una Foto
+                  </small>
+                }
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary " data-bs-dismiss="modal" (click)="resetForm()">Cerrar</button>
+          <button type="button" class="btn btn-primary " (click)="validaFormHabitacion()">{{isEditing ? "Modificar" : "Agregar"}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

@@ -11,6 +11,7 @@
   </div>
   <div class="card-body">
     @if (isLoadedClientes) {
+      <div class="table-container">
     <table class="table">
       <thead>
         <tr>
@@ -35,7 +36,6 @@
             <td>{{cliente.telefono}}</td>
             <td>{{cliente.estado}}</td>
             <td>{{cliente.municipio}}</td>
-            <td></td>
             <td>
               <div class="row gx-0">
                 <div class="col">
@@ -54,6 +54,7 @@
         }
       </tbody>
     </table>
+  </div>
     }
   </div>
   <div class="card-footer text-center">
