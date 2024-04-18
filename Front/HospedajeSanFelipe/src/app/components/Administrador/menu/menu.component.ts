@@ -11,10 +11,4 @@ import { UtilsService } from '../../../services/utils.service';
 })
 export class MenuComponent {
   _utils = inject(UtilsService);
-  router = inject(Router);
-
-  public cerrarSesion(): void {
-    sessionStorage.clear();
-    this.router.navigateByUrl('/login');
-  }
 }

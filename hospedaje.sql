@@ -125,9 +125,10 @@ CREATE TABLE IF NOT EXISTS habitaciones (
   ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
-insert into habitaciones(id_habitacion, no_habitacion, no_ocupantes, no_max_ocupantes, fk_piso, fk_estado, url_foto) values (1, "1", 4, 6, 1, 1, "url_foto");
-insert into habitaciones(id_habitacion, no_habitacion, no_ocupantes, no_max_ocupantes, fk_piso, fk_estado, url_foto) values (2, "2", 2, 3, 2, 2, "url_foto");
-insert into habitaciones(id_habitacion, no_habitacion, no_ocupantes, no_max_ocupantes, fk_piso, fk_estado, url_foto) values (3, "3", 6, 8, 3, 3, "url_foto");
+insert into habitaciones(id_habitacion, no_habitacion, no_ocupantes, no_max_ocupantes, fk_piso, fk_estado, url_foto) values (1, "1", 4, 6, 1, 1, "habitacion_1.jpg");
+insert into habitaciones(id_habitacion, no_habitacion, no_ocupantes, no_max_ocupantes, fk_piso, fk_estado, url_foto) values (2, "2", 2, 3, 2, 2, "habitacion_2.jpg");
+insert into habitaciones(id_habitacion, no_habitacion, no_ocupantes, no_max_ocupantes, fk_piso, fk_estado, url_foto) values (3, "3", 6, 8, 3, 3, "habitacion_3.jpg");
+insert into habitaciones(id_habitacion, no_habitacion, no_ocupantes, no_max_ocupantes, fk_piso, fk_estado, url_foto) values (4, "4", 6, 8, 3, 3, "habitacion_4.jpg");
 
 -- -----------------------------------------------------
 -- Table hotel_san_felipe.trabajo_empleado

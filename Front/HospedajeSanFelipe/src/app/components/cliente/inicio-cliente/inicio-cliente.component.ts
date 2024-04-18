@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment.development';
 import { HabitacionClienteResponse, HabitacionResponse } from '../../../model/habitacion.model';
 import { ImagenesService } from '../../../services/imagenes.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { UtilsService } from '../../../services/utils.service';
 
 @Component({
   selector: 'app-inicio-cliente',
@@ -26,6 +27,10 @@ export class InicioClienteComponent implements OnInit {
   private _imagenes = inject(ImagenesService);
   private sanitizer = inject(DomSanitizer);
   private _alerta = inject(AlertsService);
+
+  constructor() {
+    sessionStorage.clear();
+  }
 
   private getAllHabitacion(): void {
 
