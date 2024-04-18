@@ -1,10 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { HabitacionEmpleadoResponse } from '../../../model/habitacion.model';
+import { environment } from '../../../../environments/environment.development';
+import { Habitaciones, Imagenes } from '../../../model/constantes';
+import { PeticionesService } from '../../../services/peticiones/peticiones.service';
+import { ImagenesService } from '../../../services/imagenes.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { AlertsService } from '../../../services/alerts.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'
 })
@@ -23,7 +30,7 @@ export class InicioComponent implements OnInit {
 
   private getAllHabitacion(): void {
 
-    this._peticiones.getPeticion(`${this.URL_HABITACIONES}${Habitaciones.CLIENTES}` ).subscribe({
+    this._peticiones.getPeticion(`${this.URL_HABITACIONES}${Habitaciones.EMPLEADOS}` ).subscribe({
       next: (response: HabitacionEmpleadoResponse[]) => {
         this.habitaciones = response;
         this.isLoadedHabitaciones.set(true);
