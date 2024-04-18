@@ -1,11 +1,12 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PeticionesService } from '../../../services/peticiones/peticiones.service';
 import { environment } from '../../../../environments/environment.development';
 import { AlertsService } from '../../../services/alerts.service';
 import { CatEstadoHabitacion, CatPiso, HabitacionRequest, HabitacionResponse } from '../../../model/habitacion.model';
-import { Estados, Habitaciones, Pisos } from '../../../model/constantes';
+import { Estados, Habitaciones, Imagenes, Pisos } from '../../../model/constantes';
 import { LoadingComponent } from '../shared/loading/loading.component';
+import { ImagenesService } from '../../../services/imagenes.service';
 
 declare const bootstrap: any;
 
@@ -19,23 +20,25 @@ declare const bootstrap: any;
 export class HabitacionesComponent implements OnInit {
 
   private readonly URL_HABITACIONES = `${environment.apiHost}${Habitaciones.HABITACIONES}`;
-  private readonly URL_PISOS = `${environment.apiHost}${Pisos.PISOS}`;
+  private readonly URL_IMAGENES = `${environment.apiHost}${Imagenes.IMAGENES}`
   private readonly URL_ESTADOS = `${environment.apiHost}${Estados.ESTADOS}`;
+  private readonly URL_PISOS = `${environment.apiHost}${Pisos.PISOS}`;
 
   private fomrBuilder = inject(FormBuilder);
   private _peticiones = inject(PeticionesService);
   private _alerta = inject(AlertsService);
+  public _imagenes = inject(ImagenesService);
 
-  public isLoadedHabitaciones = false;
+  public isLoadedHabitaciones = signal(false);
   public habitaciones?: HabitacionResponse[];
   public habitacionesForm!: FormGroup;
-  public pisos?: CatPiso[];
-  public estados?: CatEstadoHabitacion[];
-  public isEditing = false;
+  public pisos: CatPiso[];
+  public estados: CatEstadoHabitacion[];
+  public isEditing = signal(false);
 
   public defineForm(): void {
 
-    this.isEditing = false;
+    this.isEditing.set(false);
     this.habitacionesForm = this .fomrBuilder.group({
 
       idHabitacion:  [''],
@@ -44,12 +47,12 @@ export class HabitacionesComponent implements OnInit {
       noMaxOcupante: ['' , [Validators.required, Validators.minLength(1)]],
       piso:          ['' , [Validators.required, Validators.minLength(1)]],
       estado:        ['' , [Validators.required]],
-      urlFoto:          ['' , [Validators.required, Validators.minLength(3)]]
+      urlFoto:       ['' , [Validators.required, Validators.minLength(3)]]
     })
   }
 
   private defineEditForm(habitacion: HabitacionRequest): void {
-    this.isEditing = true;
+    this.isEditing.set(true);
 
     const { idHabitacion, noHabitacion, noOcupante, noMaxOcupante, piso, estado, urlFoto } = habitacion;
 
@@ -69,7 +72,7 @@ export class HabitacionesComponent implements OnInit {
     this.habitacionesForm.reset({
       idHabitacion:   '',
       noHabitacion:   '',
-      noOcupante:    '',
+      noOcupante:     '',
       noMaxOcupante:  '',
       piso:           '',
       estado:         '',
@@ -82,12 +85,12 @@ export class HabitacionesComponent implements OnInit {
   }
 
   private getAllHabitacion(isCloseLoading?: boolean): void {
-    this.isLoadedHabitaciones = false;
+    this.isLoadedHabitaciones = signal(false);
 
     this._peticiones.getPeticion(this.URL_HABITACIONES).subscribe({
       next: (response: HabitacionResponse[]) => {
         this.habitaciones = response;
-        this.isLoadedHabitaciones = true;
+        this.isLoadedHabitaciones = signal(true);
         if (isCloseLoading) {
           this._alerta.cierraLoading();
         }
@@ -113,7 +116,7 @@ export class HabitacionesComponent implements OnInit {
         noMaxOcupante : this.habitacionesForm.get('noMaxOcupante').value,
         piso          : this.habitacionesForm.get('piso').value,
         estado        : this.habitacionesForm.get('estado').value,
-        urlFoto        : this.habitacionesForm.get('urlFoto').value,
+        urlFoto       : this._imagenes.currentFile ? this._imagenes.currentFile.name : this.habitacionesForm.get('urlFoto').value,
       };
 
       if (!this.isEditing) {
@@ -126,17 +129,19 @@ export class HabitacionesComponent implements OnInit {
 
   private agregaHabitacion(request: HabitacionRequest): void {
 
+    this._imagenes.uploadImage(this.URL_IMAGENES);
+
     this._peticiones.postPeticion(this.URL_HABITACIONES, request, false).subscribe({
       next: (response: string) => {
 
       this.resetForm();
       const miModal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
 
-     if (miModal) {
-      miModal.hide();
+      if (miModal) {
+        miModal.hide();
       }
-    this.getAllHabitacion();
-    this._alerta.toastExito(response);
+      this.getAllHabitacion();
+      this._alerta.toastExito(response);
       },
       error: (err: any) => {
         console.error(err);
@@ -146,6 +151,9 @@ export class HabitacionesComponent implements OnInit {
   }
 
   private editaHabitacion(request: HabitacionRequest): void {
+
+    this._imagenes.uploadImage(this.URL_IMAGENES);
+
     this._peticiones.putPeticion(this.URL_HABITACIONES, request).subscribe({
       next: (response: string) => {
         this.resetForm();
@@ -176,7 +184,7 @@ export class HabitacionesComponent implements OnInit {
       noMaxOcupante  : habitacionFinded.noMaxOcupante,
       piso           : habitacionFinded.piso.idPiso,
       estado         : habitacionFinded.estado.idEstado,
-      urlFoto        : '',
+      urlFoto        : habitacionFinded.urlFoto,
     }
 
     this.defineEditForm(habitacionRequest);
@@ -235,10 +243,10 @@ export class HabitacionesComponent implements OnInit {
   }
 
   public validaNumero(valor: Event): void {
-    const target = valor.currentTarget as HTMLElement;
+    const target = valor.target as HTMLInputElement;
 
     const noOcupante = this.habitacionesForm.get('noOcupante').value;
-    if(noOcupante > Number(target.innerText)) {
+    if(noOcupante > Number(target.value)) {
       this.habitacionesForm.get('noMaxOcupante').reset();
       this._alerta.toastAdvertencia('El número de ocupantes no puede ser mayor al número de ocupantes máximo')
     }

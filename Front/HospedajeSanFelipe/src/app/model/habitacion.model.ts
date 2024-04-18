@@ -1,3 +1,5 @@
+import { SafeUrl } from "@angular/platform-browser";
+import { CatServicios } from "./servicios.model";
 
 export interface Habitacion {
   idHabitacion : number;
@@ -26,22 +28,42 @@ export interface CatPiso {
 }
 
 export interface HabitacionRequest{
-	noHabitacion  :  number     ;
-	noOcupante    :  number     ;
-	noMaxOcupante :  number     ;
-	urlFoto       :  string     ;
-  piso          :  number     ;
-	estado        :  number     ;
-  idHabitacion  ?:  number    ;
+	noHabitacion  :  number;
+	noOcupante    :  number;
+	noMaxOcupante :  number;
+  piso          :  number;
+	estado        :  number;
+	urlFoto       ?: string;
+  idHabitacion  ?: number;
 }
 
 export interface HabitacionResponse{
-  idHabitacion  :  number              ;
-  noHabitacion  :  number              ;
-  noOcupante    :  number              ;
-  noMaxOcupante :  number              ;
-  urlFoto       :  string              ;
-  piso          :  CatPiso             ;
-  estado        :  CatEstadoHabitacion ;
+  idHabitacion  : number;
+  noHabitacion  : number;
+  noOcupante    : number;
+  noMaxOcupante : number;
+  urlFoto       : string;
+  piso          : CatPiso;
+  estado        : CatEstadoHabitacion
 }
 
+export interface HabitacionClienteResponse {
+  idHabitacion: number;
+	noHabitacion: string;
+	noOcupante  : number;
+	urlFoto     : string;
+  servicios   : CatServicios[];
+  imagen      ?: SafeUrl;
+}
+
+export interface HabitacionEmpleadoResponse {
+  idHabitacion  : number;
+  noHabitacion  : number;
+  noOcupante    : number;
+  noMaxOcupante : number;
+  urlFoto       : string;
+  piso          : CatPiso;
+  estado        : CatEstadoHabitacion
+  servicios     : CatServicios[];
+  imagen        ?: SafeUrl;
+}

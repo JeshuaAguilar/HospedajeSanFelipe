@@ -67,8 +67,13 @@ CREATE TABLE IF NOT EXISTS cat_servicios (
   PRIMARY KEY (id_servicio)
 ) ENGINE = InnoDB;
 
-insert into cat_servicios(id_servicio, descripcion) values (1, "Ventildor");
-insert into cat_servicios(id_servicio, descripcion) values (2, "Agua Caliente");
+insert into cat_servicios(id_servicio, descripcion) values (1, "Cama matrimonial");
+insert into cat_servicios(id_servicio, descripcion) values (2, "Cama individual");
+insert into cat_servicios(id_servicio, descripcion) values (3, "Agua caliente");
+insert into cat_servicios(id_servicio, descripcion) values (4, "Ventilador");
+insert into cat_servicios(id_servicio, descripcion) values (5, "Baño privado");
+insert into cat_servicios(id_servicio, descripcion) values (6, "wifi");
+insert into cat_servicios(id_servicio, descripcion) values (7, "tv");
 
 -- -----------------------------------------------------
 -- Table hotel_san_felipe.rol
@@ -221,3 +226,18 @@ CREATE TABLE IF NOT EXISTS habitaciones_servicios (
 
 insert into habitaciones_servicios(id_habitacion_servicio, id_servicio) values (1, 1);
 insert into habitaciones_servicios(id_habitacion_servicio, id_servicio) values (1, 2);
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(1, 3);
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(1, 4);
+
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(2, 1);
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(2, 2);
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(2, 3);
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(2, 4);
+
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(3, 1);
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(3, 2);
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(3, 4);
+
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(4, 1);
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(4, 2);
+INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(4, 3);

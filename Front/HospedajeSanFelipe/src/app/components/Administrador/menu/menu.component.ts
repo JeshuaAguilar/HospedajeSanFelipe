@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { UtilsService } from '../../../services/utils.service';
 
 @Component({
@@ -11,4 +11,10 @@ import { UtilsService } from '../../../services/utils.service';
 })
 export class MenuComponent {
   _utils = inject(UtilsService);
+  router = inject(Router);
+
+  public cerrarSesion(): void {
+    sessionStorage.clear();
+    this.router.navigateByUrl('/login');
+  }
 }

@@ -6,7 +6,7 @@
     Habitaciones
   </div>
   <div class="card-body">
-    @if (isLoadedHabitaciones) {
+    @if (isLoadedHabitaciones()) {
 
     <table class="table">
       <thead>
@@ -151,8 +151,8 @@
             </div>
               <div class="col mb-3">
                 <div class="form-floating-label">
-                  <input type="text" class="form-control" [class.is-valid]="isValid('urlFoto')" [class.is-invalid]="isFieldInvalid('urlFoto')" id="urlFoto" formControlName="urlFoto" placeholder="">
-                  <label for="urlFoto">Foto</label>
+                  <input class="form-control" type="file" [class.is-valid]="isValid('urlFoto')" [class.is-invalid]="isFieldInvalid('urlFoto')" id="urlFoto" formControlName="urlFoto" (change)="_imagenes.selectFile($event)">
+                  <label for="urlFoto" class="form-label">Foto</label>
                 </div>
                 @if (isFieldInvalid('urlFoto')) {
                   <small class="text-danger">
@@ -166,7 +166,7 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary " data-bs-dismiss="modal" (click)="resetForm()">Cerrar</button>
-          <button type="button" class="btn btn-primary " (click)="validaFormHabitacion()">{{isEditing ? "Modificar" : "Agregar"}}</button>
+          <button type="button" class="btn btn-primary " (click)="validaFormHabitacion()">{{isEditing() ? "Modificar" : "Agregar"}}</button>
         </div>
       </div>
     </div>

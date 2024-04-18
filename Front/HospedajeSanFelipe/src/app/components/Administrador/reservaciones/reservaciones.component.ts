@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, LOCALE_ID, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PeticionesService } from '../../../services/peticiones/peticiones.service';
 import { Reservacion } from '../../../model/reservaciones.model';
@@ -22,7 +22,6 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
   providers: [
     provideNativeDateAdapter(),
-    {provide: LOCALE_ID, useValue: 'es'},
     {provide: MAT_DATE_RANGE_SELECTION_STRATEGY, useClass: RangeSelectionStrategyService},
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, MatDatepickerModule, MatStepperModule, MatFormFieldModule],
@@ -103,7 +102,7 @@ export class ReservacionesComponent {
     }
   }
   private reservacion(request: any): void {
-    this._peticiones.reservacion(request).subscribe({
+    this._peticiones.getPeticion(request).subscribe({
       next: (response: any) => {
         console.log(response);
         // sessionStorage.setItem('token', response.token);

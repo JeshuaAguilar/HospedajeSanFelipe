@@ -39,7 +39,7 @@ export class ComentariosComponent {
     }
   }
   private comentario(request: any): void {
-    this._peticiones.comentario(request).subscribe({
+    this._peticiones.getPeticion(request).subscribe({
       next: (response: any) => {
         console.log(response);
         // sessionStorage.setItem('token', response.token);

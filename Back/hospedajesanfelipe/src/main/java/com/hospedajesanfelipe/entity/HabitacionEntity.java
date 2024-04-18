@@ -43,8 +43,10 @@ public class HabitacionEntity {
             inverseJoinColumns = @JoinColumn(name = "id_servicio")
     )
     private List<CatServicioEntity> servicios;
+	
 	@ManyToMany(mappedBy = "habitaciones")
     private List<ReservacionEntity> reservaciones;
+	
 	public Long getIdHabitacion() {
 		return idHabitacion;
 	}

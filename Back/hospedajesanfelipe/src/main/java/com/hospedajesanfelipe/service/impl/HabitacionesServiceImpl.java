@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service;
 import com.hospedajesanfelipe.dao.HabitacionesDao;
 import com.hospedajesanfelipe.entity.CatEstadoHabitacionEntity;
 import com.hospedajesanfelipe.entity.CatPisoEntity;
-
 import com.hospedajesanfelipe.entity.HabitacionEntity;
 import com.hospedajesanfelipe.request.HabitacionRequest;
+import com.hospedajesanfelipe.response.HabitacionClienteResponse;
+import com.hospedajesanfelipe.response.HabitacionEmpleadoResponse;
 import com.hospedajesanfelipe.response.HabitacionResponse;
 import com.hospedajesanfelipe.service.HabitacionesService;
 
@@ -43,6 +44,40 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 			for (HabitacionEntity habitacionEntity : habitaciones) {
 				HabitacionResponse habitacion = new HabitacionResponse();
 				habitacion = mapperRhabitacionResponse(habitacionEntity);
+				response.add(habitacion);
+			}
+			
+		}
+		return response;
+	}
+	
+	@Override
+	public List<HabitacionClienteResponse> getAllHabitacionesCliente() {
+		List<HabitacionClienteResponse> response = null;
+		List<HabitacionEntity> habitaciones = habitacionesDao.getAllHabitaciones();
+		
+		if (habitaciones != null && !habitaciones.isEmpty()) {
+			response = new ArrayList<HabitacionClienteResponse>();
+			for (HabitacionEntity habitacionEntity : habitaciones) {
+				HabitacionClienteResponse habitacion = new HabitacionClienteResponse();
+				habitacion = mapperHabitacionClienteResponse(habitacionEntity);
+				response.add(habitacion);
+			}
+			
+		}
+		return response;
+	}
+
+	@Override
+	public List<HabitacionEmpleadoResponse> getAllHabitacionesEmpleado() {
+		List<HabitacionEmpleadoResponse> response = null;
+		List<HabitacionEntity> habitaciones = habitacionesDao.getAllHabitaciones();
+		
+		if (habitaciones != null && !habitaciones.isEmpty()) {
+			response = new ArrayList<HabitacionEmpleadoResponse>();
+			for (HabitacionEntity habitacionEntity : habitaciones) {
+				HabitacionEmpleadoResponse habitacion = new HabitacionEmpleadoResponse();
+				habitacion = mapperHabitacionEmpleadoResponse(habitacionEntity);
 				response.add(habitacion);
 			}
 			
@@ -148,8 +183,6 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		return habitacionEntity;
 	}
 	
-	
-
 	private HabitacionResponse mapperRhabitacionResponse(HabitacionEntity habitacion) {
 		HabitacionResponse response = new HabitacionResponse();
 		
@@ -159,6 +192,35 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		response.setNoMaxOcupante(habitacion.getNoMaxOcupante());
 		response.setPiso(habitacion.getPiso());
 		response.setEstado(habitacion.getEstado());
+		response.setUrlFoto(habitacion.getUrlFoto());
+		
+		return response;
+	}
+
+	private HabitacionClienteResponse mapperHabitacionClienteResponse(HabitacionEntity habitacion) {
+		HabitacionClienteResponse response = new HabitacionClienteResponse();
+		
+		response.setIdHabitacion(habitacion.getIdHabitacion());
+		response.setNoHabitacion(habitacion.getNoHabitacion());
+		response.setNoOcupante(habitacion.getNoOcupante());
+		response.setUrlFoto(habitacion.getUrlFoto());
+		response.setServicios(habitacion.getServicios());
+		
+		return response;
+	}
+	
+	private HabitacionEmpleadoResponse mapperHabitacionEmpleadoResponse(HabitacionEntity habitacion) {
+		HabitacionEmpleadoResponse response = new HabitacionEmpleadoResponse();
+		
+		response.setIdHabitacion(habitacion.getIdHabitacion());
+		response.setNoHabitacion(habitacion.getNoHabitacion());
+		response.setNoOcupante(habitacion.getNoOcupante());
+		response.setNoMaxOcupante(habitacion.getNoMaxOcupante());
+		response.setPiso(habitacion.getPiso());
+		response.setEstado(habitacion.getEstado());
+		response.setUrlFoto(habitacion.getUrlFoto());
+		response.setServicios(habitacion.getServicios());
+		response.setReservaciones(habitacion.getReservaciones());
 		
 		return response;
 	}

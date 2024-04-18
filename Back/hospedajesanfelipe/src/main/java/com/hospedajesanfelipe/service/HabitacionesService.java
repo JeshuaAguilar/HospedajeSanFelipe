@@ -2,11 +2,10 @@ package com.hospedajesanfelipe.service;
 
 import java.util.List;
 
-
 import com.hospedajesanfelipe.entity.HabitacionEntity;
-
 import com.hospedajesanfelipe.request.HabitacionRequest;
-
+import com.hospedajesanfelipe.response.HabitacionClienteResponse;
+import com.hospedajesanfelipe.response.HabitacionEmpleadoResponse;
 import com.hospedajesanfelipe.response.HabitacionResponse;
 
 public interface HabitacionesService {
@@ -17,6 +16,9 @@ public HabitacionEntity getHabitacionByNoHabitacion(String noHabitacion);
 	 Retorna una lista con todos los empleados de tipo empleados entity, porque aquí sí me puede trar sus reservaciones y comentarios 
 	 */
 	public List<HabitacionResponse> getAllHabitaciones();
+	
+	public List<HabitacionClienteResponse> getAllHabitacionesCliente();
+	public List<HabitacionEmpleadoResponse> getAllHabitacionesEmpleado();
 	/*Este método busca a un empleado por su id, y únicamente regresa 1 empleado, que conincida con el id de búsqueda
 	  Y recibe el idEmpledo por parámetro para poder buscarlo
 	  Y retorna un objeto tipo empleado con la información del empleado encontrada de tipo empleados entity, porque aquí sí me puede trar sus reservaciones y comentarios

@@ -11,12 +11,17 @@ export enum Clientes {
   CLIENTES = '/hospedaje/api/clientes'
 }
 export enum Habitaciones {
-  HABITACIONES = '/hospedaje/api/habitaciones'
+  HABITACIONES = '/hospedaje/api/habitaciones',
+  CLIENTES = '/clientes'
 }
 export enum Pisos {
   PISOS = '/hospedaje/api/pisos'
 }
 export enum Estados {
   ESTADOS = '/hospedaje/api/estadoHabitaciones'
+}
+export enum Imagenes {
+  IMAGENES = '/hospedaje/api/imagenes',
+  GET_BY_NAME = '/getByName'
 }
 

@@ -15,6 +15,7 @@ public class HabitacionResponse implements Serializable {
 	private String urlFoto;
     private CatPisoEntity piso;
 	private CatEstadoHabitacionEntity estado;
+	
 	public Long getIdHabitacion() {
 		return idHabitacion;
 	}

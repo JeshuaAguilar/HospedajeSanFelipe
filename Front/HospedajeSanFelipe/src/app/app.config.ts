@@ -5,9 +5,17 @@ import { routes } from './app.routes';
 import { HttpClientModule } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
+import localeEsMx from '@angular/common/locales/es-MX';
+import { LOCALE_ID, DEFAULT_CURRENCY_CODE } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localeEsMx, 'es-Mx');
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
+    { provide: LOCALE_ID, useValue: 'es-Mx' },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'MXN' },
     importProvidersFrom(HttpClientModule), provideAnimationsAsync(),
   ],
 };

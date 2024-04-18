@@ -9,15 +9,19 @@ import { EmpleadosComponent } from './components/administrador/empleados/emplead
 import { LoginComponent } from './components/administrador/login/login.component';
 import { ClientesComponent } from './components/administrador/clientes/clientes.component';
 import { InicioClienteComponent } from './components/cliente/inicio-cliente/inicio-cliente.component';
+import { ImagenesComponent } from './components/administrador/shared/imagenes/imagenes.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: 'inicio', component: InicioComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'empleados', component: EmpleadosComponent },
-  { path: 'habitaciones', component: HabitacionesComponent },
-  { path: 'comentarios', component: ComentariosComponent },
-  { path: 'reservaciones', component: ReservacionesComponent },
-  { path: 'clientes', component: ClientesComponent },
+  { path: 'login',         component: LoginComponent },
+  { path: 'inicio',        component: InicioComponent,        canActivate: [authGuard]},
+  { path: 'empleados',     component: EmpleadosComponent,     canActivate: [authGuard]},
+  { path: 'habitaciones',  component: HabitacionesComponent,  canActivate: [authGuard]},
+  { path: 'comentarios',   component: ComentariosComponent,   canActivate: [authGuard]},
+  { path: 'reservaciones', component: ReservacionesComponent, canActivate: [authGuard]},
+  { path: 'clientes',      component: ClientesComponent,      canActivate: [authGuard]},
+
+  { path: 'imagenes', component: ImagenesComponent },
 
   { path: 'inicioCliente', component: InicioClienteComponent },
 

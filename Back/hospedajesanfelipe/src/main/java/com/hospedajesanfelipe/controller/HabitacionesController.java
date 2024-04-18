@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.hospedajesanfelipe.entity.HabitacionEntity;
 import com.hospedajesanfelipe.request.HabitacionRequest;
+import com.hospedajesanfelipe.response.HabitacionClienteResponse;
+import com.hospedajesanfelipe.response.HabitacionEmpleadoResponse;
 import com.hospedajesanfelipe.response.HabitacionResponse;
 import com.hospedajesanfelipe.service.HabitacionesService;
 
@@ -30,6 +31,15 @@ public class HabitacionesController {
 	@GetMapping()
 	public List<HabitacionResponse> getAllHabitaciones() {
 		return habitacionesService.getAllHabitaciones();
+	}
+	
+	@GetMapping("/clientes")
+	public List<HabitacionClienteResponse> getAllHabitacionesCliente() {
+		return habitacionesService.getAllHabitacionesCliente();
+	}
+	@GetMapping("/empleados")
+	public List<HabitacionEmpleadoResponse> getAllHabitacionesEmpleado() {
+		return habitacionesService.getAllHabitacionesEmpleado();
 	}
 	
 	@GetMapping("/{idHabitacion}")

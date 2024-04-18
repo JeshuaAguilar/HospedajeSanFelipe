@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 
@@ -116,43 +116,4 @@ export class PeticionesService {
     return this.httpClient.post<any>(url, params, httpOptions).pipe(catchError(this.handlePostError));
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  public empleado(params: any): Observable<any> {
-    const url = `http://localhost:8080/hospedaje/api/empleados`;
-
-    return this.httpClient.post<any>(url, params, this.headerConfigJson()).pipe(catchError(this.handlePostError));
-  }
-  public cliente(params: any): Observable<any> {
-    const url = `http://localhost:8080/hospedaje/api/clientes`;
-
-    return this.httpClient.post<any>(url, params, this.headerConfigJson()).pipe(catchError(this.handlePostError));
-  }
-  public comentario(params: any): Observable<any> {
-    const url = `http://localhost:8080/hospedaje/api/comentarios`;
-
-    return this.httpClient.post<any>(url, params, this.headerConfigJson()).pipe(catchError(this.handlePostError));
-  }
-  public habitacion(params: any): Observable<any> {
-    const url = `http://localhost:8080/hospedaje/api/habitaciones`;
-
-    return this.httpClient.post<any>(url, params, this.headerConfigJson()).pipe(catchError(this.handlePostError));
-  }
-  public reservacion(params: any): Observable<any> {
-    const url = `http://localhost:8080/hospedaje/api/reservaciones`;
-
-    return this.httpClient.post<any>(url, params, this.headerConfigJson()).pipe(catchError(this.handlePostError));
-  }
 }
