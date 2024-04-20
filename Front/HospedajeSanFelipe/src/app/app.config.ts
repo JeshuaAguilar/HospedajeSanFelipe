@@ -7,12 +7,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 import localeEsMx from '@angular/common/locales/es-MX';
 import { LOCALE_ID, DEFAULT_CURRENCY_CODE } from '@angular/core';
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 
 registerLocaleData(localeEsMx, 'es-Mx');
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    DatePipe,
     provideRouter(routes),
     { provide: LOCALE_ID, useValue: 'es-Mx' },
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'MXN' },

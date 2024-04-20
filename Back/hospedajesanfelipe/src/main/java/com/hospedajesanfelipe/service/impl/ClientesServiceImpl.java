@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 
 import com.hospedajesanfelipe.dao.ClientesDao;
@@ -21,14 +20,21 @@ public class ClientesServiceImpl implements ClientesService {
 	ClientesDao clientesDao;
 	
 	@Override
-	public ClienteEntity getClienteByNombre(String nombre) {
-		Optional<ClienteEntity> entity = clientesDao.getClienteByNombre(nombre);
+	public List<ClienteResponse> getClienteByNombreApellido(String nombre, String apellido) {
+		List<ClienteResponse> response = null;
+		List<ClienteEntity> clientes = clientesDao.getClienteByNombreApellido(nombre, apellido);
 		
-		if (entity.isPresent()) {
-			return entity.get();
+		if (clientes != null && !clientes.isEmpty()) {
+			response = new ArrayList<ClienteResponse>();
+			for (ClienteEntity clienteEntity : clientes) {
+				ClienteResponse cliente = new ClienteResponse();
+				cliente = mapperRclienteResponse(clienteEntity);
+				response.add(cliente);
+			}
 		} else {
-			return null;
+			response = new ArrayList<ClienteResponse>();
 		}
+		return response;
 	}
 	
 	@Override

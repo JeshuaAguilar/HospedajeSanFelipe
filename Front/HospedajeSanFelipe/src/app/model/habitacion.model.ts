@@ -76,3 +76,14 @@ export interface HabitacionEmpleadoResponse {
   servicios     : CatServicios[];
   imagen        ?: SafeUrl;
 }
+
+export interface HabitacionDisponibleResponse {
+  idHabitacion : number;
+	noHabitacion : string;
+	noOcupante   : number;
+	noMaxOcupante: number;
+	piso         : string;
+	servicios    : CatServicios[];
+	isSelected   : boolean;
+}
+

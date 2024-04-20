@@ -4,6 +4,7 @@ import { PeticionesService } from '../../../services/peticiones/peticiones.servi
 import { LoginResponse } from '../../../model/login-response';
 import { Router } from '@angular/router';
 import { UtilsService } from '../../../services/utils.service';
+import { AlertsService } from '../../../services/alerts.service';
 
 @Component({
   selector: 'app-login',
@@ -13,10 +14,11 @@ import { UtilsService } from '../../../services/utils.service';
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
-  private router = inject(Router);
-  private formBuilder = inject(FormBuilder);
   private _peticiones = inject(PeticionesService);
+  private formBuilder = inject(FormBuilder);
+  private _alertas = inject(AlertsService);
   private _util = inject(UtilsService);
+  private router = inject(Router);
 
   loginForm!: FormGroup;
 
@@ -41,7 +43,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
     } else {
-      // this._alerts.loading();
+      this._alertas.iniciaLoading();
       const loginRequest: any = {
         userName: this.loginForm.get('usr')?.value,
         password: this.loginForm.get('psw')?.value,
@@ -56,12 +58,12 @@ export class LoginComponent implements OnInit {
         console.log(response);
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('user', JSON.stringify(response));
-        // this._alerts.toastLogin('¡Ha iniciado sesión correctamente!');
+        this._alertas.toastExito('¡Ha iniciado sesión correctamente!');
         this.redirectHome();
       },
       error: (err: any) => {
         console.error(err);
-        // this._alerts.error(err);
+        this._alertas.error(err);
       },
     });
   }

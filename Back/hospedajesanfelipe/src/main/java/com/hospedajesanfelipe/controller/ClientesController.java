@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hospedajesanfelipe.entity.ClienteEntity;
-import com.hospedajesanfelipe.entity.EmpleadoEntity;
 import com.hospedajesanfelipe.request.ClienteRequest;
-import com.hospedajesanfelipe.request.EmpleadoRequest;
 import com.hospedajesanfelipe.response.ClienteResponse;
 import com.hospedajesanfelipe.service.ClientesService;
 
@@ -31,6 +29,11 @@ public class ClientesController {
 	@GetMapping()
 	public List<ClienteResponse> getAllClientes() {
 		return clientesService.getAllClientes();
+	}
+
+	@GetMapping("/{nombre}/{apellido}")
+	public List<ClienteResponse> getClienteByNombreApellido(@PathVariable("nombre") String nombre, @PathVariable("apellido") String apellido) {
+		return clientesService.getClienteByNombreApellido(nombre,apellido);
 	}
 	
 	@PostMapping()

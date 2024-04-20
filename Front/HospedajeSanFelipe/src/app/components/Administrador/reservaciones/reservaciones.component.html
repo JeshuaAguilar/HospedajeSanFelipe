@@ -52,7 +52,7 @@
 </div>
 
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered" [class.modal-xl]="currentStep() !== 0">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="staticBackdropLabel">Reservaciones</h1>
@@ -60,53 +60,160 @@
       </div>
       <div class="modal-body">
 
-        <mat-stepper #stepper>
-          <mat-step>
-            <form>
-              <ng-template matStepLabel>Reservación</ng-template>
-              <div>
-                <!-- <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)" [dateClass]="dateClass" [dateFilter]="myFilter"></mat-calendar> -->
-                <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)"></mat-calendar>
-                <div class="row">
-                  <div class="col">
-                    <fieldset class="card p-2 pt-1 shadow-sm">
-                      <legend class="float-none w-auto px-1 fs-7">Fecha de entrada</legend>
-                      <span class="fs-7">{{selectedRangeValue?.start | date: 'fullDate'}}</span>
-                    </fieldset>
-                    <!-- <input type="text" aria-label="Fecha Inicio" [value]="selectedRangeValue?.start | date: 'shortDate'" readonly> -->
-                  </div>
-                  <div class="col">
-                    <fieldset class="card p-2 pt-1 shadow-sm">
-                      <legend class="float-none w-auto px-1 fs-7">Fecha de salida</legend>
-                      <span class="fs-7">{{selectedRangeValue?.end | date: 'fullDate'}}</span>
-                    </fieldset>
-                    <!-- <input type="text" aria-label="Fecha Fin"  readonly> -->
-                  </div>
+        <mat-stepper #stepper (selectionChange)="onStepChange($event)">
+          <mat-step >
+            <ng-template matStepLabel>Reservación</ng-template>
+            <div>
+              <!-- <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)" [dateClass]="dateClass" [dateFilter]="myFilter"></mat-calendar> -->
+              <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)"></mat-calendar>
+              <div class="row">
+                <div class="col">
+                  <fieldset class="card p-2 pt-1 shadow-sm alto-fechas">
+                    <legend class="float-none w-auto px-1 fs-7">Fecha de entrada</legend>
+                    <span class="fs-7">{{selectedRangeValue?.start | date: 'fullDate'}}</span>
+                  </fieldset>
+                  <!-- <input type="text" aria-label="Fecha Inicio" [value]="selectedRangeValue?.start | date: 'shortDate'" readonly> -->
+                </div>
+                <div class="col">
+                  <fieldset class="card p-2 pt-1 shadow-sm alto-fechas">
+                    <legend class="float-none w-auto px-1 fs-7">Fecha de salida</legend>
+                    <span class="fs-7">{{selectedRangeValue?.end | date: 'fullDate'}}</span>
+                  </fieldset>
+                  <!-- <input type="text" aria-label="Fecha Fin"  readonly> -->
                 </div>
               </div>
-              <div class="mt-3">
-                <button type="button" class="btn btn-primary" matStepperNext>Siguiente</button>
-              </div>
-            </form>
-          </mat-step>
-          <mat-step>
-            <form>
-              <ng-template matStepLabel>Habitaciones disponibles</ng-template>
-              <div >
+            </div>
+            <div class="mt-3">
+              <button type="button" class="btn btn-primary" matStepperNext (click)="getAllHabitacionesDisponibles()">Siguiente</button>
+            </div>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Habitaciones disponibles</ng-template>
+          <div data-simplebar class="body-habitaciones p-2  my-3">
+            <div class="row">
+              @for (habitacion of habitaciones(); track $index) {
+                <div class="col">
+                  <div class="card px-3 mb-2 shadow-sm" [class.border-success]="habitacion.isSelected == true" id="cardHabitacion" (click)="habitacion.isSelected = !habitacion.isSelected">
+                    <div class="row align-items-center">
+                      <div class="col-3 fs-3 text-center">
+                        {{habitacion.noHabitacion}}
+                      </div>
+                      <div class="col-9">
+                        <div class="div fs-4">
+                          <span class="fw-medium">{{450 | currency}}</span>
+                        </div>
+                        <div class="div fs-6">
+                          <span class="fw-medium">{{habitacion.piso}}</span><!-- <span class="ms-4 text-body-secondary">Contacto: </span> <span class="fw-medium">{{''}}</span> -->
+                        </div>
+                      </div>
+                      <!-- <div class="col-1 text-start">
+                        <input class="form-check-input me-1" type="checkbox" id="firstCheckbox" for="cardHabitacion" (click)="isSelected(habitacion.idHabitacion, $event)" [(ngModel)]="habitacion.isSelected" (click)="$event.stopPropagation()">
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+              }@empty {
+                <p>No hay habitaciones disponibles para las fechas seleccionadas</p>
+              }
+            </div>
+            <div class="row mt-3">
+              <div class="col text-start">
                 <button type="button" class="btn btn-primary" matStepperPrevious>Atrás</button>
-                <button type="button" class="btn btn-primary" matStepperNext>Siguiente</button>
               </div>
-            </form>
-          </mat-step>
-          <mat-step>
-            <form>
-              <ng-template matStepLabel>Datos del cliente</ng-template>
-              <div>
-                <button type="button" class="btn btn-primary" matStepperPrevious>Atrás</button>
+              <div class="col text-end">
+                <button type="button" class="btn btn-primary" matStepperNext (click)="defineFormBusquedaCliente()">Siguiente</button>
               </div>
-            </form>
-          </mat-step>
-        </mat-stepper>
+            </div>
+          </div>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Datos del cliente</ng-template>
+          <div class="mb-3">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" [ngModel]="isClienteNuevo()" (ngModelChange)="isClienteNuevo.set($event)" [ngModelOptions]="{standalone: true}">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Es cliente nuevo</label>
+            </div>
+          </div>
+          @if (isClienteNuevo()) {
+              <app-alta-cliente/>
+          }@else {
+            <fieldset class="card shadow-sm">
+              <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Buscar cliente</legend>
+              <div class="card-body">
+                <form [formGroup]="busquedaForm">
+                  <div class="row">
+                    <div class="col mb-3">
+                      <div class="form-floating-label">
+                        <input type="text" class="form-control" [class.is-valid]="isValid('nombre')" [class.is-invalid]="isFieldInvalid('nombre')"  id="nombre" formControlName="nombre" placeholder="">
+                        <label for="nombre">Nombre</label>
+                      </div>
+                      @if (isFieldInvalid('nombre')) {
+                        <small class="text-danger">
+                          Ingrese un nombre
+                        </small>
+                      }
+                    </div>
+                    <div class="col mb-3">
+                      <div class="form-floating-label">
+                        <input type="text" class="form-control" [class.is-valid]="isValid('primerAp')" [class.is-invalid]="isFieldInvalid('primerAp')"  id="primerAp" formControlName="primerAp" placeholder="">
+                        <label for="primerAp">Primer apellido</label>
+                      </div>
+                      @if (isFieldInvalid('primerAp')) {
+                        <small class="text-danger">
+                          Ingrese un apellido
+                        </small>
+                      }
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+            </fieldset>
+            <button type="button" class="btn btn-primary w-100 my-3" (click)="validaFormBusqueda()">Buscar</button>
+            <div data-simplebar class="body-habitaciones p-2  my-3">
+              @for (cliente of clientes(); track $index) {
+                <div class="card px-3 mb-2 shadow-sm">
+                  <div class="row align-items-center py-2">
+                    <div class="col-2 fs-3 text-center">
+                      {{cliente.idCliente}}
+                    </div>
+                    <div class="col-9">
+                      <div class="div fs-5">
+                        <span class="text-body-secondary mb-2">Nombre: </span> <span class="fw-medium">{{cliente.nombre + ' ' + cliente.primerApellido + ' ' + cliente.segundoApellido}}</span>
+                      </div>
+                      <div class="div fs-7">
+                        <span class="text-body-secondary">Origen: </span> <span class="fw-medium">{{cliente.municipio + ', ' + cliente.estado}}</span> <span class="ms-4 text-body-secondary">Contacto: </span> <span class="fw-medium">{{cliente.telefono}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }@empty {
+                <p>No se encontraron clientes con los datos de búsqueda proporcionados</p>
+              }
+            </div>
+          }
+          <div class="mt-5">
+            <button type="button" class="btn btn-primary" matStepperPrevious>Atrás</button>
+          </div>
+        </mat-step>
+        <mat-step>
+          <div data-simplebar class="body-habitaciones p-2  my-3">
+            <ng-template matStepLabel>Resumen de reservación</ng-template>
+            <fieldset class="card shadow-sm">
+              <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Datos del cliente</legend>
+            </fieldset>
+            <fieldset class="card shadow-sm">
+              <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Datos del vendedor</legend>
+            </fieldset>
+            <fieldset class="card shadow-sm">
+              <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Datos de la reservacón</legend>
+            </fieldset>
+            <fieldset class="card shadow-sm">
+              <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Datos de Pago</legend>
+            </fieldset>
+          </div>
+        </mat-step>
+      </mat-stepper>
 
       </div>
       <div class="modal-footer">

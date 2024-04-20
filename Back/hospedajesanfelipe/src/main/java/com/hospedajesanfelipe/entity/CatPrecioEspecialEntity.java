@@ -1,7 +1,7 @@
 package com.hospedajesanfelipe.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,9 +16,9 @@ public class CatPrecioEspecialEntity {
 	@Column(name = "id_precio_especial")
 	private Long idPrecioEspecial;
 	@Column(name = "fecha_inicio")
-	private Date fechaInicio;
+	private LocalDate fechaInicio;
 	@Column(name = "fecha_fin")
-	private Date fechaFin;
+	private LocalDate fechaFin;
 	@Column(name = "precio")
 	private BigDecimal precio;
 	@Column(name = "descripcion")
@@ -30,16 +30,16 @@ public class CatPrecioEspecialEntity {
 	public void setIdPrecioEspecial(Long idPrecioEspecial) {
 		this.idPrecioEspecial = idPrecioEspecial;
 	}
-	public Date getFechaInicio() {
+	public LocalDate getFechaInicio() {
 		return fechaInicio;
 	}
-	public void setFechaInicio(Date fechaInicio) {
+	public void setFechaInicio(LocalDate fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
-	public Date getFechaFin() {
+	public LocalDate getFechaFin() {
 		return fechaFin;
 	}
-	public void setFechaFin(Date fechaFin) {
+	public void setFechaFin(LocalDate fechaFin) {
 		this.fechaFin = fechaFin;
 	}
 	public BigDecimal getPrecio() {

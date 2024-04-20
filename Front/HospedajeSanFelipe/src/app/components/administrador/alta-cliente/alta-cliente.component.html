@@ -1,0 +1,72 @@
+<form [formGroup]="clienteForm">
+  <div class="row row-cols-2">
+    <div class="col mb-3">
+      <input type="hidden" formControlName="idCliente">
+
+      <div class="form-floating-label">
+        <input type="text" class="form-control" [class.is-valid]="isValid('nombre')" [class.is-invalid]="isFieldInvalid('nombre')" id="nombre" formControlName="nombre" placeholder="">
+        <label for="nombre">Nombre</label>
+      </div>
+      @if (isFieldInvalid('nombre')) {
+        <small class="text-danger">
+          Ingrese un nombre
+        </small>
+      }
+    </div>
+    <div class="col mb-3">
+      <div class="form-floating-label">
+        <input type="text" class="form-control" [class.is-valid]="isValid('primerAp')" [class.is-invalid]="isFieldInvalid('primerAp')"  id="primerAp" formControlName="primerAp" placeholder="">
+        <label for="primerAp">Apellido paterno</label>
+      </div>
+      @if (isFieldInvalid('primerAp')) {
+        <small class="text-danger">
+          Ingrese un apellido
+        </small>
+      }
+    </div>
+    <div class="col mb-3">
+      <div class="form-floating-label">
+        <input type="text" class="form-control" [class.is-valid]="isValid('segundoAp')" [class.is-invalid]="isFieldInvalid('segundoAp')"  id="segundoAp" formControlName="segundoAp" placeholder="">
+        <label for="segundoAp">Apellido materno</label>
+      </div>
+      @if (isFieldInvalid('segundoAp')) {
+         <small class="text-danger">
+          Ingrese un apellido
+        </small>
+      }
+    </div>
+    <div class="col mb-3">
+      <div class="form-floating-label">
+        <input type="text" class="form-control" [class.is-valid]="isValid('telefono')" [class.is-invalid]="isFieldInvalid('telefono')" id="telefono" formControlName="telefono" placeholder="">
+        <label for="telefono">Telefono</label>
+      </div>
+      @if (isFieldInvalid('telefono')) {
+        <small class="text-danger">
+          Ingrese un numero
+        </small>
+      }
+    </div>
+    <div class="col mb-3">
+      <div class="form-floating-label">
+        <input type="text" class="form-control" [class.is-valid]="isValid('estado')" [class.is-invalid]="isFieldInvalid('estado')"  id="estado" formControlName="estado" placeholder="">
+        <label for="estado">Estado</label>
+      </div>
+      @if (isFieldInvalid('estado')) {
+        <small class="text-danger">
+          Ingrese un estado
+        </small>
+      }
+    </div>
+    <div class="col mb-3">
+      <div class="form-floating-label">
+        <input type="text" class="form-control" [class.is-valid]="isValid('municipio')" [class.is-invalid]="isFieldInvalid('municipio')"  id="municipio" formControlName="municipio" placeholder="">
+        <label for="municipio">Municipio</label>
+      </div>
+      @if (isFieldInvalid('municipio')) {
+        <small class="text-danger">
+          Ingrese un municipio
+        </small>
+      }
+    </div>
+  </div>
+</form>

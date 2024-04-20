@@ -1,19 +1,23 @@
-import { Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PeticionesService } from '../../../services/peticiones/peticiones.service';
 import { Reservacion } from '../../../model/reservaciones.model';
 import { environment } from '../../../../environments/environment.development';
-import { Reservaciones } from '../../../model/constantes';
+import { Clientes, Habitaciones, Reservaciones } from '../../../model/constantes';
 import { AlertsService } from '../../../services/alerts.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
-import { DateRange, MatCalendar, MatCalendarCellClassFunction, MatDatepickerModule } from '@angular/material/datepicker';
+import { DateRange, MatCalendar, MatDatepickerModule } from '@angular/material/datepicker';
 import { RangeSelectionStrategyService } from '../../../services/range-selection-strategy.service';
 import { MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
+import { HabitacionDisponibleResponse } from '../../../model/habitacion.model';
+import { AltaClienteComponent } from '../alta-cliente/alta-cliente.component';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { ClienteResponse } from '../../../model/cliente.model';
 
 
 @Component({
@@ -22,28 +26,41 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
   providers: [
     provideNativeDateAdapter(),
-    {provide: MAT_DATE_RANGE_SELECTION_STRATEGY, useClass: RangeSelectionStrategyService},
+    {provide: MAT_DATE_RANGE_SELECTION_STRATEGY, useClass: RangeSelectionStrategyService}
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, MatDatepickerModule, MatStepperModule, MatFormFieldModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, MatDatepickerModule, MatStepperModule, MatFormFieldModule, AltaClienteComponent],
   templateUrl: './reservaciones.component.html',
   styleUrl: './reservaciones.component.css'
 })
 export class ReservacionesComponent {
-
+  private readonly URL_CLIENTES = `${environment.apiHost}${Clientes.CLIENTES}`;
+  // private readonly URL_HABITACIONES = `${environment.apiHost}${Habitaciones.HABITACIONES}`;
   private readonly URL_RESERVACIONES = `${environment.apiHost}${Reservaciones.RESERVACIONES}`;
 
-  private fomrBuilder = inject(FormBuilder);
   private _peticiones = inject(PeticionesService);
-  private _alerta = inject(AlertsService);
+  private _alertas = inject(AlertsService);
+  private fomrBuilder = inject(FormBuilder);
+  private datePipe = inject(DatePipe);
 
   public reservacionForm: FormGroup;
-  public campaignOne: FormGroup;
+  public busquedaForm: FormGroup;
   public reservaciones: Reservacion[];
 
-  publicresetCalendar = true;
+  public habitaciones = signal<HabitacionDisponibleResponse[]>([]);
+  public clientes = signal<ClienteResponse[]>([]);
+  public isLoadedHabitaciones = signal(false);
+  public isClienteNuevo = signal(true);
+  public currentStep = signal(0);
 
   constructor() {
     this.ayer = new Date();
+  }
+
+  public defineFormBusquedaCliente(): void {
+    this.busquedaForm = this.fomrBuilder.group({
+      nombre   : ['', [Validators.required, Validators.minLength(3)]],
+      primerAp : ['', [Validators.required, Validators.minLength(3)]],
+    })
   }
 
   private defineForm(): void {
@@ -52,17 +69,18 @@ export class ReservacionesComponent {
       fechaSalida   : ['', [Validators.required, Validators.minLength(3)]],
       noPersonas    : ['', [Validators.required, Validators.minLength(3)]],
       noPersonaExtra: ['', [Validators.required, Validators.minLength(3)]],
+      subtotal      : ['', [Validators.required, Validators.minLength(3)]],
       total         : ['', [Validators.required, Validators.minLength(3)]],
       estado        : ['', [Validators.required, Validators.minLength(3)]],
       cliente       : ['', [Validators.required, Validators.minLength(3)]],
       empleado      : ['', [Validators.required, Validators.minLength(3)]],
       comentario    : ['', [Validators.required, Validators.minLength(3)]],
-      precioEspecial: ['', [Validators.required, Validators.minLength(3)]],
     })
   }
 
   public ngOnInit(): void {
     this.defineForm();
+    this.defineFormBusquedaCliente();
     this.getReservaciones(true);
   }
 
@@ -71,11 +89,11 @@ export class ReservacionesComponent {
       next: (response: Reservacion[]) => {
         this.reservaciones = response;
         if (isCloseLoading) {
-          this._alerta.cierraLoading();
+          this._alertas.cierraLoading();
         }
       },
       error: (err: any) => {
-        this._alerta.error(err);
+        this._alertas.error(err);
       },
     });
   }
@@ -117,11 +135,6 @@ export class ReservacionesComponent {
     });
   }
 
-  public isFieldInvalid(control: string): boolean {
-    const formControl = this.reservacionForm.get(control);
-    return formControl!.invalid && (formControl!.dirty || formControl!.touched);
-  }
-
   /*Métodos de Datepicker*/
   @ViewChild(MatCalendar, {static: false}) calendar!: MatCalendar<Date>;
   @Input() selectedRangeValue: DateRange<Date> | undefined;
@@ -154,7 +167,7 @@ export class ReservacionesComponent {
         //   // Opcionalmente, puedes restablecer la selección o manejar de otra manera
         // }
       } else {
-        this._alerta.toastAdvertencia("La fecha final debe ser después de la fecha inicial.");
+        this._alertas.toastAdvertencia("La fecha final debe ser después de la fecha inicial.");
       }
     }
     this.selectedRangeValueChange.emit(this.selectedRangeValue);
@@ -193,4 +206,73 @@ export class ReservacionesComponent {
   // };
 
   /*Métodos de Datepicker*/
+
+  public getAllHabitacionesDisponibles(): void {
+
+    // const fechaEntrada = this.datePipe.transform(this.selectedRangeValue.start, 'yyyy-MM-dd');
+    // const fechaSalida = this.datePipe.transform(this.selectedRangeValue.end, 'yyyy-MM-dd');
+
+    // this._peticiones.getPeticion(`${this.URL_HABITACIONES}/${fechaEntrada}/${fechaSalida}`).subscribe({
+      // next: (response: HabitacionDisponibleResponse[]) => {
+        // this.habitaciones = response;
+        this.habitaciones.set(JSON.parse(`[{"idHabitacion":1,"noHabitacion":"01","noOcupante":4,"noMaxOcupante":6,"piso":"Primer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":2,"noHabitacion":"02","noOcupante":2,"noMaxOcupante":3,"piso":"Segundo Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":3,"noHabitacion":"03","noOcupante":6,"noMaxOcupante":8,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":4,"noHabitacion":"04","noOcupante":6,"noMaxOcupante":8,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"}]}]`));
+    //     this.isLoadedHabitaciones.set(true);
+    //     this._alertas.cierraLoading();
+    //   },
+    //   error: (err: any) => {
+    //     this._alertas.error(err);
+    //   },
+    // });
+  }
+
+  public validaFormBusqueda(): void {
+    if (this.busquedaForm.invalid) {
+      this.busquedaForm.markAllAsTouched();
+    } else {
+      this._alertas.iniciaLoading();
+      const clienteRequest: any = {
+        nombre: this.busquedaForm.get('nombre').value,
+        apellido: this.busquedaForm.get('primerAp').value
+      }
+
+      this.getClienteByNombreApellido(clienteRequest);
+    }
+  }
+
+  private getClienteByNombreApellido(clienteRequest: any): void {
+    this._peticiones.getPeticion(`${this.URL_CLIENTES}/${clienteRequest.nombre}/${clienteRequest.apellido}`).subscribe({
+      next: (response: ClienteResponse[]) => {
+        this.clientes.set(response);
+        this._alertas.cierraLoading();
+      },
+      error: (err: any) => {
+        this._alertas.error(err);
+      },
+    });
+  }
+
+  public isSelected(idHabitacion: number, event: MouseEvent): void {
+      const isChecked = (event.target as HTMLInputElement).checked;
+
+    this.habitaciones.update((habitaciones: HabitacionDisponibleResponse[]) => {
+      const indexToUpdate = habitaciones.findIndex((habitacion: HabitacionDisponibleResponse) => habitacion.idHabitacion === idHabitacion);
+      if (indexToUpdate !== -1) {
+        habitaciones[indexToUpdate].isSelected = isChecked;
+      }
+      return habitaciones;
+    });
+  }
+
+  public isValid(control: string): boolean {
+    return this.busquedaForm.get(control).valid;
+  }
+
+  public isFieldInvalid(control: string): boolean {
+    const formControl = this.busquedaForm.get(control);
+    return formControl.invalid && (formControl.dirty || formControl.touched);
+  }
+
+  public onStepChange(event: StepperSelectionEvent): void {
+    this.currentStep.set(event.selectedIndex);
+  }
 }

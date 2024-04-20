@@ -10,7 +10,7 @@ import com.hospedajesanfelipe.response.ClienteResponse;
 
 public interface ClientesService {
 	
-	public ClienteEntity getClienteByNombre(String nombre);
+	public List<ClienteResponse> getClienteByNombreApellido(String nombre, String apellido);
 	
 	public List<ClienteResponse> getAllClientes();
 	

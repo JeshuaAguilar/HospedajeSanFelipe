@@ -1,8 +1,10 @@
 package com.hospedajesanfelipe.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hospedajesanfelipe.entity.HabitacionEntity;
 import com.hospedajesanfelipe.request.HabitacionRequest;
 import com.hospedajesanfelipe.response.HabitacionClienteResponse;
+import com.hospedajesanfelipe.response.HabitacionDisponibleResponse;
 import com.hospedajesanfelipe.response.HabitacionEmpleadoResponse;
 import com.hospedajesanfelipe.response.HabitacionResponse;
 import com.hospedajesanfelipe.service.HabitacionesService;
@@ -37,9 +40,17 @@ public class HabitacionesController {
 	public List<HabitacionClienteResponse> getAllHabitacionesCliente() {
 		return habitacionesService.getAllHabitacionesCliente();
 	}
+	
 	@GetMapping("/empleados")
 	public List<HabitacionEmpleadoResponse> getAllHabitacionesEmpleado() {
 		return habitacionesService.getAllHabitacionesEmpleado();
+	}
+
+	@GetMapping("/{fechaEntrada}/{fechaSalida}")
+	public List<HabitacionDisponibleResponse> getAllHabitacionesDisponibles(
+			@PathVariable("fechaEntrada") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaEntrada, 
+	        @PathVariable("fechaSalida") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaSalida) {
+		return habitacionesService.getAllHabitacionesDisponibles(fechaEntrada, fechaSalida);
 	}
 	
 	@GetMapping("/{idHabitacion}")

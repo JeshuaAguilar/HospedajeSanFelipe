@@ -16,12 +16,12 @@ public class ClientesDao {
 	@Autowired
 	ClientesRepository clientesRepository;
 	
-	public Optional<ClienteEntity> getClienteByNombre(String nombre) {
+	public List<ClienteEntity> getClienteByNombreApellido(String nombre, String apellido) {
 			
-			Optional<ClienteEntity> response = null;
+		List<ClienteEntity> response = null;
 			
 			try {
-				response = clientesRepository.findByNombre(nombre);
+				response = clientesRepository.findByNombreAndPrimerApellido(nombre, apellido);
 			} catch (DataAccessException ex) {
 				System.out.println(ex.getMessage() + ex);
 			}

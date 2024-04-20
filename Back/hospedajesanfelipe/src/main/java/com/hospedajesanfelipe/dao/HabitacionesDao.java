@@ -50,6 +50,26 @@ public class HabitacionesDao {
 		return response;
 	}
 	
+	public List<HabitacionEntity> getAllHabitacionesDisponibles() {
+		//El método de findAll(), es de JPA y trae todos los registros
+		/*
+		 * Creamos una variable de tipo List empleado, como nula, si la consulta falla o truena por algún motivo, retornaríamos
+		 * un null, el try y catch es para evitar que el programa se detenga y podamos manejar el error y mostrarlo en el log
+		 * para que podamos saber con detalle sobre qué fue lo que falló
+		 */
+		List<HabitacionEntity> response = null;
+		try {
+			response = habitacionesRepository.findAll();
+		} catch (DataAccessException ex) {
+			/*
+			 * Con esto imprimimos en el log, el detalle del error
+			 */
+			System.out.println(ex.getMessage() + ex);
+		}
+		
+		return response;
+	}
+	
 	public Optional<HabitacionEntity> getHabitacionById(Long idHabitacion) {
 		/*
 		 * El método de findById(), es de JPA y trae el registro que coincida con el id enviado a buscar

@@ -2,7 +2,7 @@ package com.hospedajesanfelipe.response;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.hospedajesanfelipe.entity.CatPrecioEspecialEntity;
 import com.hospedajesanfelipe.entity.ClienteEntity;
@@ -14,8 +14,8 @@ public class ReservacionResponse implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long idReservacion;
-	private Date fechaEntrada;
-	private Date fechaSalida;
+	private LocalDate fechaEntrada;
+	private LocalDate fechaSalida;
 	private int noPersonas;
 	private int noPersonaExtra;
 	private BigDecimal total;
@@ -31,16 +31,16 @@ public class ReservacionResponse implements Serializable {
 	public void setIdReservacion(Long idReservacion) {
 		this.idReservacion = idReservacion;
 	}
-	public Date getFechaEntrada() {
+	public LocalDate getFechaEntrada() {
 		return fechaEntrada;
 	}
-	public void setFechaEntrada(Date fechaEntrada) {
+	public void setFechaEntrada(LocalDate fechaEntrada) {
 		this.fechaEntrada = fechaEntrada;
 	}
-	public Date getFechaSalida() {
+	public LocalDate getFechaSalida() {
 		return fechaSalida;
 	}
-	public void setFechaSalida(Date fechaSalida) {
+	public void setFechaSalida(LocalDate fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
 	public int getNoPersonas() {

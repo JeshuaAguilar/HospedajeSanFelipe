@@ -26,7 +26,7 @@ export class InicioComponent implements OnInit {
   private _peticiones = inject(PeticionesService);
   private _imagenes = inject(ImagenesService);
   private sanitizer = inject(DomSanitizer);
-  private _alerta = inject(AlertsService);
+  private _alertas = inject(AlertsService);
 
   private getAllHabitacion(): void {
 
@@ -35,10 +35,10 @@ export class InicioComponent implements OnInit {
         this.habitaciones = response;
         this.isLoadedHabitaciones.set(true);
         this.getFotoByName();
-        this._alerta.cierraLoading();
+        this._alertas.cierraLoading();
       },
       error: (err: any) => {
-        this._alerta.error(err);
+        this._alertas.error(err);
       },
     });
   }

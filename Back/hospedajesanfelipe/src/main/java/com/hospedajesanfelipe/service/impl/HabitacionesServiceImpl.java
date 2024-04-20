@@ -1,6 +1,7 @@
 package com.hospedajesanfelipe.service.impl;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,8 +13,10 @@ import com.hospedajesanfelipe.dao.HabitacionesDao;
 import com.hospedajesanfelipe.entity.CatEstadoHabitacionEntity;
 import com.hospedajesanfelipe.entity.CatPisoEntity;
 import com.hospedajesanfelipe.entity.HabitacionEntity;
+import com.hospedajesanfelipe.entity.ReservacionEntity;
 import com.hospedajesanfelipe.request.HabitacionRequest;
 import com.hospedajesanfelipe.response.HabitacionClienteResponse;
+import com.hospedajesanfelipe.response.HabitacionDisponibleResponse;
 import com.hospedajesanfelipe.response.HabitacionEmpleadoResponse;
 import com.hospedajesanfelipe.response.HabitacionResponse;
 import com.hospedajesanfelipe.service.HabitacionesService;
@@ -80,6 +83,43 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 				HabitacionEmpleadoResponse habitacion = new HabitacionEmpleadoResponse();
 				habitacion = mapperHabitacionEmpleadoResponse(habitacionEntity);
 				response.add(habitacion);
+			}
+			
+		}
+		return response;
+	}
+	
+	@Override
+	public List<HabitacionDisponibleResponse> getAllHabitacionesDisponibles(LocalDate fechaEntrada, LocalDate fechaSalida) {
+		List<HabitacionDisponibleResponse> response = null;
+		List<HabitacionEntity> habitaciones = habitacionesDao.getAllHabitaciones();
+		
+		if (habitaciones != null && !habitaciones.isEmpty()) {
+			response = new ArrayList<HabitacionDisponibleResponse>();
+			for (HabitacionEntity habitacionEntity : habitaciones) {
+				HabitacionDisponibleResponse habitacion = new HabitacionDisponibleResponse();
+				
+				if(!habitacionEntity.getReservaciones().isEmpty()) {
+					for (ReservacionEntity reservacion : habitacionEntity.getReservaciones()) {
+			            if ((fechaSalida.isBefore(reservacion.getFechaEntrada()) || fechaEntrada.isAfter(reservacion.getFechaSalida().minusDays(1)))) {
+			            	habitacion.setIdHabitacion(habitacionEntity.getIdHabitacion());
+			            	habitacion.setNoHabitacion(habitacionEntity.getNoHabitacion());
+			            	habitacion.setNoOcupante(habitacionEntity.getNoOcupante());
+			            	habitacion.setNoMaxOcupante(habitacionEntity.getNoMaxOcupante());
+			            	habitacion.setPiso(habitacionEntity.getPiso().getDescripcion());
+			            	habitacion.setServicios(habitacionEntity.getServicios());
+			            	response.add(habitacion);
+			            }
+			        }
+				} else {
+					habitacion.setIdHabitacion(habitacionEntity.getIdHabitacion());
+	            	habitacion.setNoHabitacion(habitacionEntity.getNoHabitacion());
+	            	habitacion.setNoOcupante(habitacionEntity.getNoOcupante());
+	            	habitacion.setNoMaxOcupante(habitacionEntity.getNoMaxOcupante());
+	            	habitacion.setPiso(habitacionEntity.getPiso().getDescripcion());
+	            	habitacion.setServicios(habitacionEntity.getServicios());
+	            	response.add(habitacion);
+				}
 			}
 			
 		}

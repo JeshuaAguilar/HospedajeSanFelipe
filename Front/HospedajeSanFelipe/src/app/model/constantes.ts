@@ -13,7 +13,7 @@ export enum Clientes {
 export enum Habitaciones {
   HABITACIONES = '/hospedaje/api/habitaciones',
   EMPLEADOS = '/empleados',
-  CLIENTES = '/clientes'
+  CLIENTES = '/clientes',
 }
 export enum Pisos {
   PISOS = '/hospedaje/api/pisos'

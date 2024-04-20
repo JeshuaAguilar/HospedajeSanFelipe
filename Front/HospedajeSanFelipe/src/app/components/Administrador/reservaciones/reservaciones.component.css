@@ -14,6 +14,27 @@ button.example-custom-date-class {
   border-radius: 100%;
 }
 
-fieldset {
+.alto-fechas {
   height: 70px !important;
+  text-align: center;
 }
+
+.body-habitaciones {
+  max-height: 65vh;
+  overflow-x: hidden;
+}
+
+.body-habitaciones .card {
+  transition: box-shadow 0.3s ease-in-out !important; /* Asegurando que esta transición tenga prioridad */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1) !important; /* Sombra predeterminada más sutil con !important */
+}
+
+.body-habitaciones .card:hover {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 123, 255, 0.35) !important; /* Sombra intensa en hover */
+  border-color: rgba(0, 123, 255, 0.35) !important;
+}
+
+.body-habitaciones .card {
+  cursor: pointer;
+}
+

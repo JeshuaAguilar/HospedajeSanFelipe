@@ -1,7 +1,7 @@
 package com.hospedajesanfelipe.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -24,9 +24,9 @@ public class ReservacionEntity {
 	@Column(name = "id_reservacion")
 	private Long idReservacion;
 	@Column(name = "fecha_entrada")
-	private Date fechaEntrada;
+	private LocalDate fechaEntrada;
 	@Column(name = "fecha_salida")
-	private Date fechaSalida;
+	private LocalDate fechaSalida;
 	@Column(name = "no_personas")
 	private int noPersonas;
 	@Column(name = "no_personas_extra")
@@ -62,16 +62,16 @@ public class ReservacionEntity {
 	public void setIdReservacion(Long idReservacion) {
 		this.idReservacion = idReservacion;
 	}
-	public Date getFechaEntrada() {
+	public LocalDate getFechaEntrada() {
 		return fechaEntrada;
 	}
-	public void setFechaEntrada(Date fechaEntrada) {
+	public void setFechaEntrada(LocalDate fechaEntrada) {
 		this.fechaEntrada = fechaEntrada;
 	}
-	public Date getFechaSalida() {
+	public LocalDate getFechaSalida() {
 		return fechaSalida;
 	}
-	public void setFechaSalida(Date fechaSalida) {
+	public void setFechaSalida(LocalDate fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
 	public int getNoPersonas() {
