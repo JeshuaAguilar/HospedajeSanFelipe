@@ -1,5 +1,6 @@
 package com.hospedajesanfelipe.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -27,6 +28,16 @@ public class HabitacionEntity {
 	private int noOcupante;
 	@Column(name = "no_max_ocupantes")
 	private int noMaxOcupante;
+	@Column(name = "no_camas_individuales")
+	private int noCamasIndividuales;
+	@Column(name = "no_camas_matrimoniales")
+	private int noCamasMatrimoniales;
+	@Column(name = "costo")
+	private BigDecimal costo;
+	
+	
+	
+	
 	@ManyToOne
 	@JoinColumn(name = "fk_piso")
 	private CatPisoEntity piso;
@@ -46,6 +57,27 @@ public class HabitacionEntity {
 	
 	@ManyToMany(mappedBy = "habitaciones")
     private List<ReservacionEntity> reservaciones;
+	
+	
+	
+	public int getNoCamasIndividuales() {
+		return noCamasIndividuales;
+	}
+	public void setNoCamasIndividuales(int noCamasIndividuales) {
+		this.noCamasIndividuales = noCamasIndividuales;
+	}
+	public int getNoCamasMatrimoniales() {
+		return noCamasMatrimoniales;
+	}
+	public void setNoCamasMatrimoniales(int noCamasMatrimoniales) {
+		this.noCamasMatrimoniales = noCamasMatrimoniales;
+	}
+	public BigDecimal getCosto() {
+		return costo;
+	}
+	public void setCosto(BigDecimal costo) {
+		this.costo = costo;
+	}
 	
 	public Long getIdHabitacion() {
 		return idHabitacion;

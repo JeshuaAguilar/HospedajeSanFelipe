@@ -1,6 +1,7 @@
 package com.hospedajesanfelipe.response;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.hospedajesanfelipe.entity.CatEstadoHabitacionEntity;
@@ -16,6 +17,9 @@ public class HabitacionEmpleadoResponse implements Serializable {
 	private String noHabitacion;
 	private int noOcupante;
 	private int noMaxOcupante;
+//	private int noCamasIndividuales;
+//	private int noCamasMatrimoniales;
+//	private BigDecimal costo;
 	private CatPisoEntity piso;
 	private CatEstadoHabitacionEntity estado;
 	private String urlFoto;

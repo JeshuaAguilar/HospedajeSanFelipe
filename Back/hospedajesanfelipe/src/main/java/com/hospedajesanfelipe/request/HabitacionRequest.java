@@ -1,6 +1,7 @@
 package com.hospedajesanfelipe.request;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class HabitacionRequest implements Serializable {
 
@@ -10,11 +11,33 @@ public class HabitacionRequest implements Serializable {
 	private String noHabitacion;
 	private int noOcupante;
 	private int noMaxOcupante;
+	private int noCamasIndividuales;
+	private int noCamasMatrimoniales;
+	private BigDecimal costo;
 	private String urlFoto;
     private Long piso;
 	private Long estado;
+	
 	public Long getIdHabitacion() {
 		return idHabitacion;
+	}
+	public int getNoCamasIndividuales() {
+		return noCamasIndividuales;
+	}
+	public void setNoCamasIndividuales(int noCamasIndividuales) {
+		this.noCamasIndividuales = noCamasIndividuales;
+	}
+	public int getNoCamasMatrimoniales() {
+		return noCamasMatrimoniales;
+	}
+	public void setNoCamasMatrimoniales(int noCamasMatrimoniales) {
+		this.noCamasMatrimoniales = noCamasMatrimoniales;
+	}
+	public BigDecimal getCosto() {
+		return costo;
+	}
+	public void setCosto(BigDecimal costo) {
+		this.costo = costo;
 	}
 	public void setIdHabitacion(Long idHabitacion) {
 		this.idHabitacion = idHabitacion;

@@ -15,9 +15,11 @@
           <th scope="col">Habitacion</th>
           <th scope="col">Ocupantes</th>
           <th scope="col">Ocupantes Max</th>
+          <th scope="col">Camas individuales</th>
+          <th scope="col">Camas matrimoniales</th>
+          <th scope="col">Costo</th>
           <th scope="col">Piso</th>
           <th scope="col">Estado</th>
-          <th scope="col">Foto</th>
           <th scope="col">Acciones</th>
         </tr>
       </thead>
@@ -28,19 +30,19 @@
             <td>{{habitacion.noHabitacion}}</td>
             <td>{{habitacion.noOcupante}}</td>
             <td>{{habitacion.noMaxOcupante}}</td>
+            <td>{{habitacion.noCamasIndividuales}}</td>
+            <td>{{habitacion.noCamasMatrimoniales}}</td>
+            <td>{{habitacion.costo}}</td>
             <td>{{habitacion.piso.descripcion}}</td>
             <td>{{habitacion.estado.descripcion}}</td>
-            <td></td>
-            <td>
-            <div class="row gx-0">
+            <td><div class="row gx-0">
               <div class="col">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modificarHabitacion(habitacion.idHabitacion)">Editar</button>
               </div>
               <div class="col">
                 <button type="button" class="btn btn-danger"  (click)="eliminarHabitacion(habitacion.idHabitacion)">Eliminar</button>
               </div>
-            </div>
-          </td>
+            </div></td>
         </tr>
       } @empty {
         <p>
@@ -148,7 +150,50 @@
                   </small>
                 }
 
+
+
+
             </div>
+
+            <div class="col mb-3">
+              <div class="form-floating-label">
+                <input type="text" class="form-control"  [class.is-invalid]="isFieldInvalid('noCamasI')" id="noCamasI" formControlName="noCamasI" placeholder="">
+                <label for="noCamasI">camas individuales</label>
+              </div>
+              @if (isFieldInvalid('noCamasI')) {
+                <small class="text-danger">
+                  Ingrese las camas individuales
+                </small>
+              }
+            </div>
+
+
+          <div class="col mb-3">
+            <div class="form-floating-label">
+              <input type="text" class="form-control"  [class.is-valid]="isValid('noCamasM')" [class.is-invalid]="isFieldInvalid('noCamasM')" id="noCamasM" formControlName="noCamasM" placeholder="">
+              <label for="noCamasM">Camas matrimoniales</label>
+            </div>
+            @if (isFieldInvalid('noCamasM')) {
+              <small class="text-danger">
+                Ingrese las camas matrimoniales
+              </small>
+            }
+          </div>
+
+
+        <div class="col mb-3">
+          <div class="form-floating-label">
+            <input type="text" class="form-control" (input)="validaNumero($event)" [class.is-valid]="isValid('costo')" [class.is-invalid]="isFieldInvalid('costo')" id="costo" formControlName="costo" placeholder="">
+            <label for="costo">Costo</label>
+          </div>
+          @if (isFieldInvalid('costo')) {
+            <small class="text-danger">
+              Ingrese el Costo
+            </small>
+          }
+        </div>
+
+
               <div class="col mb-3">
                 <div class="form-floating-label">
                   <input class="form-control" type="file" [class.is-valid]="isValid('urlFoto')" [class.is-invalid]="isFieldInvalid('urlFoto')" id="urlFoto" formControlName="urlFoto" (change)="_imagenes.selectFile($event)">

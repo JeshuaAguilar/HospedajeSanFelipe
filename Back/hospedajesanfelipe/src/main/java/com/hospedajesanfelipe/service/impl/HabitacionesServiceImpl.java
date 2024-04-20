@@ -1,5 +1,6 @@
 package com.hospedajesanfelipe.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -151,6 +152,9 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		habitacionEntity.setNoHabitacion(validaNull(habitacion.getNoHabitacion(), habitacionEntity.getNoHabitacion()));
 		habitacionEntity.setNoOcupante(validaNull(habitacion.getNoOcupante(), habitacionEntity.getNoOcupante()));
 		habitacionEntity.setNoMaxOcupante(validaNull(habitacion.getNoMaxOcupante(), habitacionEntity.getNoMaxOcupante()));
+		habitacionEntity.setNoCamasIndividuales(validaNull(habitacion.getNoCamasIndividuales(), habitacionEntity.getNoCamasIndividuales()));
+		habitacionEntity.setNoCamasMatrimoniales(validaNull(habitacion.getNoCamasMatrimoniales(), habitacionEntity.getNoCamasMatrimoniales()));
+		habitacionEntity.setCosto(validaNull(habitacion.getCosto(), habitacionEntity.getCosto()));
 		/*
 		 * Rol, es un objeto, y cuando hacemos la instancia de un new EmpleadoEntity(), este objeto es nulo
 		 * Por eso tenermos que crearle una nueva instancia de CatRolEntity()
@@ -190,6 +194,9 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		response.setNoHabitacion(habitacion.getNoHabitacion());
 		response.setNoOcupante(habitacion.getNoOcupante());
 		response.setNoMaxOcupante(habitacion.getNoMaxOcupante());
+		response.setNoCamasIndividuales(habitacion.getNoCamasIndividuales());
+		response.setNoCamasMatrimoniales(habitacion.getNoCamasMatrimoniales());
+		response.setCosto(habitacion.getCosto());
 		response.setPiso(habitacion.getPiso());
 		response.setEstado(habitacion.getEstado());
 		response.setUrlFoto(habitacion.getUrlFoto());
@@ -216,6 +223,9 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		response.setNoHabitacion(habitacion.getNoHabitacion());
 		response.setNoOcupante(habitacion.getNoOcupante());
 		response.setNoMaxOcupante(habitacion.getNoMaxOcupante());
+//		response.setNoCamasIndividuales(habitacion.getNoCamasIndividuales());
+//		response.setNoCamasMatrimoniales(habitacion.getNoCamasMatrimoniales());
+//		response.setCosto(habitacion.getCosto());
 		response.setPiso(habitacion.getPiso());
 		response.setEstado(habitacion.getEstado());
 		response.setUrlFoto(habitacion.getUrlFoto());
@@ -225,11 +235,19 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		return response;
 	}
 	
-	private int validaNull(int noOcupante, int noOcupante2) {
-	    if (noOcupante > 0) {
-	        return noOcupante;
+	private int validaNull(int parametro, int parametro2) {
+	    if (parametro > 0) {
+	        return parametro;
 	    } else {
-	        return noOcupante2;
+	        return parametro2;
+	    }
+	}
+	
+	public BigDecimal validaNull(BigDecimal parametro, BigDecimal parametro2) {
+	    if (parametro.compareTo(BigDecimal.ZERO) > 0) {
+	        return parametro;
+	    } else {
+	        return parametro2;
 	    }
 	}
 	

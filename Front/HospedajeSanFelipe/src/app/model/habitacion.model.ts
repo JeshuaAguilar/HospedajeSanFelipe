@@ -6,6 +6,9 @@ export interface Habitacion {
   noHabitacion : string;
   noOcupantes  : number;
   noMaxOcupante: number;
+  noCamasIndividuales  : number;
+  noCamasMatrimoniales: number;
+  costo         : number;
   piso         : CatPiso;
   estado       : CatEstadoHabitacion;
   urlFoto      : string;
@@ -31,6 +34,9 @@ export interface HabitacionRequest{
 	noHabitacion  :  number;
 	noOcupante    :  number;
 	noMaxOcupante :  number;
+  noCamasIndividuales  : number;
+  noCamasMatrimoniales: number;
+  costo         : number;
   piso          :  number;
 	estado        :  number;
 	urlFoto       ?: string;
@@ -42,6 +48,9 @@ export interface HabitacionResponse{
   noHabitacion  : number;
   noOcupante    : number;
   noMaxOcupante : number;
+  noCamasIndividuales  : number;
+  noCamasMatrimoniales: number;
+  costo         : number;
   urlFoto       : string;
   piso          : CatPiso;
   estado        : CatEstadoHabitacion

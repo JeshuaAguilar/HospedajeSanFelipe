@@ -8,3 +8,41 @@ img {
 .servicios {
   width: calc(1rem + .8vw);
 }
+
+
+.whatsapp-link {
+  position: fixed; /* Fija el elemento */
+  left: 20px; /* Lo posiciona 20px desde el borde izquierdo */
+  top: 50px; /* Lo posiciona 20px desde el borde inferior */
+  z-index: 999; /* Asegura que esté por encima de otros elementos */
+}
+
+
+.contenedor {
+  position:fixed; /* Posición fija */
+  top: 0; /* Coloca la div en la parte superior */
+  left: 0; /* Coloca la div en el lado izquierdo */
+  width: 100%; /* Ancho del 100% */
+  z-index: -1; /* Asegura que esté detrás de otros elementos */
+}
+
+
+#horario {
+  font-size: 1.5rem;
+  color: white; /* Cambia el color del texto a blanco */
+  border: 5px solid #ffffff;
+}
+
+
+.header-habitaciones {
+  font-size: 2.5rem; /* Tamaño del texto */
+  color: #fffbfb; /* Color del texto */
+  font-weight: bold; /* Peso de la fuente */
+  text-transform: uppercase; /* Convertir el texto a mayúsculas */
+  margin-top: 40px; /* Espacio superior */
+  margin-bottom: 20px; /* Espacio inferior */
+  padding: 10px 0; /* Relleno interno */
+  border-bottom: 5px solid #ffffff; /* Línea inferior */
+}
+
+

@@ -67,13 +67,8 @@ CREATE TABLE IF NOT EXISTS cat_servicios (
   PRIMARY KEY (id_servicio)
 ) ENGINE = InnoDB;
 
-insert into cat_servicios(id_servicio, descripcion) values (1, "Cama matrimonial");
-insert into cat_servicios(id_servicio, descripcion) values (2, "Cama individual");
-insert into cat_servicios(id_servicio, descripcion) values (3, "Agua caliente");
-insert into cat_servicios(id_servicio, descripcion) values (4, "Ventilador");
-insert into cat_servicios(id_servicio, descripcion) values (5, "Baño privado");
-insert into cat_servicios(id_servicio, descripcion) values (6, "wifi");
-insert into cat_servicios(id_servicio, descripcion) values (7, "tv");
+insert into cat_servicios(id_servicio, descripcion) values (1, "Ventildor");
+insert into cat_servicios(id_servicio, descripcion) values (2, "Agua Caliente");
 
 -- -----------------------------------------------------
 -- Table hotel_san_felipe.rol
@@ -113,22 +108,28 @@ CREATE TABLE IF NOT EXISTS habitaciones (
   no_habitacion VARCHAR(4) NOT NULL,
   no_ocupantes INT UNSIGNED NOT NULL,
   no_max_ocupantes INT UNSIGNED NOT NULL,
+  no_camas_individuales INT UNSIGNED NOT NULL,
+  no_camas_matrimoniales INT UNSIGNED NOT NULL,
+  costo DECIMAL(10,2) UNSIGNED NOT NULL,
   fk_piso INT UNSIGNED NOT NULL,
   fk_estado INT UNSIGNED NOT NULL,
-  url_foto varchar(255) NOT NULL,
+  url_foto VARCHAR(255) NOT NULL,
   PRIMARY KEY (id_habitacion),
   FOREIGN KEY (fk_piso) REFERENCES cat_pisos(id_piso)
   ON DELETE NO ACTION
-  ON UPDATE NO action,
+  ON UPDATE NO ACTION,
   FOREIGN KEY (fk_estado) REFERENCES cat_estados_habitaciones(id_estado)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
-insert into habitaciones(id_habitacion, no_habitacion, no_ocupantes, no_max_ocupantes, fk_piso, fk_estado, url_foto) values (1, "1", 4, 6, 1, 1, "habitacion_1.jpg");
-insert into habitaciones(id_habitacion, no_habitacion, no_ocupantes, no_max_ocupantes, fk_piso, fk_estado, url_foto) values (2, "2", 2, 3, 2, 2, "habitacion_2.jpg");
-insert into habitaciones(id_habitacion, no_habitacion, no_ocupantes, no_max_ocupantes, fk_piso, fk_estado, url_foto) values (3, "3", 6, 8, 3, 3, "habitacion_3.jpg");
-insert into habitaciones(id_habitacion, no_habitacion, no_ocupantes, no_max_ocupantes, fk_piso, fk_estado, url_foto) values (4, "4", 6, 8, 3, 3, "habitacion_4.jpg");
+INSERT INTO habitaciones (no_habitacion, no_ocupantes, no_max_ocupantes, no_camas_individuales, no_camas_matrimoniales, costo, fk_piso, fk_estado, url_foto)
+VALUES 
+('01', 2, 2, 1, 0, 100.00, 1, 2, 'habitacion_1.jpg'),
+('02', 4, 4, 2, 1, 150.00, 2, 3, 'habitacion_2.jpg'),
+('03', 4, 5, 1, 1, 120.00, 3, 2, 'habitacion_3.jpg'),
+('04', 3, 4, 1, 1, 300.00, 3, 1, 'habitacion_4.jpg');
+
 
 -- -----------------------------------------------------
 -- Table hotel_san_felipe.trabajo_empleado
@@ -227,18 +228,3 @@ CREATE TABLE IF NOT EXISTS habitaciones_servicios (
 
 insert into habitaciones_servicios(id_habitacion_servicio, id_servicio) values (1, 1);
 insert into habitaciones_servicios(id_habitacion_servicio, id_servicio) values (1, 2);
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(1, 3);
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(1, 4);
-
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(2, 1);
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(2, 2);
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(2, 3);
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(2, 4);
-
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(3, 1);
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(3, 2);
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(3, 4);
-
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(4, 1);
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(4, 2);
-INSERT INTO habitaciones_servicios (id_habitacion_servicio, id_servicio) VALUES(4, 3);
