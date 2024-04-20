@@ -236,6 +236,7 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		response.setNoMaxOcupante(habitacion.getNoMaxOcupante());
 		response.setNoCamasIndividuales(habitacion.getNoCamasIndividuales());
 		response.setNoCamasMatrimoniales(habitacion.getNoCamasMatrimoniales());
+		response.setNoMaxExtras(habitacion.getNoMaxExtras());
 		response.setCosto(habitacion.getCosto());
 		response.setPiso(habitacion.getPiso());
 		response.setEstado(habitacion.getEstado());
@@ -263,9 +264,9 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		response.setNoHabitacion(habitacion.getNoHabitacion());
 		response.setNoOcupante(habitacion.getNoOcupante());
 		response.setNoMaxOcupante(habitacion.getNoMaxOcupante());
-//		response.setNoCamasIndividuales(habitacion.getNoCamasIndividuales());
-//		response.setNoCamasMatrimoniales(habitacion.getNoCamasMatrimoniales());
-//		response.setCosto(habitacion.getCosto());
+		response.setNoCamasIndividuales(habitacion.getNoCamasIndividuales());
+		response.setNoCamasMatrimoniales(habitacion.getNoCamasMatrimoniales());
+		response.setCosto(habitacion.getCosto());
 		response.setPiso(habitacion.getPiso());
 		response.setEstado(habitacion.getEstado());
 		response.setUrlFoto(habitacion.getUrlFoto());

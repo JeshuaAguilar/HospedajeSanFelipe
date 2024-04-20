@@ -16,11 +16,19 @@ public class HabitacionResponse implements Serializable {
 	private int noMaxOcupante;
 	private int noCamasIndividuales;
 	private int noCamasMatrimoniales;
+	private int noMaxExtras;
+	
 	private BigDecimal costo;
 	private String urlFoto;
     private CatPisoEntity piso;
 	private CatEstadoHabitacionEntity estado;
 	
+	public int getNoMaxExtras() {
+		return noMaxExtras;
+	}
+	public void setNoMaxExtras(int noMaxExtras) {
+		this.noMaxExtras = noMaxExtras;
+	}
 	public int getNoCamasIndividuales() {
 		return noCamasIndividuales;
 	}

@@ -17,15 +17,42 @@ public class HabitacionEmpleadoResponse implements Serializable {
 	private String noHabitacion;
 	private int noOcupante;
 	private int noMaxOcupante;
-//	private int noCamasIndividuales;
-//	private int noCamasMatrimoniales;
-//	private BigDecimal costo;
+	private int noCamasIndividuales;
+	private int noCamasMatrimoniales;
+	private int noMaxExtras;
+	private BigDecimal costo;
 	private CatPisoEntity piso;
 	private CatEstadoHabitacionEntity estado;
 	private String urlFoto;
     private List<CatServicioEntity> servicios;
     private List<ReservacionEntity> reservaciones;
     
+    
+    
+	public int getNoMaxExtras() {
+		return noMaxExtras;
+	}
+	public void setNoMaxExtras(int noMaxExtras) {
+		this.noMaxExtras = noMaxExtras;
+	}
+	public int getNoCamasIndividuales() {
+		return noCamasIndividuales;
+	}
+	public void setNoCamasIndividuales(int noCamasIndividuales) {
+		this.noCamasIndividuales = noCamasIndividuales;
+	}
+	public int getNoCamasMatrimoniales() {
+		return noCamasMatrimoniales;
+	}
+	public void setNoCamasMatrimoniales(int noCamasMatrimoniales) {
+		this.noCamasMatrimoniales = noCamasMatrimoniales;
+	}
+	public BigDecimal getCosto() {
+		return costo;
+	}
+	public void setCosto(BigDecimal costo) {
+		this.costo = costo;
+	}
 	public Long getIdHabitacion() {
 		return idHabitacion;
 	}

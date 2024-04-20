@@ -32,11 +32,10 @@ public class HabitacionEntity {
 	private int noCamasIndividuales;
 	@Column(name = "no_camas_matrimoniales")
 	private int noCamasMatrimoniales;
+	@Column(name = "no_max_extras")
+	private int noMaxExtras;
 	@Column(name = "costo")
 	private BigDecimal costo;
-	
-	
-	
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_piso")
@@ -132,6 +131,12 @@ public class HabitacionEntity {
 	}
 	public void setReservaciones(List<ReservacionEntity> reservaciones) {
 		this.reservaciones = reservaciones;
+	}
+	public int getNoMaxExtras() {
+		return noMaxExtras;
+	}
+	public void setNoMaxExtras(int noMaxExtras) {
+		this.noMaxExtras = noMaxExtras;
 	}
 	
 

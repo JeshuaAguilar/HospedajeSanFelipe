@@ -8,6 +8,7 @@ export interface Habitacion {
   noMaxOcupante: number;
   noCamasIndividuales  : number;
   noCamasMatrimoniales: number;
+  noMaxExtras         : number;
   costo         : number;
   piso         : CatPiso;
   estado       : CatEstadoHabitacion;
@@ -36,6 +37,7 @@ export interface HabitacionRequest{
 	noMaxOcupante :  number;
   noCamasIndividuales  : number;
   noCamasMatrimoniales: number;
+  noMaxExtras         : number;
   costo         : number;
   piso          :  number;
 	estado        :  number;
@@ -50,6 +52,7 @@ export interface HabitacionResponse{
   noMaxOcupante : number;
   noCamasIndividuales  : number;
   noCamasMatrimoniales: number;
+  noMaxExtras         : number;
   costo         : number;
   urlFoto       : string;
   piso          : CatPiso;
@@ -70,6 +73,7 @@ export interface HabitacionEmpleadoResponse {
   noHabitacion  : number;
   noOcupante    : number;
   noMaxOcupante : number;
+  noMaxExtras   : number;
   urlFoto       : string;
   piso          : CatPiso;
   estado        : CatEstadoHabitacion

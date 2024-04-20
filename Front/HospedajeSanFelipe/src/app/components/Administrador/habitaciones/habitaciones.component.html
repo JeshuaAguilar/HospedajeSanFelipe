@@ -15,6 +15,7 @@
           <th scope="col">Habitacion</th>
           <th scope="col">Ocupantes</th>
           <th scope="col">Ocupantes Max</th>
+          <th scope="col">Extras Max</th>
           <th scope="col">Camas individuales</th>
           <th scope="col">Camas matrimoniales</th>
           <th scope="col">Costo</th>
@@ -30,19 +31,22 @@
             <td>{{habitacion.noHabitacion}}</td>
             <td>{{habitacion.noOcupante}}</td>
             <td>{{habitacion.noMaxOcupante}}</td>
+            <td>{{habitacion.noMaxExtras}}</td>
             <td>{{habitacion.noCamasIndividuales}}</td>
             <td>{{habitacion.noCamasMatrimoniales}}</td>
             <td>{{habitacion.costo}}</td>
             <td>{{habitacion.piso.descripcion}}</td>
             <td>{{habitacion.estado.descripcion}}</td>
-            <td><div class="row gx-0">
+            <td>
+              <div class="row gx-0">
               <div class="col">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modificarHabitacion(habitacion.idHabitacion)">Editar</button>
               </div>
               <div class="col">
                 <button type="button" class="btn btn-danger"  (click)="eliminarHabitacion(habitacion.idHabitacion)">Eliminar</button>
               </div>
-            </div></td>
+            </div>
+          </td>
         </tr>
       } @empty {
         <p>
@@ -73,7 +77,6 @@
             <div class="row row-cols-2 row-cols-lg-3">
               <div class="col mb-3">
                 <input type="hidden" formControlName="idHabitacion">
-
                 <div class="form-floating-label">
                   <input type="text" class="form-control" [class.is-valid]="isValid('noHabitacion')" [class.is-invalid]="isFieldInvalid('noHabitacion')" id="noHabitacion" formControlName="noHabitacion" placeholder="">
                   <label for="noHabitacion">Habitacion</label>
@@ -104,6 +107,19 @@
                 @if (isFieldInvalid('noMaxOcupante')) {
                   <small class="text-danger">
                     Ingrese el maximo de ocupantes
+                  </small>
+                }
+              </div>
+
+
+              <div class="col mb-3">
+                <div class="form-floating-label">
+                  <input type="text" class="form-control" [class.is-valid]="isValid('noMaxExtras')" [class.is-invalid]="isFieldInvalid('noMaxExtras')" id="noMaxExtras" formControlName="noMaxExtras" placeholder="">
+                  <label for="noMaxExtras">Extras Maximos</label>
+                </div>
+                @if (isFieldInvalid('noMaxExtras')) {
+                  <small class="text-danger">
+                    Ingrese el maximo de Extras
                   </small>
                 }
               </div>
@@ -157,10 +173,10 @@
 
             <div class="col mb-3">
               <div class="form-floating-label">
-                <input type="text" class="form-control"  [class.is-invalid]="isFieldInvalid('noCamasI')" id="noCamasI" formControlName="noCamasI" placeholder="">
-                <label for="noCamasI">camas individuales</label>
+                <input type="text" class="form-control"  [class.is-invalid]="isFieldInvalid('noCamasIndividuales')" id="noCamasIndividuales" formControlName="noCamasIndividuales" placeholder="">
+                <label for="noCamasIndividuales">camas individuales</label>
               </div>
-              @if (isFieldInvalid('noCamasI')) {
+              @if (isFieldInvalid('noCamasIndividuales')) {
                 <small class="text-danger">
                   Ingrese las camas individuales
                 </small>
@@ -170,10 +186,10 @@
 
           <div class="col mb-3">
             <div class="form-floating-label">
-              <input type="text" class="form-control"  [class.is-valid]="isValid('noCamasM')" [class.is-invalid]="isFieldInvalid('noCamasM')" id="noCamasM" formControlName="noCamasM" placeholder="">
-              <label for="noCamasM">Camas matrimoniales</label>
+              <input type="text" class="form-control"  [class.is-valid]="isValid('noCamasMatrimoniales')" [class.is-invalid]="isFieldInvalid('noCamasMatrimoniales')" id="noCamasMatrimoniales" formControlName="noCamasMatrimoniales" placeholder="">
+              <label for="noCamasMatrimoniales">Camas matrimoniales</label>
             </div>
-            @if (isFieldInvalid('noCamasM')) {
+            @if (isFieldInvalid('noCamasMatrimoniales')) {
               <small class="text-danger">
                 Ingrese las camas matrimoniales
               </small>

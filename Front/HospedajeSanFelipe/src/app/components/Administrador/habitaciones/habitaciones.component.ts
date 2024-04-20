@@ -47,6 +47,7 @@ export class HabitacionesComponent implements OnInit {
       noMaxOcupante: ['' , [Validators.required, Validators.minLength(1)]],
       noCamasIndividuales:    ['' , [Validators.required, Validators.maxLength(2)]],
       noCamasMatrimoniales: ['' , [Validators.required, Validators.maxLength(2)]],
+      noMaxExtras: ['' , [Validators.required, Validators.maxLength(2)]],
       costo:          ['' , [Validators.required]],
       piso:          ['' , [Validators.required, Validators.minLength(1)]],
       estado:        ['' , [Validators.required]],
@@ -57,20 +58,21 @@ export class HabitacionesComponent implements OnInit {
   private defineEditForm(habitacion: HabitacionRequest): void {
     this.isEditing.set(true);
 
-    const { idHabitacion, noHabitacion, noOcupante, noMaxOcupante, noCamasIndividuales, noCamasMatrimoniales, costo, piso, estado, urlFoto } = habitacion;
+    const { idHabitacion, noHabitacion, noOcupante, noMaxOcupante,noMaxExtras , noCamasIndividuales, noCamasMatrimoniales, costo, piso, estado, urlFoto } = habitacion;
 
     this.habitacionesForm = this .fomrBuilder.group({
 
-      idHabitacion: idHabitacion,
-      noHabitacion:   [noHabitacion,  [Validators.required, Validators.minLength(1)]],
-      noOcupante:     [noOcupante,    [Validators.required, Validators.minLength(1)]],
-      noMaxOcupante:  [noMaxOcupante, [Validators.required, Validators.minLength(1)]],
-      noCamasIndividuales:     [noCamasIndividuales,    [Validators.required, Validators.minLength(2)]],
-      noCamasMatrimoniales:  [noCamasMatrimoniales, [Validators.required, Validators.minLength(2)]],
-      costo:           [costo,          [Validators.required, Validators.minLength(1)]],
-      piso:           [piso,          [Validators.required, Validators.minLength(1)]],
-      estado:         [estado,        [Validators.required]],
-      urlFoto:        [urlFoto,       [Validators.minLength(3)]]
+      idHabitacion        : idHabitacion,
+      noHabitacion        : [noHabitacion,  [Validators.required, Validators.minLength(1)]],
+      noOcupante          : [noOcupante,    [Validators.required, Validators.minLength(1)]],
+      noMaxOcupante       : [noMaxOcupante, [Validators.required, Validators.minLength(1)]],
+      noCamasIndividuales : [noCamasIndividuales,    [Validators.required, Validators.minLength(2)]],
+      noCamasMatrimoniales: [noCamasMatrimoniales, [Validators.required, Validators.minLength(2)]],
+      noMaxExtras         : [noMaxExtras, [Validators.required, Validators.minLength(2)]],
+      costo               : [costo,          [Validators.required, Validators.minLength(1)]],
+      piso                : [piso,          [Validators.required, Validators.minLength(1)]],
+      estado              : [estado,        [Validators.required]],
+      urlFoto             : [urlFoto,       [Validators.minLength(3)]]
     })
   }
 
@@ -82,6 +84,7 @@ export class HabitacionesComponent implements OnInit {
       noMaxOcupante:  '',
       noCamasIndividuales:     '',
       noCamasMatrimoniales:  '',
+      noMaxExtras:           '',
       costo:           '',
       piso:           '',
       estado:         '',
@@ -123,8 +126,9 @@ export class HabitacionesComponent implements OnInit {
         noHabitacion  : this.habitacionesForm.get('noHabitacion').value,
         noOcupante    : this.habitacionesForm.get('noOcupante').value,
         noMaxOcupante : this.habitacionesForm.get('noMaxOcupante').value,
-        noCamasIndividuales    : this.habitacionesForm.get('noCamasI').value,
-        noCamasMatrimoniales : this.habitacionesForm.get('noCamasM').value,
+        noCamasIndividuales    : this.habitacionesForm.get('noCamasIndividuales').value,
+        noCamasMatrimoniales : this.habitacionesForm.get('noCamasMatrimoniales').value,
+        noMaxExtras : this.habitacionesForm.get('noMaxExtras').value,
         costo          : this.habitacionesForm.get('costo').value,
         piso          : this.habitacionesForm.get('piso').value,
         estado        : this.habitacionesForm.get('estado').value,
@@ -196,6 +200,7 @@ export class HabitacionesComponent implements OnInit {
       noMaxOcupante         : habitacionFinded.noMaxOcupante,
       noCamasIndividuales   : habitacionFinded.noCamasIndividuales,
       noCamasMatrimoniales  : habitacionFinded.noCamasMatrimoniales,
+      noMaxExtras  : habitacionFinded.noMaxExtras,
       costo                 : habitacionFinded.costo,
       piso                  : habitacionFinded.piso.idPiso,
       estado                : habitacionFinded.estado.idEstado,

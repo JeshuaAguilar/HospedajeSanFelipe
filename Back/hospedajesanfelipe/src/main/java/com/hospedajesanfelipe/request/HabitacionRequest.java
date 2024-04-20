@@ -13,11 +13,20 @@ public class HabitacionRequest implements Serializable {
 	private int noMaxOcupante;
 	private int noCamasIndividuales;
 	private int noCamasMatrimoniales;
+	private int noMaxExtras;
 	private BigDecimal costo;
 	private String urlFoto;
     private Long piso;
 	private Long estado;
 	
+	
+	
+	public int getNoMaxExtras() {
+		return noMaxExtras;
+	}
+	public void setNoMaxExtras(int noMaxExtras) {
+		this.noMaxExtras = noMaxExtras;
+	}
 	public Long getIdHabitacion() {
 		return idHabitacion;
 	}
