@@ -1,13 +1,15 @@
-<div class="card">
-  <div class="card-body">
-    <div class="row">
-      <div class="col">
+<div class="contenedor" >
 
-      </div>
-    </div>
-    <div class="row row-cols-1">
+</div>
+
+
+
+  <div class="card-body">
+
+    <div class="login-container " >
+      <img class="Logo" src="../../../../assets/image/logo/sf.png" alt="Hospedaje Logo">
       <form [formGroup]="loginForm">
-        <div class="col mb-3">
+        <div class="col ">
           <div class="form-floating-label">
             <input type="text" class="form-control" id="usr" formControlName="usr" placeholder="">
             <label for="usr">Usuario</label>
@@ -31,6 +33,7 @@
         </div>
       </form>
       <button type="button" class="btn btn-primary mt-3" (click)="validarLogin()">Login</button>
+
     </div>
   </div>
-</div>
+

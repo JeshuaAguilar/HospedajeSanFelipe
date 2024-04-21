@@ -1,0 +1,18 @@
+/* Estilos para hacer que la tabla sea desplazable horizontalmente */
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* Asegura que la tabla ocupe el ancho completo del contenedor */
+.table {
+  width: 100%;
+  table-layout: auto;
+}
+
+/* Establece la anchura de las columnas en automático para que se ajusten al contenido */
+.table th,
+.table td {
+  width: auto;
+  white-space: nowrap; /* Evita el salto de línea en el texto largo */
+}

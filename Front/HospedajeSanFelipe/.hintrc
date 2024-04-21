@@ -16,7 +16,8 @@
     "axe/name-role-value": [
       "default",
       {
-        "link-name": "off"
+        "link-name": "off",
+        "button-name": "off"
       }
     ],
     "axe/structure": [
@@ -24,6 +25,7 @@
       {
         "list": "off"
       }
-    ]
+    ],
+    "button-type": "off"
   }
 }

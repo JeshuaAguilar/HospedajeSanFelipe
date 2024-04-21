@@ -19,11 +19,16 @@ img {
 
 
 .contenedor {
-  position:fixed; /* Posición fija */
-  top: 0; /* Coloca la div en la parte superior */
-  left: 0; /* Coloca la div en el lado izquierdo */
-  width: 100%; /* Ancho del 100% */
-  z-index: -1; /* Asegura que esté detrás de otros elementos */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Ajusta la altura al 100% para que la imagen cubra todo el contenedor */
+  z-index: -1;
+  background-image: url('../../../../assets/image/habitaciones/HospedajeSanFelipe.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 

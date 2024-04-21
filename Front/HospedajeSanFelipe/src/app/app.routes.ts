@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ComentariosComponent } from './components/administrador/comentarios/comentarios.component';
+// import { ComentariosComponent } from './components/administrador/comentarios/comentarios.component';
 import { HabitacionesComponent } from './components/administrador/habitaciones/habitaciones.component';
 import { InicioComponent } from './components/administrador/inicio/inicio.component';
 import { ReservacionesComponent } from './components/administrador/reservaciones/reservaciones.component';
@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'inicio',        component: InicioComponent,        canActivate: [authGuard]},
   { path: 'empleados',     component: EmpleadosComponent,     canActivate: [authGuard]},
   { path: 'habitaciones',  component: HabitacionesComponent,  canActivate: [authGuard]},
-  { path: 'comentarios',   component: ComentariosComponent,   canActivate: [authGuard]},
+  // { path: 'comentarios',   component: ComentariosComponent,   canActivate: [authGuard]},
   { path: 'reservaciones', component: ReservacionesComponent, canActivate: [authGuard]},
   { path: 'clientes',      component: ClientesComponent,      canActivate: [authGuard]},
 

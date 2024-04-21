@@ -37,11 +37,11 @@
                 <a class="nav-link" routerLinkActive="active" routerLink="clientes">Clientes</a>
               </li>
             }
-            @if (_utils.getRolUser() === 'ADMIN') {
+            <!-- @if (_utils.getRolUser() === 'ADMIN') {
               <li class="nav-item">
                 <a class="nav-link" routerLinkActive="active" routerLink="comentarios">Comentarios</a>
               </li>
-            }
+            } -->
             <li class="nav-item">
               <a class="nav-link cerrar" (click)="_utils.cerrarSesion()">Cerrar sesión</a>
             </li>
