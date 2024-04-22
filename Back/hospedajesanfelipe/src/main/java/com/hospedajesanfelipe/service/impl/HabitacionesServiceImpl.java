@@ -94,50 +94,40 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 	
 	@Override
 	public List<HabitacionDisponibleResponse> getAllHabitacionesDisponibles(LocalDate fechaEntrada, LocalDate fechaSalida) {
-		List<HabitacionDisponibleResponse> response = null;
-		List<HabitacionEntity> habitaciones = habitacionesDao.getAllHabitaciones();
-		
-		if (habitaciones != null && !habitaciones.isEmpty()) {
-			response = new ArrayList<HabitacionDisponibleResponse>();
-			for (HabitacionEntity habitacionEntity : habitaciones) {
-				HabitacionDisponibleResponse habitacion = new HabitacionDisponibleResponse();
-				
-				List<ReservacionEntity> reservaciones = reservacionesDao.findReservacionesByHabitacion(habitacionEntity.getIdHabitacion());
-				
-				if(!reservaciones.isEmpty()) {
-					for (ReservacionEntity reservacion : reservaciones) {
-			            if ((fechaSalida.isBefore(reservacion.getFechaEntrada()) || fechaEntrada.isAfter(reservacion.getFechaSalida().minusDays(1)))) {
-			            	habitacion.setIdHabitacion(habitacionEntity.getIdHabitacion());
-			            	habitacion.setNoHabitacion(habitacionEntity.getNoHabitacion());
-			            	habitacion.setNoOcupante(habitacionEntity.getNoOcupantes());
-			            	habitacion.setNoMaxOcupante(habitacionEntity.getNoMaxOcupante());
-			            	habitacion.setNoMaxExtras(habitacionEntity.getNoMaxExtras());
-			            	habitacion.setNoCamasIndividuales(habitacionEntity.getNoCamasIndividuales());
-			            	habitacion.setNoCamasMatrimoniales(habitacionEntity.getNoCamasMatrimoniales());
-			            	habitacion.setCosto(habitacionEntity.getCosto());
-			            	habitacion.setPiso(habitacionEntity.getPiso().getDescripcion());
-			            	habitacion.setServicios(habitacionEntity.getServicios());
-			            	response.add(habitacion);
-			            }
-			        }
-				} else {
-					habitacion.setIdHabitacion(habitacionEntity.getIdHabitacion());
-	            	habitacion.setNoHabitacion(habitacionEntity.getNoHabitacion());
-	            	habitacion.setNoOcupante(habitacionEntity.getNoOcupantes());
-	            	habitacion.setNoMaxOcupante(habitacionEntity.getNoMaxOcupante());
-	            	habitacion.setNoMaxExtras(habitacionEntity.getNoMaxExtras());
-	            	habitacion.setNoCamasIndividuales(habitacionEntity.getNoCamasIndividuales());
-	            	habitacion.setNoCamasMatrimoniales(habitacionEntity.getNoCamasMatrimoniales());
-	            	habitacion.setCosto(habitacionEntity.getCosto());
-	            	habitacion.setPiso(habitacionEntity.getPiso().getDescripcion());
-	            	habitacion.setServicios(habitacionEntity.getServicios());
-	            	response.add(habitacion);
-				}
-			}
-			
-		}
-		return response;
+	    List<HabitacionDisponibleResponse> response = new ArrayList<>();  // Inicializar siempre para evitar NullPointerException.
+	    List<HabitacionEntity> habitaciones = habitacionesDao.getAllHabitaciones();
+	    
+	    if (habitaciones != null && !habitaciones.isEmpty()) {
+	        for (HabitacionEntity habitacionEntity : habitaciones) {
+	            List<ReservacionEntity> reservaciones = reservacionesDao.findReservacionesByHabitacion(habitacionEntity.getIdHabitacion());
+	            
+	            boolean isAvailable = true;
+	            for (ReservacionEntity reservacion : reservaciones) {
+	                if (!(fechaSalida.isBefore(reservacion.getFechaEntrada()) || fechaEntrada.isAfter(reservacion.getFechaSalida()))) {
+	                    isAvailable = false;
+	                    break;  // No need to check further, habitacion is not available
+	                }
+	            }
+
+	            if (isAvailable) {
+	                HabitacionDisponibleResponse habitacion = new HabitacionDisponibleResponse();
+	                habitacion.setIdHabitacion(habitacionEntity.getIdHabitacion());
+	                habitacion.setNoHabitacion(habitacionEntity.getNoHabitacion());
+	                habitacion.setNoOcupante(habitacionEntity.getNoOcupantes());
+	                habitacion.setNoMaxOcupante(habitacionEntity.getNoMaxOcupante());
+	                habitacion.setNoMaxExtras(habitacionEntity.getNoMaxExtras());
+	                habitacion.setNoCamasIndividuales(habitacionEntity.getNoCamasIndividuales());
+	                habitacion.setNoCamasMatrimoniales(habitacionEntity.getNoCamasMatrimoniales());
+	                habitacion.setCosto(habitacionEntity.getCosto());
+	                habitacion.setPiso(habitacionEntity.getPiso().getDescripcion());
+	                habitacion.setServicios(habitacionEntity.getServicios());
+	                response.add(habitacion);
+	            }
+	        }
+	    }
+	    return response;
 	}
+
 	
 	@Override
 	public HabitacionEntity getHabitacionById(Long idHabitacion) {

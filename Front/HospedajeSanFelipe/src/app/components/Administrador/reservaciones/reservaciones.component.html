@@ -33,10 +33,10 @@
             <td>{{reservacion.noPersonaExtra}}</td>
             <td>{{reservacion.fechaEntrada | date: 'dd/MM/yyyy'}}</td>
             <td>{{reservacion.fechaSalida | date: 'dd/MM/yyyy'}}</td>
-            <td>{{reservacion.total}}</td>
-            <td>{{reservacion.precioEspecial}}</td>
+            <td>{{reservacion.total | currency}}</td>
+            <td>{{reservacion.precioEspecial ? reservacion.precioEspecial.descripcion:''}}</td>
             <td>
-              <button type="button" class="btn btn-primary">Editar</button>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" (click)="editarReservacion(reservacion)">Editar</button>
               <button type="button" class="btn btn-danger">Eliminar</button>
             </td>
           </tr>
@@ -90,7 +90,7 @@
           <mat-step>
             <ng-template matStepLabel>Habitaciones disponibles</ng-template>
             <div data-simplebar class="body-habitaciones p-2  my-3">
-              <div class="row">
+              <div class="row row-cols-2 row-cols-xl-4">
                 @for (habitacion of habitaciones(); track $index) {
                   <div class="col">
                     <div class="card px-3 mb-2 shadow-sm" [class.border-success]="habitacion.isSelected == true" id="cardHabitacion" (click)="habitacionSelected.set(habitacion)" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">

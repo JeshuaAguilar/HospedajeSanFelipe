@@ -57,7 +57,6 @@ export class ReservacionesComponent implements OnInit {
   public isLoadedHabitaciones = signal(false);
   public isClienteNuevo = signal(true);
   public currentStep = signal(0);
-  public currentValue = signal(0)
 
   public habitacionSelected = signal<HabitacionDisponibleResponse>(new HabitacionDisponibleResponse());
   public reservacion: Reservacion = new Reservacion();
@@ -75,7 +74,6 @@ export class ReservacionesComponent implements OnInit {
     this.isLoadedHabitaciones = signal(false);
     this.isClienteNuevo = signal(true);
     this.currentStep = signal(0);
-    this.currentValue = signal(0);
 
     this.habitacionSelected = signal<HabitacionDisponibleResponse>(new HabitacionDisponibleResponse());
 
@@ -206,6 +204,36 @@ export class ReservacionesComponent implements OnInit {
     });
   }
 
+  public editarReservacion(reservacion: Reservacion): void {
+    this.selectedRangeValue = new DateRange(new Date(reservacion.fechaEntrada), new Date(reservacion.fechaSalida));
+
+    // this.habitaciones = signal<HabitacionDisponibleResponse[]>([]);
+    this.getAllHabitacionesDisponibles();
+
+    const clientes: Cliente[] = [];
+    clientes.push(reservacion.cliente);
+
+    this.clientes = signal<Cliente[]>(clientes);
+
+    this.isLoadedHabitaciones = signal(false);
+    this.isClienteNuevo = signal(false);
+    this.currentStep = signal(0);
+
+    this.habitacionSelected = signal<HabitacionDisponibleResponse>(new HabitacionDisponibleResponse());
+
+    this.reservacion = new Reservacion();
+    this.reservacion.habitaciones = reservacion.habitaciones;
+    this.reservacion.noPersonas = reservacion.noPersonas;
+    this.reservacion.noPersonaExtra = reservacion.noPersonaExtra;
+
+    const empleado: LoginResponse = JSON.parse(sessionStorage.getItem('user'));
+
+    this.reservacion.empleado = new EmpleadoRequest();
+    this.reservacion.empleado.idEmpleado = empleado.idEmpleado;
+    this.reservacion.empleado.nombre = empleado.nombre;
+    this.clienteNuevo = undefined;
+  }
+
   /*Métodos de Datepicker*/
   @ViewChild(MatCalendar, {static: false}) calendar!: MatCalendar<Date>;
   @Input() selectedRangeValue: DateRange<Date> | undefined;
@@ -282,26 +310,46 @@ export class ReservacionesComponent implements OnInit {
 
   public getAllHabitacionesDisponibles(): void {
 
-    // const fechaEntrada = this.datePipe.transform(this.selectedRangeValue.start, 'yyyy-MM-dd');
-    // const fechaSalida = this.datePipe.transform(this.selectedRangeValue.end, 'yyyy-MM-dd');
+    const fechaEntrada = this.datePipe.transform(this.selectedRangeValue.start, 'yyyy-MM-dd');
+    const fechaSalida = this.datePipe.transform(this.selectedRangeValue.end, 'yyyy-MM-dd');
 
-    // this._peticiones.getPeticion(`${this.URL_HABITACIONES}/${fechaEntrada}/${fechaSalida}`).subscribe({
-    //   next: (response: HabitacionDisponibleResponse[]) => {
-    //     this.habitaciones.set(response);
-    //     console.log(JSON.stringify(response));
+    this._peticiones.getPeticion(`${this.URL_HABITACIONES}/${fechaEntrada}/${fechaSalida}`).subscribe({
+      next: (response: HabitacionDisponibleResponse[]) => {
+        this.habitaciones.set(response);
+        console.log(JSON.stringify(response));
 
 
+        // this.habitaciones.set(JSON.parse(`[{"idHabitacion":1,"noHabitacion":"01","noOcupante":2,"noMaxOcupante":2,"noMaxExtras":2,"noCamasIndividuales":1,"noCamasMatrimoniales":0,"costo":100,"piso":"Primer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":2,"noHabitacion":"02","noOcupante":4,"noMaxOcupante":4,"noMaxExtras":3,"noCamasIndividuales":2,"noCamasMatrimoniales":1,"costo":150,"piso":"Segundo Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":3,"noHabitacion":"03","noOcupante":4,"noMaxOcupante":5,"noMaxExtras":2,"noCamasIndividuales":1,"noCamasMatrimoniales":1,"costo":120,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":4,"noHabitacion":"04","noOcupante":3,"noMaxOcupante":4,"noMaxExtras":1,"noCamasIndividuales":1,"noCamasMatrimoniales":1,"costo":300,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"}]}]`));
 
-        this.habitaciones.set(JSON.parse(`[{"idHabitacion":1,"noHabitacion":"01","noOcupante":2,"noMaxOcupante":2,"noMaxExtras":2,"noCamasIndividuales":1,"noCamasMatrimoniales":0,"costo":100,"piso":"Primer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":2,"noHabitacion":"02","noOcupante":4,"noMaxOcupante":4,"noMaxExtras":3,"noCamasIndividuales":2,"noCamasMatrimoniales":1,"costo":150,"piso":"Segundo Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":3,"noHabitacion":"03","noOcupante":4,"noMaxOcupante":5,"noMaxExtras":2,"noCamasIndividuales":1,"noCamasMatrimoniales":1,"costo":120,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":4,"noHabitacion":"04","noOcupante":3,"noMaxOcupante":4,"noMaxExtras":1,"noCamasIndividuales":1,"noCamasMatrimoniales":1,"costo":300,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"}]}]`));
-
-      //   this.isLoadedHabitaciones.set(true);
-      //   this._alertas.cierraLoading();
-      // },
-      // error: (err: any) => {
-      //   this._alertas.error(err);
-      // },
-    // });
+        this.isLoadedHabitaciones.set(true);
+        this._alertas.cierraLoading();
+      },
+      error: (err: any) => {
+        this._alertas.error(err);
+      },
+    });
   }
+
+  // public getAllHabitacionesDisponiblesEdit(): void {
+
+  //   const fechaEntrada = this.datePipe.transform(this.selectedRangeValue.start, 'yyyy-MM-dd');
+  //   const fechaSalida = this.datePipe.transform(this.selectedRangeValue.end, 'yyyy-MM-dd');
+
+  //   this._peticiones.getPeticion(`${this.URL_HABITACIONES}/${fechaEntrada}/${fechaSalida}`).to({
+  //     next: (response: HabitacionDisponibleResponse[]) => {
+  //       this.habitaciones.set(response);
+  //       console.log(JSON.stringify(response));
+
+  //       this.habitaciones.set(JSON.parse(`[{"idHabitacion":1,"noHabitacion":"01","noOcupante":2,"noMaxOcupante":2,"noMaxExtras":2,"noCamasIndividuales":1,"noCamasMatrimoniales":0,"costo":100,"piso":"Primer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":2,"noHabitacion":"02","noOcupante":4,"noMaxOcupante":4,"noMaxExtras":3,"noCamasIndividuales":2,"noCamasMatrimoniales":1,"costo":150,"piso":"Segundo Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":3,"noHabitacion":"03","noOcupante":4,"noMaxOcupante":5,"noMaxExtras":2,"noCamasIndividuales":1,"noCamasMatrimoniales":1,"costo":120,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":4,"noHabitacion":"04","noOcupante":3,"noMaxOcupante":4,"noMaxExtras":1,"noCamasIndividuales":1,"noCamasMatrimoniales":1,"costo":300,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"}]}]`));
+
+  //       this.isLoadedHabitaciones.set(true);
+  //       this._alertas.cierraLoading();
+  //     },
+  //     error: (err: any) => {
+  //       this._alertas.error(err);
+  //     },
+  //   });
+  // }
 
   public validaFormBusqueda(): void {
     if (this.busquedaForm.invalid) {
