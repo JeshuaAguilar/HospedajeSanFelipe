@@ -45,9 +45,9 @@ export class HabitacionesComponent implements OnInit {
       noHabitacion:  ['' , [Validators.required, Validators.minLength(1)]],
       noOcupante:    ['' , [Validators.required, Validators.minLength(1)]],
       noMaxOcupante: ['' , [Validators.required, Validators.minLength(1)]],
-      noCamasIndividuales:    ['' , [Validators.required, Validators.maxLength(2)]],
-      noCamasMatrimoniales: ['' , [Validators.required, Validators.maxLength(2)]],
-      noMaxExtras: ['' , [Validators.required, Validators.maxLength(2)]],
+      noCamasIndividuales:    ['' , [Validators.required, Validators.maxLength(1)]],
+      noCamasMatrimoniales: ['' , [Validators.required, Validators.maxLength(1)]],
+      noMaxExtras: ['' , [Validators.required, Validators.maxLength(1)]],
       costo:          ['' , [Validators.required]],
       piso:          ['' , [Validators.required, Validators.minLength(1)]],
       estado:        ['' , [Validators.required]],
@@ -58,17 +58,17 @@ export class HabitacionesComponent implements OnInit {
   private defineEditForm(habitacion: HabitacionRequest): void {
     this.isEditing.set(true);
 
-    const { idHabitacion, noHabitacion, noOcupantes, noMaxOcupante,noMaxExtras , noCamasIndividuales, noCamasMatrimoniales, costo, piso, estado, urlFoto } = habitacion;
+    const { idHabitacion, noHabitacion, noOcupante, noMaxOcupante,noMaxExtras , noCamasIndividuales, noCamasMatrimoniales, costo, piso, estado, urlFoto } = habitacion;
 
     this.habitacionesForm = this .fomrBuilder.group({
 
       idHabitacion        : idHabitacion,
       noHabitacion        : [noHabitacion,  [Validators.required, Validators.minLength(1)]],
-      noOcupantes          : [noOcupantes,    [Validators.required, Validators.minLength(1)]],
+      noOcupante          : [noOcupante,    [Validators.required, Validators.minLength(1)]],
       noMaxOcupante       : [noMaxOcupante, [Validators.required, Validators.minLength(1)]],
-      noCamasIndividuales : [noCamasIndividuales,    [Validators.required, Validators.minLength(2)]],
-      noCamasMatrimoniales: [noCamasMatrimoniales, [Validators.required, Validators.minLength(2)]],
-      noMaxExtras         : [noMaxExtras, [Validators.required, Validators.minLength(2)]],
+      noCamasIndividuales : [noCamasIndividuales,    [Validators.required, Validators.minLength(1)]],
+      noCamasMatrimoniales: [noCamasMatrimoniales, [Validators.required, Validators.minLength(1)]],
+      noMaxExtras         : [noMaxExtras, [Validators.required, Validators.minLength(1)]],
       costo               : [costo,          [Validators.required, Validators.minLength(1)]],
       piso                : [piso,          [Validators.required, Validators.minLength(1)]],
       estado              : [estado,        [Validators.required]],
@@ -124,7 +124,7 @@ export class HabitacionesComponent implements OnInit {
 
         idHabitacion  : this.isEditing ? this.habitacionesForm.get('idHabitacion').value : 0,
         noHabitacion  : this.habitacionesForm.get('noHabitacion').value,
-        noOcupantes    : this.habitacionesForm.get('noOcupantes').value,
+        noOcupante    : this.habitacionesForm.get('noOcupante').value,
         noMaxOcupante : this.habitacionesForm.get('noMaxOcupante').value,
         noCamasIndividuales    : this.habitacionesForm.get('noCamasIndividuales').value,
         noCamasMatrimoniales : this.habitacionesForm.get('noCamasMatrimoniales').value,
@@ -196,11 +196,11 @@ export class HabitacionesComponent implements OnInit {
     const habitacionRequest: HabitacionRequest = {
       idHabitacion          : habitacionFinded.idHabitacion,
       noHabitacion          : habitacionFinded.noHabitacion,
-      noOcupantes           : habitacionFinded.noOcupantes,
+      noOcupante            : habitacionFinded.noOcupante,
       noMaxOcupante         : habitacionFinded.noMaxOcupante,
       noCamasIndividuales   : habitacionFinded.noCamasIndividuales,
       noCamasMatrimoniales  : habitacionFinded.noCamasMatrimoniales,
-      noMaxExtras  : habitacionFinded.noMaxExtras,
+      noMaxExtras           : habitacionFinded.noMaxExtras,
       costo                 : habitacionFinded.costo,
       piso                  : habitacionFinded.piso.idPiso,
       estado                : habitacionFinded.estado.idEstado,

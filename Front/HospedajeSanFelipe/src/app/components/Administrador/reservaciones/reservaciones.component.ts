@@ -175,12 +175,12 @@ export class ReservacionesComponent implements OnInit {
     for (const habitacion of this.reservacion.habitaciones) {
       const habitacionEntity = new Habitacion();
       habitacionEntity.idHabitacion = habitacion.idHabitacion;
-      habitacionEntity.noOcupantes = habitacion.noOcupantes;
+      habitacionEntity.noOcupante = habitacion.noOcupante;
       habitacionEntity.noMaxExtras = habitacion.noMaxExtras;
       reservacionRequest.habitaciones.push(habitacionEntity);
     }
 
-    const noPersonas = this.reservacion.habitaciones.reduce((total: number, habitacion: Habitacion) => Number(total) + Number(habitacion.noOcupantes), 0);
+    const noPersonas = this.reservacion.habitaciones.reduce((total: number, habitacion: Habitacion) => Number(total) + Number(habitacion.noOcupante), 0);
     reservacionRequest.noPersonas = noPersonas;
 	  reservacionRequest.noPersonaExtra = this.getPersonasExtras(this.reservacion.habitaciones);
 
@@ -421,7 +421,7 @@ export class ReservacionesComponent implements OnInit {
     habitacion.idHabitacion = this.habitacionSelected().idHabitacion;
     habitacion.noHabitacion = this.habitacionSelected().noHabitacion;
     habitacion.costo = this.habitacionSelected().costo;
-    habitacion.noOcupantes = this.reservacion.noPersonas;
+    habitacion.noOcupante = this.reservacion.noPersonas;
     habitacion.noMaxExtras = this.reservacion.noPersonaExtra;
     this.reservacion.habitaciones.push(habitacion);
     this.isSelected(this.habitacionSelected().idHabitacion, true);

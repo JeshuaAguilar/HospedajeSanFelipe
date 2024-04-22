@@ -25,7 +25,7 @@ public class HabitacionEntity {
 	@Column(name = "no_habitacion")
 	private String noHabitacion;
 	@Column(name = "no_ocupantes")
-	private int noOcupantes;
+	private int noOcupante;
 	@Column(name = "no_max_ocupantes")
 	private int noMaxOcupante;
 	@Column(name = "no_camas_individuales")
@@ -53,78 +53,102 @@ public class HabitacionEntity {
             inverseJoinColumns = @JoinColumn(name = "id_servicio")
     )
     private List<CatServicioEntity> servicios;
-	
-	public int getNoCamasIndividuales() {
-		return noCamasIndividuales;
-	}
-	public void setNoCamasIndividuales(int noCamasIndividuales) {
-		this.noCamasIndividuales = noCamasIndividuales;
-	}
-	public int getNoCamasMatrimoniales() {
-		return noCamasMatrimoniales;
-	}
-	public void setNoCamasMatrimoniales(int noCamasMatrimoniales) {
-		this.noCamasMatrimoniales = noCamasMatrimoniales;
-	}
-	public BigDecimal getCosto() {
-		return costo;
-	}
-	public void setCosto(BigDecimal costo) {
-		this.costo = costo;
-	}
-	
+
 	public Long getIdHabitacion() {
 		return idHabitacion;
 	}
+
 	public void setIdHabitacion(Long idHabitacion) {
 		this.idHabitacion = idHabitacion;
 	}
+
 	public String getNoHabitacion() {
 		return noHabitacion;
 	}
+
 	public void setNoHabitacion(String noHabitacion) {
 		this.noHabitacion = noHabitacion;
 	}
-	public int getNoOcupantes() {
-		return noOcupantes;
+
+	public int getNoOcupante() {
+		return noOcupante;
 	}
-	public void setNoOcupantes(int noOcupantes) {
-		this.noOcupantes = noOcupantes;
+
+	public void setNoOcupante(int noOcupante) {
+		this.noOcupante = noOcupante;
 	}
+
 	public int getNoMaxOcupante() {
 		return noMaxOcupante;
 	}
+
 	public void setNoMaxOcupante(int noMaxOcupante) {
 		this.noMaxOcupante = noMaxOcupante;
 	}
-	public CatPisoEntity getPiso() {
-		return piso;
+
+	public int getNoCamasIndividuales() {
+		return noCamasIndividuales;
 	}
-	public void setPiso(CatPisoEntity piso) {
-		this.piso = piso;
+
+	public void setNoCamasIndividuales(int noCamasIndividuales) {
+		this.noCamasIndividuales = noCamasIndividuales;
 	}
-	public CatEstadoHabitacionEntity getEstado() {
-		return estado;
+
+	public int getNoCamasMatrimoniales() {
+		return noCamasMatrimoniales;
 	}
-	public void setEstado(CatEstadoHabitacionEntity estado) {
-		this.estado = estado;
+
+	public void setNoCamasMatrimoniales(int noCamasMatrimoniales) {
+		this.noCamasMatrimoniales = noCamasMatrimoniales;
 	}
-	public String getUrlFoto() {
-		return urlFoto;
-	}
-	public void setUrlFoto(String urlFoto) {
-		this.urlFoto = urlFoto;
-	}
-	public List<CatServicioEntity> getServicios() {
-		return servicios;
-	}
-	public void setServicios(List<CatServicioEntity> servicios) {
-		this.servicios = servicios;
-	}
+
 	public int getNoMaxExtras() {
 		return noMaxExtras;
 	}
+
 	public void setNoMaxExtras(int noMaxExtras) {
 		this.noMaxExtras = noMaxExtras;
 	}
+
+	public BigDecimal getCosto() {
+		return costo;
+	}
+
+	public void setCosto(BigDecimal costo) {
+		this.costo = costo;
+	}
+
+	public CatPisoEntity getPiso() {
+		return piso;
+	}
+
+	public void setPiso(CatPisoEntity piso) {
+		this.piso = piso;
+	}
+
+	public CatEstadoHabitacionEntity getEstado() {
+		return estado;
+	}
+
+	public void setEstado(CatEstadoHabitacionEntity estado) {
+		this.estado = estado;
+	}
+
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
+	}
+
+	public List<CatServicioEntity> getServicios() {
+		return servicios;
+	}
+
+	public void setServicios(List<CatServicioEntity> servicios) {
+		this.servicios = servicios;
+	}
+
+	
 }

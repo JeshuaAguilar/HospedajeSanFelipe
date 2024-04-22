@@ -113,7 +113,7 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 	                HabitacionDisponibleResponse habitacion = new HabitacionDisponibleResponse();
 	                habitacion.setIdHabitacion(habitacionEntity.getIdHabitacion());
 	                habitacion.setNoHabitacion(habitacionEntity.getNoHabitacion());
-	                habitacion.setNoOcupante(habitacionEntity.getNoOcupantes());
+	                habitacion.setNoOcupante(habitacionEntity.getNoOcupante());
 	                habitacion.setNoMaxOcupante(habitacionEntity.getNoMaxOcupante());
 	                habitacion.setNoMaxExtras(habitacionEntity.getNoMaxExtras());
 	                habitacion.setNoCamasIndividuales(habitacionEntity.getNoCamasIndividuales());
@@ -193,10 +193,11 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		
 		habitacionEntity.setIdHabitacion(habitacion.getIdHabitacion());
 		habitacionEntity.setNoHabitacion(validaNull(habitacion.getNoHabitacion(), habitacionEntity.getNoHabitacion()));
-		habitacionEntity.setNoOcupantes(validaNull(habitacion.getNoOcupante(), habitacionEntity.getNoOcupantes()));
+		habitacionEntity.setNoOcupante(validaNull(habitacion.getNoOcupante(), habitacionEntity.getNoOcupante()));
 		habitacionEntity.setNoMaxOcupante(validaNull(habitacion.getNoMaxOcupante(), habitacionEntity.getNoMaxOcupante()));
 		habitacionEntity.setNoCamasIndividuales(validaNull(habitacion.getNoCamasIndividuales(), habitacionEntity.getNoCamasIndividuales()));
 		habitacionEntity.setNoCamasMatrimoniales(validaNull(habitacion.getNoCamasMatrimoniales(), habitacionEntity.getNoCamasMatrimoniales()));
+		habitacionEntity.setNoMaxExtras(validaNull(habitacion.getNoMaxExtras(), habitacionEntity.getNoMaxExtras()));
 		habitacionEntity.setCosto(validaNull(habitacion.getCosto(), habitacionEntity.getCosto()));
 		/*
 		 * Rol, es un objeto, y cuando hacemos la instancia de un new EmpleadoEntity(), este objeto es nulo
@@ -235,7 +236,7 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		
 		response.setIdHabitacion(habitacion.getIdHabitacion());
 		response.setNoHabitacion(habitacion.getNoHabitacion());
-		response.setNoOcupante(habitacion.getNoOcupantes());
+		response.setNoOcupante(habitacion.getNoOcupante());
 		response.setNoMaxOcupante(habitacion.getNoMaxOcupante());
 		response.setNoCamasIndividuales(habitacion.getNoCamasIndividuales());
 		response.setNoCamasMatrimoniales(habitacion.getNoCamasMatrimoniales());
@@ -253,7 +254,7 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		
 		response.setIdHabitacion(habitacion.getIdHabitacion());
 		response.setNoHabitacion(habitacion.getNoHabitacion());
-		response.setNoOcupante(habitacion.getNoOcupantes());
+		response.setNoOcupante(habitacion.getNoOcupante());
 		response.setUrlFoto(habitacion.getUrlFoto());
 		response.setServicios(habitacion.getServicios());
 		
@@ -265,10 +266,11 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		
 		response.setIdHabitacion(habitacion.getIdHabitacion());
 		response.setNoHabitacion(habitacion.getNoHabitacion());
-		response.setNoOcupante(habitacion.getNoOcupantes());
+		response.setNoOcupante(habitacion.getNoOcupante());
 		response.setNoMaxOcupante(habitacion.getNoMaxOcupante());
 		response.setNoCamasIndividuales(habitacion.getNoCamasIndividuales());
 		response.setNoCamasMatrimoniales(habitacion.getNoCamasMatrimoniales());
+		response.setNoMaxExtras(habitacion.getNoMaxExtras());
 		response.setCosto(habitacion.getCosto());
 		response.setPiso(habitacion.getPiso());
 		response.setEstado(habitacion.getEstado());

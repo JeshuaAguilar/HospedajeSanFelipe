@@ -4,7 +4,7 @@ import { CatServicios } from "./servicios.model";
 export class Habitacion {
   idHabitacion : number;
   noHabitacion : string;
-  noOcupantes  : number;
+  noOcupante  : number;
   noMaxOcupantes: number;
   noCamasIndividuales  : number;
   noCamasMatrimoniales: number;
@@ -33,7 +33,7 @@ export interface CatPiso {
 
 export interface HabitacionRequest{
 	noHabitacion  :  number;
-	noOcupantes   :  number;
+	noOcupante   :  number;
 	noMaxOcupante :  number;
   noCamasIndividuales  : number;
   noCamasMatrimoniales: number;
@@ -48,7 +48,7 @@ export interface HabitacionRequest{
 export interface HabitacionResponse{
   idHabitacion  : number;
   noHabitacion  : number;
-  noOcupantes   : number;
+  noOcupante    : number;
   noMaxOcupante : number;
   noCamasIndividuales  : number;
   noCamasMatrimoniales: number;

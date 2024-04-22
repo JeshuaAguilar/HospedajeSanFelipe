@@ -29,7 +29,7 @@
           <tr>
             <th scope="row">{{habitacion.idHabitacion}}</th>
             <td>{{habitacion.noHabitacion}}</td>
-            <td>{{habitacion.noOcupantes}}</td>
+            <td>{{habitacion.noOcupante}}</td>
             <td>{{habitacion.noMaxOcupante}}</td>
             <td>{{habitacion.noMaxExtras}}</td>
             <td>{{habitacion.noCamasIndividuales}}</td>
@@ -91,10 +91,10 @@
               </div>
               <div class="col mb-3">
                 <div class="form-floating-label">
-                  <input type="text" class="form-control" [class.is-valid]="isValid('noOcupantes')" [class.is-invalid]="isFieldInvalid('noOcupantes')" id="noOcupantes" formControlName="noOcupantes" placeholder="">
-                  <label for="noOcupantes">Ocupantes</label>
+                  <input type="text" class="form-control" [class.is-valid]="isValid('noOcupante')" [class.is-invalid]="isFieldInvalid('noOcupante')" id="noOcupante" formControlName="noOcupante" placeholder="">
+                  <label for="noOcupante">Ocupantes</label>
                 </div>
-                @if (isFieldInvalid('noOcupantes')) {
+                @if (isFieldInvalid('noOcupante')) {
                   <small class="text-danger">
                     Ingrese los ocupantes
                   </small>
