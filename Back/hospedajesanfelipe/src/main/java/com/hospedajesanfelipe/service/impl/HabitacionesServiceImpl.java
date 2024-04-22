@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hospedajesanfelipe.dao.HabitacionesDao;
+import com.hospedajesanfelipe.dao.ReservacionesDao;
 import com.hospedajesanfelipe.entity.CatEstadoHabitacionEntity;
 import com.hospedajesanfelipe.entity.CatPisoEntity;
 import com.hospedajesanfelipe.entity.HabitacionEntity;
@@ -26,6 +27,8 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 	
 	@Autowired
 	HabitacionesDao habitacionesDao;
+	@Autowired
+	ReservacionesDao reservacionesDao;
 
 	@Override
 	public HabitacionEntity getHabitacionByNoHabitacion(String noHabitacion) {
@@ -99,13 +102,19 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 			for (HabitacionEntity habitacionEntity : habitaciones) {
 				HabitacionDisponibleResponse habitacion = new HabitacionDisponibleResponse();
 				
-				if(!habitacionEntity.getReservaciones().isEmpty()) {
-					for (ReservacionEntity reservacion : habitacionEntity.getReservaciones()) {
+				List<ReservacionEntity> reservaciones = reservacionesDao.findReservacionesByHabitacion(habitacionEntity.getIdHabitacion());
+				
+				if(!reservaciones.isEmpty()) {
+					for (ReservacionEntity reservacion : reservaciones) {
 			            if ((fechaSalida.isBefore(reservacion.getFechaEntrada()) || fechaEntrada.isAfter(reservacion.getFechaSalida().minusDays(1)))) {
 			            	habitacion.setIdHabitacion(habitacionEntity.getIdHabitacion());
 			            	habitacion.setNoHabitacion(habitacionEntity.getNoHabitacion());
-			            	habitacion.setNoOcupante(habitacionEntity.getNoOcupante());
+			            	habitacion.setNoOcupante(habitacionEntity.getNoOcupantes());
 			            	habitacion.setNoMaxOcupante(habitacionEntity.getNoMaxOcupante());
+			            	habitacion.setNoMaxExtras(habitacionEntity.getNoMaxExtras());
+			            	habitacion.setNoCamasIndividuales(habitacionEntity.getNoCamasIndividuales());
+			            	habitacion.setNoCamasMatrimoniales(habitacionEntity.getNoCamasMatrimoniales());
+			            	habitacion.setCosto(habitacionEntity.getCosto());
 			            	habitacion.setPiso(habitacionEntity.getPiso().getDescripcion());
 			            	habitacion.setServicios(habitacionEntity.getServicios());
 			            	response.add(habitacion);
@@ -114,8 +123,12 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 				} else {
 					habitacion.setIdHabitacion(habitacionEntity.getIdHabitacion());
 	            	habitacion.setNoHabitacion(habitacionEntity.getNoHabitacion());
-	            	habitacion.setNoOcupante(habitacionEntity.getNoOcupante());
+	            	habitacion.setNoOcupante(habitacionEntity.getNoOcupantes());
 	            	habitacion.setNoMaxOcupante(habitacionEntity.getNoMaxOcupante());
+	            	habitacion.setNoMaxExtras(habitacionEntity.getNoMaxExtras());
+	            	habitacion.setNoCamasIndividuales(habitacionEntity.getNoCamasIndividuales());
+	            	habitacion.setNoCamasMatrimoniales(habitacionEntity.getNoCamasMatrimoniales());
+	            	habitacion.setCosto(habitacionEntity.getCosto());
 	            	habitacion.setPiso(habitacionEntity.getPiso().getDescripcion());
 	            	habitacion.setServicios(habitacionEntity.getServicios());
 	            	response.add(habitacion);
@@ -190,7 +203,7 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		
 		habitacionEntity.setIdHabitacion(habitacion.getIdHabitacion());
 		habitacionEntity.setNoHabitacion(validaNull(habitacion.getNoHabitacion(), habitacionEntity.getNoHabitacion()));
-		habitacionEntity.setNoOcupante(validaNull(habitacion.getNoOcupante(), habitacionEntity.getNoOcupante()));
+		habitacionEntity.setNoOcupantes(validaNull(habitacion.getNoOcupante(), habitacionEntity.getNoOcupantes()));
 		habitacionEntity.setNoMaxOcupante(validaNull(habitacion.getNoMaxOcupante(), habitacionEntity.getNoMaxOcupante()));
 		habitacionEntity.setNoCamasIndividuales(validaNull(habitacion.getNoCamasIndividuales(), habitacionEntity.getNoCamasIndividuales()));
 		habitacionEntity.setNoCamasMatrimoniales(validaNull(habitacion.getNoCamasMatrimoniales(), habitacionEntity.getNoCamasMatrimoniales()));
@@ -232,7 +245,7 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		
 		response.setIdHabitacion(habitacion.getIdHabitacion());
 		response.setNoHabitacion(habitacion.getNoHabitacion());
-		response.setNoOcupante(habitacion.getNoOcupante());
+		response.setNoOcupante(habitacion.getNoOcupantes());
 		response.setNoMaxOcupante(habitacion.getNoMaxOcupante());
 		response.setNoCamasIndividuales(habitacion.getNoCamasIndividuales());
 		response.setNoCamasMatrimoniales(habitacion.getNoCamasMatrimoniales());
@@ -250,7 +263,7 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		
 		response.setIdHabitacion(habitacion.getIdHabitacion());
 		response.setNoHabitacion(habitacion.getNoHabitacion());
-		response.setNoOcupante(habitacion.getNoOcupante());
+		response.setNoOcupante(habitacion.getNoOcupantes());
 		response.setUrlFoto(habitacion.getUrlFoto());
 		response.setServicios(habitacion.getServicios());
 		
@@ -262,7 +275,7 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		
 		response.setIdHabitacion(habitacion.getIdHabitacion());
 		response.setNoHabitacion(habitacion.getNoHabitacion());
-		response.setNoOcupante(habitacion.getNoOcupante());
+		response.setNoOcupante(habitacion.getNoOcupantes());
 		response.setNoMaxOcupante(habitacion.getNoMaxOcupante());
 		response.setNoCamasIndividuales(habitacion.getNoCamasIndividuales());
 		response.setNoCamasMatrimoniales(habitacion.getNoCamasMatrimoniales());
@@ -271,7 +284,8 @@ public class HabitacionesServiceImpl implements HabitacionesService {
 		response.setEstado(habitacion.getEstado());
 		response.setUrlFoto(habitacion.getUrlFoto());
 		response.setServicios(habitacion.getServicios());
-		response.setReservaciones(habitacion.getReservaciones());
+		List<ReservacionEntity> reservaciones = reservacionesDao.findReservacionesByHabitacion(habitacion.getIdHabitacion());
+		response.setReservaciones(reservaciones);
 		
 		return response;
 	}

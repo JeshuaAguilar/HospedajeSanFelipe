@@ -1,8 +1,8 @@
 import { Cliente } from "./cliente.model";
 import { EmpleadoRequest } from "./empleados";
-import { Habitacion } from "./habitacion.model";
+import { Habitacion } from './habitacion.model';
 
-export interface Reservacion {
+export class Reservacion {
   idReservacion : number;
   fechaEntrada  : Date;
   fechaSalida   : Date;
@@ -12,9 +12,24 @@ export interface Reservacion {
   estado        : string;
   cliente       : Cliente;
   empleado      : EmpleadoRequest;
-  comentario    : Comentario;
+  // comentario    : Comentario;
   precioEspecial: CatPrecioEspecial;
   habitaciones  : Habitacion[];
+}
+
+export class ReservacionRequest {
+  // idReservacion : number;
+  fechaEntrada    : Date;
+  fechaSalida     : Date;
+  noPersonas      : number;
+  noPersonaExtra  : number;
+  total           : number;
+  estado          : number;
+  idCliente       : number;
+  idEmpleado      : number;
+  idComentario    : number;
+  idPrecioEspecial: number;
+  habitaciones    : Habitacion[];
 }
 
 

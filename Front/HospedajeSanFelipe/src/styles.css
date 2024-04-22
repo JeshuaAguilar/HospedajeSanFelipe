@@ -41,3 +41,14 @@ html, body { height: 100%; }
 .fs-7{
   font-size: 0.8rem !important
 }
+
+img {
+  height: 100%;
+  width: 100%;
+  aspect-ratio: 1/0;
+  object-fit: contain;
+}
+
+.servicios {
+  width: calc(1rem + .8vw);
+}

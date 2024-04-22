@@ -9,7 +9,7 @@ import com.hospedajesanfelipe.response.ReservacionResponse;
 public interface ReservacionesService {
 	public List<ReservacionResponse> getAllReservaciones();
 	public ReservacionEntity getReservacion(Long idReservacion);
-	public ReservacionEntity saveReservaciones(ReservacionRequest reservacion);
+	public ReservacionResponse saveReservaciones(ReservacionRequest reservacion);
 	public ReservacionEntity updateReservaciones(ReservacionRequest reservacion);
 	public void deleteReservaciones(Long idReservacion);
 }

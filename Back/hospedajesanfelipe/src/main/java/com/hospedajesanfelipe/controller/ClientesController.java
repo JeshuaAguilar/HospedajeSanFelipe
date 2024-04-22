@@ -37,11 +37,11 @@ public class ClientesController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<String> createClientes(@RequestBody ClienteRequest cliente) {
+	public ResponseEntity<?> createClientes(@RequestBody ClienteRequest cliente) {
 		ClienteEntity response = clientesService.createCliente(cliente); 
 		
 		if (response != null) {
-			return ResponseEntity.status(HttpStatus.CREATED).body("El cliente se ha creado exitosamente");
+			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		} else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el cliente");
 		}

@@ -25,7 +25,7 @@ export const routes: Routes = [
 
   { path: 'inicioCliente', component: InicioClienteComponent },
 
-  { path: '', redirectTo: 'Login', pathMatch: 'full' }, // redirect to `first-component`
+  { path: '', redirectTo: 'login', pathMatch: 'full' }, // redirect to `first-component`
   { path: '**', component: LoginComponent }, // Redirecciona a una página cuando no encuentra el path
 ];
 

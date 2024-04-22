@@ -35,7 +35,7 @@ public class ReservacionesController {
 	}
 	
 	@PostMapping()
-	public ReservacionEntity createReservacion(@RequestBody ReservacionRequest reservacion) {
+	public ReservacionResponse createReservacion(@RequestBody ReservacionRequest reservacion) {
 		return reservacionesService.saveReservaciones(reservacion);
 	}
 	

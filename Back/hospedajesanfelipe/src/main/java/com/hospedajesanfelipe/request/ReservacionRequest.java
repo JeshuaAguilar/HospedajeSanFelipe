@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.hospedajesanfelipe.entity.HabitacionEntity;
+
 public class ReservacionRequest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -13,14 +15,14 @@ public class ReservacionRequest implements Serializable {
 	private LocalDate fechaEntrada;
 	private LocalDate fechaSalida;
 	private int noPersonas;
-	private int noPersonaExtra;
+	private Integer noPersonaExtra;
 	private BigDecimal total;
 	private Long estado;
-	private Long cliente;
-	private Long empleado;
-    private String comentario;
+	private Long idCliente;
+	private Long idEmpleado;
+    private Long comentario;
 	private Long precioEspecial;
-	private List<HabitacionRequest> habitaciones;
+	private List<HabitacionEntity> habitaciones;
 	
 	public Long getIdReservacion() {
 		return idReservacion;
@@ -46,10 +48,10 @@ public class ReservacionRequest implements Serializable {
 	public void setNoPersonas(int noPersonas) {
 		this.noPersonas = noPersonas;
 	}
-	public int getNoPersonaExtra() {
+	public Integer getNoPersonaExtra() {
 		return noPersonaExtra;
 	}
-	public void setNoPersonaExtra(int noPersonaExtra) {
+	public void setNoPersonaExtra(Integer noPersonaExtra) {
 		this.noPersonaExtra = noPersonaExtra;
 	}
 	public BigDecimal getTotal() {
@@ -64,22 +66,22 @@ public class ReservacionRequest implements Serializable {
 	public void setEstado(Long estado) {
 		this.estado = estado;
 	}
-	public Long getCliente() {
-		return cliente;
+	public Long getIdCliente() {
+		return idCliente;
 	}
-	public void setCliente(Long cliente) {
-		this.cliente = cliente;
+	public void setIdCliente(Long idCliente) {
+		this.idCliente = idCliente;
 	}
-	public Long getEmpleado() {
-		return empleado;
+	public Long getIdEmpleado() {
+		return idEmpleado;
 	}
-	public void setEmpleado(Long empleado) {
-		this.empleado = empleado;
+	public void setIdEmpleado(Long idEmpleado) {
+		this.idEmpleado = idEmpleado;
 	}
-	public String getComentario() {
+	public Long getComentario() {
 		return comentario;
 	}
-	public void setComentario(String comentario) {
+	public void setComentario(Long comentario) {
 		this.comentario = comentario;
 	}
 	public Long getPrecioEspecial() {
@@ -88,10 +90,10 @@ public class ReservacionRequest implements Serializable {
 	public void setPrecioEspecial(Long precioEspecial) {
 		this.precioEspecial = precioEspecial;
 	}
-	public List<HabitacionRequest> getHabitaciones() {
+	public List<HabitacionEntity> getHabitaciones() {
 		return habitaciones;
 	}
-	public void setHabitaciones(List<HabitacionRequest> habitaciones) {
+	public void setHabitaciones(List<HabitacionEntity> habitaciones) {
 		this.habitaciones = habitaciones;
 	}
 }

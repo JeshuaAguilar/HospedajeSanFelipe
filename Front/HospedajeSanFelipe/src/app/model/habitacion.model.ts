@@ -1,11 +1,11 @@
 import { SafeUrl } from "@angular/platform-browser";
 import { CatServicios } from "./servicios.model";
 
-export interface Habitacion {
+export class Habitacion {
   idHabitacion : number;
   noHabitacion : string;
   noOcupantes  : number;
-  noMaxOcupante: number;
+  noMaxOcupantes: number;
   noCamasIndividuales  : number;
   noCamasMatrimoniales: number;
   noMaxExtras         : number;
@@ -33,7 +33,7 @@ export interface CatPiso {
 
 export interface HabitacionRequest{
 	noHabitacion  :  number;
-	noOcupante    :  number;
+	noOcupantes   :  number;
 	noMaxOcupante :  number;
   noCamasIndividuales  : number;
   noCamasMatrimoniales: number;
@@ -48,7 +48,7 @@ export interface HabitacionRequest{
 export interface HabitacionResponse{
   idHabitacion  : number;
   noHabitacion  : number;
-  noOcupante    : number;
+  noOcupantes   : number;
   noMaxOcupante : number;
   noCamasIndividuales  : number;
   noCamasMatrimoniales: number;
@@ -81,11 +81,15 @@ export interface HabitacionEmpleadoResponse {
   imagen        ?: SafeUrl;
 }
 
-export interface HabitacionDisponibleResponse {
+export class HabitacionDisponibleResponse {
   idHabitacion : number;
 	noHabitacion : string;
 	noOcupante   : number;
 	noMaxOcupante: number;
+  noMaxExtras  : number;
+  noCamasIndividuales : number;
+  noCamasMatrimoniales: number;
+  costo        : number;
 	piso         : string;
 	servicios    : CatServicios[];
 	isSelected   : boolean;

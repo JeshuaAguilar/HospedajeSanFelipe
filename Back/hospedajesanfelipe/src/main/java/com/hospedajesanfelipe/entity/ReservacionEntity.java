@@ -2,7 +2,6 @@ package com.hospedajesanfelipe.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -30,7 +27,7 @@ public class ReservacionEntity {
 	@Column(name = "no_personas")
 	private int noPersonas;
 	@Column(name = "no_personas_extra")
-	private int noPersonaExtra;
+	private Integer noPersonaExtra;
 	@Column(name = "total")
 	private BigDecimal total;
 	@ManyToOne
@@ -48,13 +45,6 @@ public class ReservacionEntity {
 	@ManyToOne
     @JoinColumn(name = "fk_id_precio_especial")
 	private CatPrecioEspecialEntity precioEspecial;
-	@ManyToMany
-    @JoinTable(
-            name = "reservaciones_habitaciones",
-            joinColumns = @JoinColumn(name = "id_reservacion"),
-            inverseJoinColumns = @JoinColumn(name = "id_habitacion")
-    )
-    private List<HabitacionEntity> habitaciones;
 	
 	public Long getIdReservacion() {
 		return idReservacion;
@@ -80,10 +70,10 @@ public class ReservacionEntity {
 	public void setNoPersonas(int noPersonas) {
 		this.noPersonas = noPersonas;
 	}
-	public int getNoPersonaExtra() {
+	public Integer getNoPersonaExtra() {
 		return noPersonaExtra;
 	}
-	public void setNoPersonaExtra(int noPersonaExtra) {
+	public void setNoPersonaExtra(Integer noPersonaExtra) {
 		this.noPersonaExtra = noPersonaExtra;
 	}
 	public BigDecimal getTotal() {
@@ -97,12 +87,6 @@ public class ReservacionEntity {
 	}
 	public void setEstado(CatEstadoHabitacionEntity estado) {
 		this.estado = estado;
-	}
-	public List<HabitacionEntity> getHabitaciones() {
-		return habitaciones;
-	}
-	public void setHabitaciones(List<HabitacionEntity> habitaciones) {
-		this.habitaciones = habitaciones;
 	}
 	public ClienteEntity getCliente() {
 		return cliente;

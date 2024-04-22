@@ -3,10 +3,12 @@ package com.hospedajesanfelipe.response;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import com.hospedajesanfelipe.entity.CatPrecioEspecialEntity;
 import com.hospedajesanfelipe.entity.ClienteEntity;
 import com.hospedajesanfelipe.entity.ComentarioEntity;
+import com.hospedajesanfelipe.entity.ReservacionHabitacionEntity;
 import com.hospedajesanfelipe.request.EmpleadoRequest;
 
 public class ReservacionResponse implements Serializable {
@@ -24,6 +26,7 @@ public class ReservacionResponse implements Serializable {
 	private EmpleadoRequest empleado;
 	private ComentarioEntity comentario;
 	private CatPrecioEspecialEntity precioEspecial;
+	private List<ReservacionHabitacionEntity> rhs;
 	
 	public Long getIdReservacion() {
 		return idReservacion;
@@ -90,5 +93,11 @@ public class ReservacionResponse implements Serializable {
 	}
 	public void setPrecioEspecial(CatPrecioEspecialEntity precioEspecial) {
 		this.precioEspecial = precioEspecial;
+	}
+	public List<ReservacionHabitacionEntity> getRhs() {
+		return rhs;
+	}
+	public void setRhs(List<ReservacionHabitacionEntity> rhs) {
+		this.rhs = rhs;
 	}
 }

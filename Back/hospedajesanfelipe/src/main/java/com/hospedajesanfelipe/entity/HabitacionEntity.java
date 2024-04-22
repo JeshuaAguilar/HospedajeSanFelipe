@@ -25,7 +25,7 @@ public class HabitacionEntity {
 	@Column(name = "no_habitacion")
 	private String noHabitacion;
 	@Column(name = "no_ocupantes")
-	private int noOcupante;
+	private int noOcupantes;
 	@Column(name = "no_max_ocupantes")
 	private int noMaxOcupante;
 	@Column(name = "no_camas_individuales")
@@ -53,11 +53,6 @@ public class HabitacionEntity {
             inverseJoinColumns = @JoinColumn(name = "id_servicio")
     )
     private List<CatServicioEntity> servicios;
-	
-	@ManyToMany(mappedBy = "habitaciones")
-    private List<ReservacionEntity> reservaciones;
-	
-	
 	
 	public int getNoCamasIndividuales() {
 		return noCamasIndividuales;
@@ -90,11 +85,11 @@ public class HabitacionEntity {
 	public void setNoHabitacion(String noHabitacion) {
 		this.noHabitacion = noHabitacion;
 	}
-	public int getNoOcupante() {
-		return noOcupante;
+	public int getNoOcupantes() {
+		return noOcupantes;
 	}
-	public void setNoOcupante(int noOcupante) {
-		this.noOcupante = noOcupante;
+	public void setNoOcupantes(int noOcupantes) {
+		this.noOcupantes = noOcupantes;
 	}
 	public int getNoMaxOcupante() {
 		return noMaxOcupante;
@@ -126,19 +121,10 @@ public class HabitacionEntity {
 	public void setServicios(List<CatServicioEntity> servicios) {
 		this.servicios = servicios;
 	}
-	public List<ReservacionEntity> getReservaciones() {
-		return reservaciones;
-	}
-	public void setReservaciones(List<ReservacionEntity> reservaciones) {
-		this.reservaciones = reservaciones;
-	}
 	public int getNoMaxExtras() {
 		return noMaxExtras;
 	}
 	public void setNoMaxExtras(int noMaxExtras) {
 		this.noMaxExtras = noMaxExtras;
 	}
-	
-
-	
 }

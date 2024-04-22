@@ -1,4 +1,4 @@
-export interface EmpleadoRequest {
+export class EmpleadoRequest {
   userName       : string;
   contrasenia    : string;
   nombre         : string;

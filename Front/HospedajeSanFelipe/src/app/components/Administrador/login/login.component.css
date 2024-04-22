@@ -8,6 +8,7 @@ justify-content: center;
 height: 100vh;
 margin: 0;
 } */
+
 .contenedor {
   position: relative;
   width: 100%;
@@ -31,30 +32,32 @@ img {
   aspect-ratio: 1/0;
   object-fit: contain;
 }
-.form-floating-label{
+
+/* .form-floating-label{
   background-color: transparent;
 }
+
 label{
   background-color: transparent;
   font-size: 20px;
   font-style:normal;
-}
+} */
 
 input {
   width: 100%;
   padding: 15px;
 
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   box-sizing: border-box;
   border: none;
   outline: none;
   border: 1px solid white;
   border-radius: 5px;
-  background-color: transparent;
+  /* background-color: transparent; */
   color: #fff;
 }
 
-button{
+button {
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
@@ -67,20 +70,16 @@ button{
   margin-top: 5%;
 }
 
-
-.login-container
-{
-background-color: transparent;
-padding: 5%;
-border-radius:
-8px;
-box-shadow: 0 0 10px
-rgba(0, 0, 0, 0.3);
-text-align: center;
-max-width: 400px;
-height: 55%;
-width: 100%;
-border: 0.5px solid white;
+.login-container {
+  padding: 5%;
+  border-radius: 8px;
+  box-shadow: 0 0 10px
+  rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 400px;
+  height: 55%;
+  width: 100%;
+  border: 0.5px solid white;
 }
 
 .Logo{
@@ -97,7 +96,7 @@ border: 0.5px solid white;
 }
 
 .login-container {
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0.3);
   padding: 5%;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);

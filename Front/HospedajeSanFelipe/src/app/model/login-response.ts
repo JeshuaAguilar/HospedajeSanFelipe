@@ -1,5 +1,5 @@
 export interface LoginResponse {
-  idEmpleado: string;
+  idEmpleado: number;
   username  : string;
   nombre    : string;
   rol       : Rol;

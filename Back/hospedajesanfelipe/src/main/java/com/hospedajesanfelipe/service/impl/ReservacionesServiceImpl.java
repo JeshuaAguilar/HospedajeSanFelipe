@@ -15,8 +15,8 @@ import com.hospedajesanfelipe.entity.ComentarioEntity;
 import com.hospedajesanfelipe.entity.EmpleadoEntity;
 import com.hospedajesanfelipe.entity.HabitacionEntity;
 import com.hospedajesanfelipe.entity.ReservacionEntity;
+import com.hospedajesanfelipe.entity.ReservacionHabitacionEntity;
 import com.hospedajesanfelipe.request.EmpleadoRequest;
-import com.hospedajesanfelipe.request.HabitacionRequest;
 import com.hospedajesanfelipe.request.ReservacionRequest;
 import com.hospedajesanfelipe.response.ReservacionResponse;
 import com.hospedajesanfelipe.service.ReservacionesService;
@@ -35,24 +35,7 @@ public class ReservacionesServiceImpl implements ReservacionesService{
 		if (reservaciones != null && !reservaciones.isEmpty()) {
 			response = new ArrayList<ReservacionResponse>();
 			for (ReservacionEntity reservacionEntity : reservaciones) {
-				ReservacionResponse reservacion = new ReservacionResponse();
-				
-				reservacion.setIdReservacion(reservacionEntity.getIdReservacion());
-				reservacion.setFechaEntrada(reservacionEntity.getFechaEntrada());
-				reservacion.setFechaSalida(reservacionEntity.getFechaSalida());
-				reservacion.setNoPersonas(reservacionEntity.getNoPersonas());
-				reservacion.setNoPersonaExtra(reservacionEntity.getNoPersonaExtra());
-				reservacion.setTotal(reservacionEntity.getTotal());
-				reservacion.setEstado(reservacionEntity.getEstado().getDescripcion());
-				reservacion.setCliente(reservacionEntity.getCliente());
-				EmpleadoRequest empleado = new EmpleadoRequest();
-				empleado.setIdEmpleado(reservacionEntity.getEmpleado().getIdEmpleado());
-				empleado.setNombre(reservacionEntity.getEmpleado().getNombre());
-				empleado.setPrimerApellido(reservacionEntity.getEmpleado().getPrimerApellido());
-				reservacion.setEmpleado(empleado);
-				reservacion.setComentario(reservacionEntity.getComentario());
-				reservacion.setPrecioEspecial(reservacionEntity.getPrecioEspecial());
-				
+				ReservacionResponse reservacion = reservacionResponseMap(reservacionEntity);
 				response.add(reservacion);
 			}
 		}
@@ -64,6 +47,10 @@ public class ReservacionesServiceImpl implements ReservacionesService{
 	public ReservacionEntity getReservacion(Long idReservacion) {
 		Optional<ReservacionEntity> reservacionEntity = reservacionesDao.getReservacion(idReservacion); 
 		if (reservacionEntity.isPresent()) {
+			ReservacionResponse reservacion = new ReservacionResponse();
+			
+			reservacion.setIdReservacion(idReservacion);
+			
 			return reservacionEntity.get();
 		} else {
 			return null;
@@ -71,14 +58,23 @@ public class ReservacionesServiceImpl implements ReservacionesService{
 	}
 	
 	@Override
-	public ReservacionEntity saveReservaciones(ReservacionRequest reservacion) {
-		ReservacionEntity reservacionEntity = mapRequestResercacion(reservacion);
-		return reservacionesDao.saveReservaciones(reservacionEntity);
+	public ReservacionResponse saveReservaciones(ReservacionRequest reservacionRequest) {
+		ReservacionEntity reservacionEntity = mapRequestReservacion(reservacionRequest);
+		ReservacionEntity reservacionSaved = reservacionesDao.saveReservaciones(reservacionEntity); 
+
+		List<ReservacionHabitacionEntity> rhs = reservacionHabitacionMapper(reservacionSaved.getIdReservacion(), reservacionRequest.getHabitaciones());
+		List<ReservacionHabitacionEntity> rhsSaved = reservacionesDao.saveReservacionHabitacion(rhs);
+		
+		ReservacionResponse response = reservacionResponseMap(reservacionSaved);
+		
+		response.setRhs(rhsSaved);
+		
+		return response;
 	}
 	
 	@Override
 	public ReservacionEntity updateReservaciones(ReservacionRequest reservacion) {
-		ReservacionEntity reservacionEntity = mapRequestResercacion(reservacion);
+		ReservacionEntity reservacionEntity = mapRequestReservacion(reservacion);
 		return reservacionesDao.updateReservaciones(reservacionEntity);
 	}
 	
@@ -87,7 +83,7 @@ public class ReservacionesServiceImpl implements ReservacionesService{
 		reservacionesDao.deleteReservaciones(idReservacion);
 	}
 	
-	private ReservacionEntity mapRequestResercacion(ReservacionRequest reservacion) {
+	private ReservacionEntity mapRequestReservacion(ReservacionRequest reservacion) {
 		ReservacionEntity entity = null;
 		if (reservacion.getIdReservacion() != null && reservacion.getIdReservacion() > 0) {
 			entity = getReservacion(reservacion.getIdReservacion());
@@ -103,13 +99,13 @@ public class ReservacionesServiceImpl implements ReservacionesService{
 		entity.setEstado(new CatEstadoHabitacionEntity());
 		entity.getEstado().setIdEstado(reservacion.getEstado());
 		entity.setCliente(new ClienteEntity());
-		entity.getCliente().setIdCliente(reservacion.getCliente());
+		entity.getCliente().setIdCliente(reservacion.getIdCliente());
 		entity.setEmpleado(new EmpleadoEntity());
-		entity.getEmpleado().setIdEmpleado(reservacion.getEmpleado());
+		entity.getEmpleado().setIdEmpleado(reservacion.getIdEmpleado());
 
 		if (reservacion.getComentario() != null) {
 			entity.setComentario(new ComentarioEntity());
-			entity.getComentario().setComentario(reservacion.getComentario());
+			entity.getComentario().setIdComentario(reservacion.getComentario());
 		}
 		
 		if (reservacion.getPrecioEspecial() != null) {
@@ -117,16 +113,49 @@ public class ReservacionesServiceImpl implements ReservacionesService{
 			entity.getPrecioEspecial().setIdPrecioEspecial(reservacion.getPrecioEspecial());
 		}
 		
-		List<HabitacionEntity> habitacionEntities = new ArrayList<>();
-		
-		for (HabitacionRequest habitacion : reservacion.getHabitaciones()) {
-			HabitacionEntity habitacionEntity = new HabitacionEntity();
-			habitacionEntity.setIdHabitacion(habitacion.getIdHabitacion());
-			
-			habitacionEntities.add(habitacionEntity);
-		}
-		entity.setHabitaciones(habitacionEntities);
-		
 		return entity;
+	}
+	
+	private List<ReservacionHabitacionEntity> reservacionHabitacionMapper(Long idReservacion, List<HabitacionEntity> habitaciones) {
+		List<ReservacionHabitacionEntity> rhs = new ArrayList<ReservacionHabitacionEntity>();
+		
+		for (HabitacionEntity habitacion : habitaciones) {
+			ReservacionHabitacionEntity rh = new ReservacionHabitacionEntity();
+			
+			ReservacionEntity reservacion =  new ReservacionEntity();
+			reservacion.setIdReservacion(idReservacion);
+			
+			rh.setReservacion(reservacion);
+			rh.setHabitacion(habitacion);
+			rh.setNoPersonas(habitacion.getNoOcupantes());
+			rh.setNoPersonasExtra(habitacion.getNoMaxExtras());
+			
+			rhs.add(rh);
+		}
+		
+		return rhs;
+	}
+	
+	private ReservacionResponse reservacionResponseMap(ReservacionEntity reservacionEntity) {
+		ReservacionResponse reservacion = new ReservacionResponse();
+		
+		reservacion.setIdReservacion(reservacionEntity.getIdReservacion());
+		reservacion.setFechaEntrada(reservacionEntity.getFechaEntrada());
+		reservacion.setFechaSalida(reservacionEntity.getFechaSalida());
+		reservacion.setNoPersonas(reservacionEntity.getNoPersonas());
+		reservacion.setNoPersonaExtra(reservacionEntity.getNoPersonaExtra());
+		reservacion.setTotal(reservacionEntity.getTotal());
+		reservacion.setEstado(reservacionEntity.getEstado().getDescripcion());
+		reservacion.setCliente(reservacionEntity.getCliente());
+		EmpleadoRequest empleado = new EmpleadoRequest();
+		empleado.setIdEmpleado(reservacionEntity.getEmpleado().getIdEmpleado());
+		empleado.setNombre(reservacionEntity.getEmpleado().getNombre());
+		empleado.setPrimerApellido(reservacionEntity.getEmpleado().getPrimerApellido());
+		reservacion.setEmpleado(empleado);
+		reservacion.setComentario(reservacionEntity.getComentario());
+		reservacion.setPrecioEspecial(reservacionEntity.getPrecioEspecial());
+		reservacion.setRhs(reservacionesDao.getAllReservacionHabitacion(reservacionEntity.getIdReservacion()));
+		
+		return reservacion;
 	}
 }

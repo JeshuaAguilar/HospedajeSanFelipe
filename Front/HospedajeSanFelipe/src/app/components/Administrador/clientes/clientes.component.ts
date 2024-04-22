@@ -50,8 +50,6 @@ export class ClientesComponent implements OnInit {
     });
   }
 
-
-
   public eliminarCliente(idCliente: number): void {
     this._alerta.iniciaLoading();
     const url = `${this.URL_CLIENTES}/${idCliente}`

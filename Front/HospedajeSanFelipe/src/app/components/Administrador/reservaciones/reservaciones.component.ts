@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PeticionesService } from '../../../services/peticiones/peticiones.service';
-import { Reservacion } from '../../../model/reservaciones.model';
+import { Reservacion, ReservacionRequest } from '../../../model/reservaciones.model';
 import { environment } from '../../../../environments/environment.development';
-import { Clientes, Habitaciones, Reservaciones } from '../../../model/constantes';
+import { Clientes, Empleados, Habitaciones, Reservaciones } from '../../../model/constantes';
 import { AlertsService } from '../../../services/alerts.service';
 import { CommonModule, DatePipe } from '@angular/common';
 
@@ -14,11 +14,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
-import { HabitacionDisponibleResponse } from '../../../model/habitacion.model';
+import { HabitacionDisponibleResponse, Habitacion } from '../../../model/habitacion.model';
 import { AltaClienteComponent } from '../alta-cliente/alta-cliente.component';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { ClienteResponse } from '../../../model/cliente.model';
+import { Cliente } from '../../../model/cliente.model';
 
+import Swal from 'sweetalert2'
+import { LoginResponse } from '../../../model/login-response';
+import { EmpleadoRequest } from '../../../model/empleados';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-reservaciones',
@@ -32,9 +37,9 @@ import { ClienteResponse } from '../../../model/cliente.model';
   templateUrl: './reservaciones.component.html',
   styleUrl: './reservaciones.component.css'
 })
-export class ReservacionesComponent {
+export class ReservacionesComponent implements OnInit {
   private readonly URL_CLIENTES = `${environment.apiHost}${Clientes.CLIENTES}`;
-  // private readonly URL_HABITACIONES = `${environment.apiHost}${Habitaciones.HABITACIONES}`;
+  private readonly URL_HABITACIONES = `${environment.apiHost}${Habitaciones.HABITACIONES}`;
   private readonly URL_RESERVACIONES = `${environment.apiHost}${Reservaciones.RESERVACIONES}`;
 
   private _peticiones = inject(PeticionesService);
@@ -47,13 +52,44 @@ export class ReservacionesComponent {
   public reservaciones: Reservacion[];
 
   public habitaciones = signal<HabitacionDisponibleResponse[]>([]);
-  public clientes = signal<ClienteResponse[]>([]);
+  public clientes = signal<Cliente[]>([]);
+
   public isLoadedHabitaciones = signal(false);
   public isClienteNuevo = signal(true);
   public currentStep = signal(0);
+  public currentValue = signal(0)
+
+  public habitacionSelected = signal<HabitacionDisponibleResponse>(new HabitacionDisponibleResponse());
+  public reservacion: Reservacion = new Reservacion();
+  public clienteNuevo: Cliente;
 
   constructor() {
     this.ayer = new Date();
+  }
+
+  public resetReservacion(): void {
+    this.selectedRangeValue = undefined;
+    this.habitaciones = signal<HabitacionDisponibleResponse[]>([]);
+    this.clientes = signal<Cliente[]>([]);
+
+    this.isLoadedHabitaciones = signal(false);
+    this.isClienteNuevo = signal(true);
+    this.currentStep = signal(0);
+    this.currentValue = signal(0);
+
+    this.habitacionSelected = signal<HabitacionDisponibleResponse>(new HabitacionDisponibleResponse());
+
+    this.reservacion = new Reservacion();
+    this.reservacion.habitaciones = [];
+    this.reservacion.noPersonas = 0;
+    this.reservacion.noPersonaExtra = 0;
+
+    const empleado: LoginResponse = JSON.parse(sessionStorage.getItem('user'));
+
+    this.reservacion.empleado = new EmpleadoRequest();
+    this.reservacion.empleado.idEmpleado = empleado.idEmpleado;
+    this.reservacion.empleado.nombre = empleado.nombre;
+    this.clienteNuevo = undefined;
   }
 
   public defineFormBusquedaCliente(): void {
@@ -79,6 +115,11 @@ export class ReservacionesComponent {
   }
 
   public ngOnInit(): void {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
     this.defineForm();
     this.defineFormBusquedaCliente();
     this.getReservaciones(true);
@@ -116,21 +157,51 @@ export class ReservacionesComponent {
         precioEspecial: this.reservacionForm.get('precioEs')?.value,
 
       };
-      this.reservacion(reservacionRequest);
+      // this.creaReservacion(reservacionRequest);
     }
   }
-  private reservacion(request: any): void {
-    this._peticiones.getPeticion(request).subscribe({
+
+  public creaReservacion(): void {
+    const reservacionRequest = new ReservacionRequest();
+
+	  reservacionRequest.fechaEntrada = this.reservacion.fechaEntrada;
+	  reservacionRequest.fechaSalida = this.reservacion.fechaSalida;
+	  reservacionRequest.total = this.reservacion.total; //Falta setearlo
+	  reservacionRequest.estado = 1;// revisar el mapeo del estado pero de las reservaciones
+	  reservacionRequest.idCliente = this.reservacion.cliente.idCliente;
+	  reservacionRequest.idEmpleado = this.reservacion.empleado.idEmpleado;
+    // reservacionRequest.idComentario;
+	  // reservacionRequest.idPrecioEspecial;
+    reservacionRequest.habitaciones = [];
+
+    for (const habitacion of this.reservacion.habitaciones) {
+      const habitacionEntity = new Habitacion();
+      habitacionEntity.idHabitacion = habitacion.idHabitacion;
+      habitacionEntity.noOcupantes = habitacion.noOcupantes;
+      habitacionEntity.noMaxExtras = habitacion.noMaxExtras;
+      reservacionRequest.habitaciones.push(habitacionEntity);
+    }
+
+    const noPersonas = this.reservacion.habitaciones.reduce((total: number, habitacion: Habitacion) => Number(total) + Number(habitacion.noOcupantes), 0);
+    reservacionRequest.noPersonas = noPersonas;
+	  reservacionRequest.noPersonaExtra = this.getPersonasExtras(this.reservacion.habitaciones);
+
+    reservacionRequest.total = this.getTotal(this.reservacion.habitaciones);
+
+    this._peticiones.postPeticion(this.URL_RESERVACIONES, reservacionRequest, false).subscribe({
       next: (response: any) => {
-        console.log(response);
-        // sessionStorage.setItem('token', response.token);
-        // sessionStorage.setItem('rol', response.rol);
-        // this._alerts.toastLogin('¡Ha iniciado sesión correctamente!');
-        // this.redirectHome();
+        // console.log(response);
+        const miModal = bootstrap.Modal.getInstance(document.getElementById('exampleModalToggle'));
+        if (miModal) {
+          miModal.hide();
+        }
+
+        this.getReservaciones(false);
+        this._alertas.toastExito('Se ha creado la reservación exitosamente');
       },
       error: (err: any) => {
         console.error(err);
-        // this._alerts.error(err);
+        this._alertas.error(err);
       },
     });
   }
@@ -161,6 +232,8 @@ export class ReservacionesComponent {
         // Verifica si el rango es válido antes de establecerlo
         // if (!this.isDateInRangeDisabled(this.selectedRangeValue.start, event)) {
           this.selectedRangeValue = new DateRange(this.selectedRangeValue.start, event);
+          this.reservacion.fechaEntrada = this.selectedRangeValue.start;
+          this.reservacion.fechaSalida = this.selectedRangeValue.end;
         // } else {
         //   // Manejar el error cuando hay fechas deshabilitadas en el rango
         //   this._alerta.toastAdvertencia("No puede seleccionar un rango que incluya fechas reservadas.");
@@ -213,15 +286,20 @@ export class ReservacionesComponent {
     // const fechaSalida = this.datePipe.transform(this.selectedRangeValue.end, 'yyyy-MM-dd');
 
     // this._peticiones.getPeticion(`${this.URL_HABITACIONES}/${fechaEntrada}/${fechaSalida}`).subscribe({
-      // next: (response: HabitacionDisponibleResponse[]) => {
-        // this.habitaciones = response;
-        this.habitaciones.set(JSON.parse(`[{"idHabitacion":1,"noHabitacion":"01","noOcupante":4,"noMaxOcupante":6,"piso":"Primer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":2,"noHabitacion":"02","noOcupante":2,"noMaxOcupante":3,"piso":"Segundo Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":3,"noHabitacion":"03","noOcupante":6,"noMaxOcupante":8,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":4,"noHabitacion":"04","noOcupante":6,"noMaxOcupante":8,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"}]}]`));
-    //     this.isLoadedHabitaciones.set(true);
-    //     this._alertas.cierraLoading();
-    //   },
-    //   error: (err: any) => {
-    //     this._alertas.error(err);
-    //   },
+    //   next: (response: HabitacionDisponibleResponse[]) => {
+    //     this.habitaciones.set(response);
+    //     console.log(JSON.stringify(response));
+
+
+
+        this.habitaciones.set(JSON.parse(`[{"idHabitacion":1,"noHabitacion":"01","noOcupante":2,"noMaxOcupante":2,"noMaxExtras":2,"noCamasIndividuales":1,"noCamasMatrimoniales":0,"costo":100,"piso":"Primer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":2,"noHabitacion":"02","noOcupante":4,"noMaxOcupante":4,"noMaxExtras":3,"noCamasIndividuales":2,"noCamasMatrimoniales":1,"costo":150,"piso":"Segundo Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":3,"noHabitacion":"03","noOcupante":4,"noMaxOcupante":5,"noMaxExtras":2,"noCamasIndividuales":1,"noCamasMatrimoniales":1,"costo":120,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":4,"descripcion":"Ventilador"}]},{"idHabitacion":4,"noHabitacion":"04","noOcupante":3,"noMaxOcupante":4,"noMaxExtras":1,"noCamasIndividuales":1,"noCamasMatrimoniales":1,"costo":300,"piso":"Tercer Piso","servicios":[{"idServicio":1,"descripcion":"Cama matrimonial"},{"idServicio":2,"descripcion":"Cama individual"},{"idServicio":3,"descripcion":"Agua caliente"}]}]`));
+
+      //   this.isLoadedHabitaciones.set(true);
+      //   this._alertas.cierraLoading();
+      // },
+      // error: (err: any) => {
+      //   this._alertas.error(err);
+      // },
     // });
   }
 
@@ -241,7 +319,7 @@ export class ReservacionesComponent {
 
   private getClienteByNombreApellido(clienteRequest: any): void {
     this._peticiones.getPeticion(`${this.URL_CLIENTES}/${clienteRequest.nombre}/${clienteRequest.apellido}`).subscribe({
-      next: (response: ClienteResponse[]) => {
+      next: (response: Cliente[]) => {
         this.clientes.set(response);
         this._alertas.cierraLoading();
       },
@@ -251,13 +329,11 @@ export class ReservacionesComponent {
     });
   }
 
-  public isSelected(idHabitacion: number, event: MouseEvent): void {
-      const isChecked = (event.target as HTMLInputElement).checked;
-
+  public isSelected(idHabitacion: number, isSelected: boolean): void {
     this.habitaciones.update((habitaciones: HabitacionDisponibleResponse[]) => {
       const indexToUpdate = habitaciones.findIndex((habitacion: HabitacionDisponibleResponse) => habitacion.idHabitacion === idHabitacion);
       if (indexToUpdate !== -1) {
-        habitaciones[indexToUpdate].isSelected = isChecked;
+        habitaciones[indexToUpdate].isSelected = isSelected;
       }
       return habitaciones;
     });
@@ -274,5 +350,89 @@ export class ReservacionesComponent {
 
   public onStepChange(event: StepperSelectionEvent): void {
     this.currentStep.set(event.selectedIndex);
+  }
+
+  public ocupantes(e): void {
+    this.reservacion.noPersonas = e.target.value;
+  }
+
+  public ocupantesExtra(e): void {
+    this.reservacion.noPersonaExtra = e.target.value;
+  }
+
+  public quitaHabitacion(): void {
+    const index = this.reservacion.habitaciones.findIndex((habitacion: Habitacion) => habitacion.idHabitacion === this.habitacionSelected().idHabitacion);
+    if (index !== -1) {
+        this.reservacion.habitaciones.splice(index, 1);
+        this.isSelected(this.habitacionSelected().idHabitacion, false);
+    }
+  }
+
+  public agregaHabitacion(): void {
+    const habitacion = new Habitacion();
+    habitacion.idHabitacion = this.habitacionSelected().idHabitacion;
+    habitacion.noHabitacion = this.habitacionSelected().noHabitacion;
+    habitacion.costo = this.habitacionSelected().costo;
+    habitacion.noOcupantes = this.reservacion.noPersonas;
+    habitacion.noMaxExtras = this.reservacion.noPersonaExtra;
+    this.reservacion.habitaciones.push(habitacion);
+    this.isSelected(this.habitacionSelected().idHabitacion, true);
+  }
+
+  public creaNuevoCliente(cliente: Cliente): void {
+    this.clienteNuevo = cliente;
+    this.reservacion.cliente = cliente;
+  }
+
+  public agregaCliente(cliente: Cliente): void {
+    Swal.fire({
+      title: "¿Desea agregar a este cliente?",
+      showCancelButton: true,
+      cancelButtonText: `Cancelar`,
+      confirmButtonText: "¡Sí, agregar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.reservacion.cliente = cliente;
+        this.clienteNuevo = new Cliente();
+      }
+    });
+  }
+
+  public getSubtotal(habitaciones: Habitacion[]): number {
+    if(habitaciones) {
+      return habitaciones.reduce((total: number, habitacion: Habitacion) => total + habitacion.costo, 0);
+    } else {
+      return 0;
+    }
+  }
+
+  public getPersonasExtras(habitaciones: Habitacion[]) {
+    if(habitaciones) {
+      return habitaciones.reduce((total: number, habitacion: Habitacion) => {
+        return total + Number(habitacion.noMaxExtras);
+      }, 0);
+    } else {
+      return 0;
+    }
+  }
+
+  public getPersonasExtrasTotal(habitaciones: Habitacion[]) {
+    if(habitaciones) {
+      return habitaciones.reduce((total: number, habitacion: Habitacion) => {
+        return total + (habitacion.noMaxExtras * 50);
+      }, 0);
+    } else {
+      return 0;
+    }
+  }
+
+  public getTotal(habitaciones: Habitacion[]): number {
+    if(habitaciones) {
+      return habitaciones.reduce((total: number, habitacion: Habitacion) => {
+        return Number(total) + Number(habitacion.costo) + (Number(habitacion.noMaxExtras) * 50);
+      }, 0);
+    } else {
+      return 0;
+    }
   }
 }

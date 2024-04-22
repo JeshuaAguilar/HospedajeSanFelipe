@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ClienteRequest, ClienteResponse } from '../../../model/cliente.model';
+import { Cliente, ClienteResponse } from '../../../model/cliente.model';
 import { PeticionesService } from '../../../services/peticiones/peticiones.service';
 import { AlertsService } from '../../../services/alerts.service';
 import { environment } from '../../../../environments/environment.development';
@@ -19,6 +19,7 @@ export class AltaClienteComponent implements OnInit {
 
   private readonly URL_CLIENTES = `${environment.apiHost}${Clientes.CLIENTES}`;
 
+  @Input() isReservacion: boolean;
   @Output() exitoCliente = new EventEmitter();
 
   private _peticiones = inject(PeticionesService);
@@ -45,7 +46,7 @@ export class AltaClienteComponent implements OnInit {
     })
   }
 
-  private defineEditForm(cliente: ClienteRequest): void {
+  private defineEditForm(cliente: Cliente): void {
 
     this.isEditing.set(true);
     const { idCliente, nombre, primerApellido, segundoApellido, telefono, estado, municipio} = cliente;
@@ -79,7 +80,7 @@ export class AltaClienteComponent implements OnInit {
     } else {
       this._alerta.iniciaLoading();
 
-      const clienteRequest: ClienteRequest = {
+      const clienteRequest: Cliente = {
         idCliente         : this.isEditing() ? this.clienteForm.get('idCliente').value : 0,
         nombre            : this.clienteForm.get('nombre').value,
         primerApellido    : this.clienteForm.get('primerAp').value,
@@ -97,10 +98,14 @@ export class AltaClienteComponent implements OnInit {
     }
   }
 
-  private agregarCliente(request: ClienteRequest): void {
+  private agregarCliente(request: Cliente): void {
     this._peticiones.postPeticion(this.URL_CLIENTES, request, false).subscribe({
-      next: (response: string) => {
-        this.resetForm();
+      next: (response: Cliente) => {
+        if(this.isReservacion) {
+          this.clienteForm.disable();
+        } else {
+          this.resetForm();
+        }
 
         const miModal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
         if (miModal) {
@@ -108,8 +113,9 @@ export class AltaClienteComponent implements OnInit {
         }
 
         // this.getAllClientes();
-        this.exitoCliente.emit();
-        this._alerta.toastExito(response);
+
+        this.exitoCliente.emit(response);
+        this._alerta.toastExito('Se ha creado el cliente exitosamente');
       },
       error: (err: any) => {
         console.error(err);
@@ -118,7 +124,7 @@ export class AltaClienteComponent implements OnInit {
     });
   }
 
-  private editaCliente(request: ClienteRequest): void {
+  private editaCliente(request: Cliente): void {
     this._peticiones.putPeticion(this.URL_CLIENTES, request).subscribe({
       next: (response: string) => {
         this.resetForm();
@@ -141,12 +147,12 @@ export class AltaClienteComponent implements OnInit {
  public modificarCliente(cliente: ClienteResponse): void {
 
   //  const clienteFinded = this.clientes.find((cliente: ClienteResponse) => idCliente === cliente.idCliente);
-   const clienteRequest: ClienteRequest = {
+   const clienteRequest: Cliente = {
     idCliente : cliente.idCliente,
     nombre    : cliente.nombre,
     primerApellido  : cliente.primerApellido,
     segundoApellido : cliente.segundoApellido,
-    telefono    : cliente.telefono,
+    telefono  : cliente.telefono,
     estado    : cliente.estado,
     municipio : cliente.municipio,
    }

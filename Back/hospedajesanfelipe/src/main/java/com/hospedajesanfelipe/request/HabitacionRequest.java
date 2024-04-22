@@ -19,8 +19,6 @@ public class HabitacionRequest implements Serializable {
     private Long piso;
 	private Long estado;
 	
-	
-	
 	public int getNoMaxExtras() {
 		return noMaxExtras;
 	}

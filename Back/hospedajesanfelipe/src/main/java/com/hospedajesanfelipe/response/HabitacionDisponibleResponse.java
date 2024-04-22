@@ -1,6 +1,7 @@
 package com.hospedajesanfelipe.response;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.hospedajesanfelipe.entity.CatServicioEntity;
@@ -13,6 +14,10 @@ public class HabitacionDisponibleResponse implements Serializable {
 	private String noHabitacion;
 	private int noOcupante;
 	private int noMaxOcupante;
+	private int noMaxExtras;
+	private int noCamasIndividuales;
+	private int noCamasMatrimoniales;
+	private BigDecimal costo;
 	private String piso;
 	private List<CatServicioEntity> servicios;
 	
@@ -39,6 +44,30 @@ public class HabitacionDisponibleResponse implements Serializable {
 	}
 	public void setNoMaxOcupante(int noMaxOcupante) {
 		this.noMaxOcupante = noMaxOcupante;
+	}
+	public int getNoMaxExtras() {
+		return noMaxExtras;
+	}
+	public void setNoMaxExtras(int noMaxExtras) {
+		this.noMaxExtras = noMaxExtras;
+	}
+	public int getNoCamasIndividuales() {
+		return noCamasIndividuales;
+	}
+	public void setNoCamasIndividuales(int noCamasIndividuales) {
+		this.noCamasIndividuales = noCamasIndividuales;
+	}
+	public int getNoCamasMatrimoniales() {
+		return noCamasMatrimoniales;
+	}
+	public void setNoCamasMatrimoniales(int noCamasMatrimoniales) {
+		this.noCamasMatrimoniales = noCamasMatrimoniales;
+	}
+	public BigDecimal getCosto() {
+		return costo;
+	}
+	public void setCosto(BigDecimal costo) {
+		this.costo = costo;
 	}
 	public String getPiso() {
 		return piso;
