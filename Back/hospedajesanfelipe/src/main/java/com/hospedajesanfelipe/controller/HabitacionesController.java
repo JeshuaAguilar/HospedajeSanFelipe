@@ -52,7 +52,7 @@ public class HabitacionesController {
 	        @PathVariable("fechaSalida") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaSalida) {
 		return habitacionesService.getAllHabitacionesDisponibles(fechaEntrada, fechaSalida);
 	}
-	
+
 	@GetMapping("/{idHabitacion}")
 	public HabitacionEntity getHabitacionById(@PathVariable Long idHabitacion) {
 		return habitacionesService.getHabitacionById(idHabitacion);

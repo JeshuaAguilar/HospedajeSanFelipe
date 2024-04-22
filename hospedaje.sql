@@ -205,23 +205,12 @@ CREATE TABLE IF NOT EXISTS reservaciones (
   ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS reservaciones_habitaciones (
-  id_reservacion INT UNSIGNED NOT NULL,
-  id_habitacion INT UNSIGNED NOT NULL,
-  PRIMARY KEY (id_reservacion, id_habitacion),
-  FOREIGN KEY (id_reservacion) REFERENCES reservaciones(id_reservacion)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE,
-  FOREIGN KEY (id_habitacion) REFERENCES habitaciones(id_habitacion)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE
-) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS reservaciones_habitaciones (
   id_reservacion INT UNSIGNED NOT NULL,
   id_habitacion INT UNSIGNED NOT NULL,
-  no_personas INT UNSIGNED NOT NULL,  -- Número de personas en esta habitación específica
-  no_personas_extra INT UNSIGNED NULL,  -- Número de personas extras en esta habitación específica
+  no_personas INT UNSIGNED NOT NULL,
+  no_personas_extra INT UNSIGNED NULL,
   PRIMARY KEY (id_reservacion, id_habitacion),
   FOREIGN KEY (id_reservacion) REFERENCES reservaciones(id_reservacion)
     ON DELETE CASCADE
@@ -229,6 +218,18 @@ CREATE TABLE IF NOT EXISTS reservaciones_habitaciones (
   FOREIGN KEY (id_habitacion) REFERENCES habitaciones(id_habitacion)
     ON DELETE CASCADE
     ON UPDATE CASCADE
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS habitaciones_servicios (
+  id_habitacion_servicio INT UNSIGNED NOT NULL,  
+  id_servicio INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_habitacion_servicio, id_servicio),
+  FOREIGN KEY (id_habitacion_servicio) REFERENCES habitaciones(id_habitacion)
+  ON DELETE CASCADE
+  ON UPDATE cascade,
+  FOREIGN KEY (id_servicio) REFERENCES cat_servicios(id_servicio)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE 
 ) ENGINE = InnoDB;
 
 insert into habitaciones_servicios(id_habitacion_servicio, id_servicio) values (1, 1);

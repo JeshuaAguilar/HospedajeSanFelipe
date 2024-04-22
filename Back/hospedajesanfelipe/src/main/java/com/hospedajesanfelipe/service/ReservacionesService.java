@@ -10,6 +10,6 @@ public interface ReservacionesService {
 	public List<ReservacionResponse> getAllReservaciones();
 	public ReservacionEntity getReservacion(Long idReservacion);
 	public ReservacionResponse saveReservaciones(ReservacionRequest reservacion);
-	public ReservacionEntity updateReservaciones(ReservacionRequest reservacion);
+	public ReservacionResponse updateReservaciones(ReservacionRequest reservacionRequest);
 	public void deleteReservaciones(Long idReservacion);
 }

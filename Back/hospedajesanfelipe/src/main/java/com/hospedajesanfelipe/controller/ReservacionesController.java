@@ -3,6 +3,8 @@ package com.hospedajesanfelipe.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,12 +42,13 @@ public class ReservacionesController {
 	}
 	
 	@PutMapping()
-	public ReservacionEntity updateReservacion(@RequestBody ReservacionRequest reservacion) {
+	public ReservacionResponse updateReservacion(@RequestBody ReservacionRequest reservacion) {
 		return reservacionesService.updateReservaciones(reservacion);
 	}
 	
 	@DeleteMapping("/{idReservacion}")
-	public void deleteReservacion(@PathVariable("idReservacion") Long idReservacion) {
+	public ResponseEntity<String> deleteReservacion(@PathVariable("idReservacion") Long idReservacion) {
 		reservacionesService.deleteReservaciones(idReservacion);
+		return ResponseEntity.status(HttpStatus.OK).body("La reservación se ha eliminado exitosamente");
 	}
 }

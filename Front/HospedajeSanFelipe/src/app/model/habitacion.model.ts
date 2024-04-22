@@ -4,12 +4,12 @@ import { CatServicios } from "./servicios.model";
 export class Habitacion {
   idHabitacion : number;
   noHabitacion : string;
-  noOcupante  : number;
+  noOcupantes  : number;
   noMaxOcupantes: number;
   noCamasIndividuales  : number;
   noCamasMatrimoniales: number;
   noMaxExtras         : number;
-  costo         : number;
+  costo        : number;
   piso         : CatPiso;
   estado       : CatEstadoHabitacion;
   urlFoto      : string;

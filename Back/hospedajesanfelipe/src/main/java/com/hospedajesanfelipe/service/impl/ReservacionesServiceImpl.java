@@ -20,9 +20,10 @@ import com.hospedajesanfelipe.request.EmpleadoRequest;
 import com.hospedajesanfelipe.request.ReservacionRequest;
 import com.hospedajesanfelipe.response.ReservacionResponse;
 import com.hospedajesanfelipe.service.ReservacionesService;
+import com.hospedajesanfelipe.vo.ReservacionHabitacionIdVO;
 
 @Service
-public class ReservacionesServiceImpl implements ReservacionesService{
+public class ReservacionesServiceImpl implements ReservacionesService {
 	
 	@Autowired
 	ReservacionesDao reservacionesDao;
@@ -73,17 +74,35 @@ public class ReservacionesServiceImpl implements ReservacionesService{
 	}
 	
 	@Override
-	public ReservacionEntity updateReservaciones(ReservacionRequest reservacion) {
-		ReservacionEntity reservacionEntity = mapRequestReservacion(reservacion);
-		return reservacionesDao.updateReservaciones(reservacionEntity);
+	public ReservacionResponse updateReservaciones(ReservacionRequest reservacionRequest) {
+		ReservacionEntity reservacionEntity = mapRequestReservacion(reservacionRequest);
+		ReservacionEntity reservacionSaved = reservacionesDao.saveReservaciones(reservacionEntity);
+		
+		List<ReservacionHabitacionEntity> rhsActual = reservacionesDao.getAllReservacionHabitacion(reservacionSaved.getIdReservacion());
+		List<ReservacionHabitacionEntity> rhsNew = reservacionHabitacionMapper(reservacionSaved.getIdReservacion(), reservacionRequest.getHabitaciones());
+		
+		List<ReservacionHabitacionEntity> rhsUpdate = reservacionHabitacionEditMapper(rhsActual, rhsNew);
+		
+		
+		List<ReservacionHabitacionEntity> rhsUpdated = reservacionesDao.updateReservacionHabitacion(rhsUpdate);
+		
+		ReservacionResponse response = reservacionResponseMap(reservacionSaved);
+		response.setRhs(rhsUpdated);
+		return response;
 	}
 	
 	@Override
 	public void deleteReservaciones(Long idReservacion) {
 		reservacionesDao.deleteReservaciones(idReservacion);
+		ReservacionHabitacionIdVO rhv = new ReservacionHabitacionIdVO();
+		
+		rhv.setReservacion(idReservacion);
+		
+		reservacionesDao.deleteReservacionHabitacionEntity(rhv);
 	}
 	
 	private ReservacionEntity mapRequestReservacion(ReservacionRequest reservacion) {
+		
 		ReservacionEntity entity = null;
 		if (reservacion.getIdReservacion() != null && reservacion.getIdReservacion() > 0) {
 			entity = getReservacion(reservacion.getIdReservacion());
@@ -115,6 +134,7 @@ public class ReservacionesServiceImpl implements ReservacionesService{
 		
 		return entity;
 	}
+
 	
 	private List<ReservacionHabitacionEntity> reservacionHabitacionMapper(Long idReservacion, List<HabitacionEntity> habitaciones) {
 		List<ReservacionHabitacionEntity> rhs = new ArrayList<ReservacionHabitacionEntity>();
@@ -134,6 +154,20 @@ public class ReservacionesServiceImpl implements ReservacionesService{
 		}
 		
 		return rhs;
+	}
+
+	private List<ReservacionHabitacionEntity> reservacionHabitacionEditMapper(List<ReservacionHabitacionEntity> existingHabitaciones, List<ReservacionHabitacionEntity> updatedHabitaciones) {
+		for (ReservacionHabitacionEntity updated : updatedHabitaciones) {
+            for (ReservacionHabitacionEntity existing : existingHabitaciones) {
+                if (existing.getHabitacion().getIdHabitacion().equals(updated.getHabitacion().getIdHabitacion())) {
+                    existing.setNoPersonas(updated.getNoPersonas());
+                    existing.setNoPersonasExtra(updated.getNoPersonasExtra());
+                    // actualizar otros campos si es necesario
+                }
+            }
+        }
+		
+		return existingHabitaciones;
 	}
 	
 	private ReservacionResponse reservacionResponseMap(ReservacionEntity reservacionEntity) {

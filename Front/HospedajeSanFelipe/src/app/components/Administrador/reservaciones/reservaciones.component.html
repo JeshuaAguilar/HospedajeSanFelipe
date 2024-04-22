@@ -1,228 +1,256 @@
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" (click)="resetReservacion()">Agregar</button>
 
-<div class="card">
-  <div class="card-header text-center">
-    Reservaciones
-  </div>
-  <div class="card-body">
-    <div class="table-container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Estado</th>
-          <th scope="col">Cliente</th>
-          <th scope="col">Empleado</th>
-          <th scope="col">No personas</th>
-          <th scope="col">No personas ext</th>
-          <th scope="col">Entrada</th>
-          <th scope="col">Salida</th>
-          <th scope="col">Total</th>
-          <th scope="col">Precio especial</th>
-          <th scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (reservacion of reservaciones; track $index) {
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" (click)="resetReservacion()">Agregar</button>
+  <div class="card">
+    <div class="card-header text-center">
+      Reservaciones
+    </div>
+    <div class="card-body">
+      <div class="table-container">
+      <table class="table">
+        <thead>
           <tr>
-            <th scope="row">{{reservacion.idReservacion}}</th>
-            <td>{{reservacion.estado}}</td>
-            <td>{{reservacion.cliente.nombre + " " + reservacion.cliente.primerApellido}}</td>
-            <td>{{reservacion.empleado.nombre + " " + reservacion.empleado.primerApellido}}</td>
-            <td>{{reservacion.noPersonas}}</td>
-            <td>{{reservacion.noPersonaExtra}}</td>
-            <td>{{reservacion.fechaEntrada | date: 'dd/MM/yyyy'}}</td>
-            <td>{{reservacion.fechaSalida | date: 'dd/MM/yyyy'}}</td>
-            <td>{{reservacion.total | currency}}</td>
-            <td>{{reservacion.precioEspecial ? reservacion.precioEspecial.descripcion:''}}</td>
-            <td>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" (click)="editarReservacion(reservacion)">Editar</button>
-              <button type="button" class="btn btn-danger">Eliminar</button>
-            </td>
+            <th scope="col">ID</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Cliente</th>
+            <th scope="col">Empleado</th>
+            <th scope="col">No personas</th>
+            <th scope="col">No personas ext</th>
+            <th scope="col">Entrada</th>
+            <th scope="col">Salida</th>
+            <th scope="col">Total</th>
+            <th scope="col">Precio especial</th>
+            <th scope="col">Acciones</th>
           </tr>
-        }@empty {
-          <tr class="text-center">
-            <td colspan="11">No hay ninguna reservación por el momento</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-   </div>
+        </thead>
+        <tbody>
+          @for (reservacion of reservaciones; track $index) {
+            <tr>
+              <th scope="row">{{reservacion.idReservacion}}</th>
+              <td>{{reservacion.estado}}</td>
+              <td>{{reservacion.cliente.nombre + " " + reservacion.cliente.primerApellido}}</td>
+              <td>{{reservacion.empleado.nombre + " " + reservacion.empleado.primerApellido}}</td>
+              <td>{{reservacion.noPersonas}}</td>
+              <td>{{reservacion.noPersonaExtra}}</td>
+              <td>{{reservacion.fechaEntrada | date: 'dd/MM/yyyy'}}</td>
+              <td>{{reservacion.fechaSalida | date: 'dd/MM/yyyy'}}</td>
+              <td>{{reservacion.total | currency}}</td>
+              <td>{{reservacion.precioEspecial ? reservacion.precioEspecial.descripcion:''}}</td>
+              <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" (click)="editarReservacion(reservacion)">Editar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarReservacion(reservacion.idReservacion)">Eliminar</button>
+              </td>
+            </tr>
+          }@empty {
+            <tr class="text-center">
+              <td colspan="11">No hay ninguna reservación por el momento</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    </div>
+    <div class="card-footer text-center">
+      Hola Administradores
+    </div>
   </div>
-  <div class="card-footer text-center">
-    Hola Administradores
-  </div>
-</div>
-
-<div class="modal fade" id="exampleModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered" [class.modal-xl]="currentStep() !== 0">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Reservaciones</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetReservacion()"></button>
-      </div>
-      <div class="modal-body">
-        <mat-stepper #stepper (selectionChange)="onStepChange($event)">
-          <mat-step >
-            <ng-template matStepLabel>Reservación</ng-template>
-            <div>
-              <!-- <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)" [dateClass]="dateClass" [dateFilter]="myFilter"></mat-calendar> -->
-              <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)"></mat-calendar>
-              <div class="row">
-                <div class="col">
-                  <fieldset class="card p-2 pt-1 shadow-sm alto-fechas">
-                    <legend class="float-none w-auto px-1 fs-7">Fecha de entrada</legend>
-                    <span class="fs-7">{{selectedRangeValue?.start | date: 'fullDate'}}</span>
-                  </fieldset>
-                </div>
-                <div class="col">
-                  <fieldset class="card p-2 pt-1 shadow-sm alto-fechas">
-                    <legend class="float-none w-auto px-1 fs-7">Fecha de salida</legend>
-                    <span class="fs-7">{{selectedRangeValue?.end | date: 'fullDate'}}</span>
-                  </fieldset>
+@if (isLoadedReservaciones()) {
+  <div class="modal fade" id="exampleModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" [class.modal-xl]="currentStep() !== 0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Reservaciones</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetReservacion()"></button>
+        </div>
+        <div class="modal-body">
+          <mat-stepper #stepper (selectionChange)="onStepChange($event)">
+            <mat-step >
+              <ng-template matStepLabel>Reservación</ng-template>
+              <div>
+                <!-- <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)" [dateClass]="dateClass" [dateFilter]="myFilter"></mat-calendar> -->
+                <mat-calendar class="mb-1" [minDate]="ayer" [selected]="selectedRangeValue" (selectedChange)="selectedChange($event)"></mat-calendar>
+                <div class="row">
+                  <div class="col">
+                    <fieldset class="card p-2 pt-1 shadow-sm alto-fechas">
+                      <legend class="float-none w-auto px-1 fs-7">Fecha de entrada</legend>
+                      <span class="fs-7">{{selectedRangeValue?.start | date: 'fullDate'}}</span>
+                    </fieldset>
+                  </div>
+                  <div class="col">
+                    <fieldset class="card p-2 pt-1 shadow-sm alto-fechas">
+                      <legend class="float-none w-auto px-1 fs-7">Fecha de salida</legend>
+                      <span class="fs-7">{{selectedRangeValue?.end | date: 'fullDate'}}</span>
+                    </fieldset>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="mt-3">
-              <button type="button" class="btn btn-success" matStepperNext (click)="getAllHabitacionesDisponibles()">Siguiente</button>
-            </div>
-          </mat-step>
-          <mat-step>
-            <ng-template matStepLabel>Habitaciones disponibles</ng-template>
-            <div data-simplebar class="body-habitaciones p-2  my-3">
-              <div class="row row-cols-2 row-cols-xl-4">
-                @for (habitacion of habitaciones(); track $index) {
-                  <div class="col">
-                    <div class="card px-3 mb-2 shadow-sm" [class.border-success]="habitacion.isSelected == true" id="cardHabitacion" (click)="habitacionSelected.set(habitacion)" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
-                      <div class="row align-items-center">
-                        <div class="col-3 fs-3 text-center">
-                          {{habitacion.noHabitacion}}
-                        </div>
-                        <div class="col-9">
-                          <div class="div fs-4">
-                            <span class="fw-medium">{{habitacion.costo| currency}}</span>
+              <div class="mt-3">
+                <button type="button" class="btn btn-success" matStepperNext (click)="getAllHabitacionesDisponibles()">Siguiente</button>
+              </div>
+              {{reservacion | json}}
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>Habitaciones disponibles</ng-template>
+              <div data-simplebar class="body-habitaciones p-2  my-3">
+                <div class="row row-cols-2 row-cols-xl-4">
+                  @for (habitacion of habitaciones(); track $index) {
+                    <div class="col">
+                      <div class="card px-3 mb-2 shadow-sm" [class.border-success]="habitacion.isSelected == true" id="cardHabitacion" (click)="habitacionSelected.set(habitacion)" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
+                        <div class="row align-items-center">
+                          <div class="col-3 fs-3 text-center">
+                            {{habitacion.noHabitacion}}
                           </div>
-                          <div class="div fs-6">
-                            <span class="fw-medium">{{habitacion.piso}}</span><!-- <span class="ms-4 text-body-secondary">Contacto: </span> <span class="fw-medium">{{''}}</span> -->
+                          <div class="col-9">
+                            <div class="div fs-4">
+                              <span class="fw-medium">{{habitacion.costo| currency}}</span>
+                            </div>
+                            <div class="div fs-6">
+                              <span class="fw-medium">{{habitacion.piso}}</span><!-- <span class="ms-4 text-body-secondary">Contacto: </span> <span class="fw-medium">{{''}}</span> -->
+                            </div>
                           </div>
+                          <!-- <div class="col-1 text-start">
+                            <input class="form-check-input me-1" type="checkbox" id="firstCheckbox" for="cardHabitacion" (click)="isSelected(habitacion.idHabitacion, $event)" [(ngModel)]="habitacion.isSelected" (click)="$event.stopPropagation()">
+                          </div> -->
                         </div>
-                        <!-- <div class="col-1 text-start">
-                          <input class="form-check-input me-1" type="checkbox" id="firstCheckbox" for="cardHabitacion" (click)="isSelected(habitacion.idHabitacion, $event)" [(ngModel)]="habitacion.isSelected" (click)="$event.stopPropagation()">
-                        </div> -->
                       </div>
                     </div>
+                  }@empty {
+                    <p>No hay habitaciones disponibles para las fechas seleccionadas</p>
+                  }
+                </div>
+                {{habitaciones() | json}}
+                <div class="row mt-3">
+                  <div class="col text-start">
+                    <button type="button" class="btn btn-success" matStepperPrevious>Atrás</button>
                   </div>
-                }@empty {
-                  <p>No hay habitaciones disponibles para las fechas seleccionadas</p>
-                }
+                  <div class="col text-end">
+                    <button type="button" class="btn btn-success" matStepperNext (click)="defineFormBusquedaCliente()">Siguiente</button>
+                  </div>
+                </div>
               </div>
-              <div class="row mt-3">
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>Datos del cliente</ng-template>
+              <div class="mb-3">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" [ngModel]="isClienteNuevo()" (ngModelChange)="isClienteNuevo.set($event)" [ngModelOptions]="{standalone: true}" [disabled]="clienteNuevo !== undefined">
+                  <label class="form-check-label" for="flexSwitchCheckDefault">Es cliente nuevo</label>
+                </div>
+              </div>
+              @if (isClienteNuevo()) {
+                <app-alta-cliente [isReservacion] = "true" (exitoCliente)="creaNuevoCliente($event)" #altaCliente/>
+                <div class="row">
+                  <div class="col text-end">
+                    <button  type="button" class="btn btn-primary" (click)="altaCliente.validaFormCliente()" [disabled]="clienteNuevo !== undefined">Agregar cliente</button>
+                  </div>
+                </div>
+              }@else {
+                <fieldset class="card shadow-sm">
+                  <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Buscar cliente</legend>
+                  <div class="card-body">
+                    <form [formGroup]="busquedaForm">
+                      <div class="row">
+                        <div class="col mb-3">
+                          <div class="form-floating-label">
+                            <input type="text" class="form-control" [class.is-valid]="isValid('nombre')" [class.is-invalid]="isFieldInvalid('nombre')"  id="nombre" formControlName="nombre" placeholder="">
+                            <label for="nombre">Nombre</label>
+                          </div>
+                          @if (isFieldInvalid('nombre')) {
+                            <small class="text-danger">
+                              Ingrese un nombre
+                            </small>
+                          }
+                        </div>
+                        <div class="col mb-3">
+                          <div class="form-floating-label">
+                            <input type="text" class="form-control" [class.is-valid]="isValid('primerAp')" [class.is-invalid]="isFieldInvalid('primerAp')"  id="primerAp" formControlName="primerAp" placeholder="">
+                            <label for="primerAp">Primer apellido</label>
+                          </div>
+                          @if (isFieldInvalid('primerAp')) {
+                            <small class="text-danger">
+                              Ingrese un apellido
+                            </small>
+                          }
+                        </div>
+                      </div>
+                    </form>
+
+                  </div>
+                </fieldset>
+                <button type="button" class="btn btn-primary w-100 my-3" (click)="validaFormBusqueda()">Buscar</button>
+                <div data-simplebar class="body-habitaciones p-2  my-3">
+                  @for (cliente of clientes(); track $index) {
+                    <div class="card px-3 mb-2 shadow-sm" (click)="agregaCliente(cliente)">
+                      <div class="row align-items-center py-2">
+                        <div class="col-2 fs-3 text-center">
+                          {{cliente.idCliente}}
+                        </div>
+                        <div class="col-9">
+                          <div class="div fs-5">
+                            <span class="text-body-secondary mb-2">Nombre: </span> <span class="fw-medium">{{cliente.nombre + ' ' + cliente.primerApellido + ' ' + cliente.segundoApellido}}</span>
+                          </div>
+                          <div class="div fs-7">
+                            <span class="text-body-secondary">Origen: </span> <span class="fw-medium">{{cliente.municipio + ', ' + cliente.estado}}</span> <span class="ms-4 text-body-secondary">Contacto: </span> <span class="fw-medium">{{cliente.telefono}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }@empty {
+                    <p>No se encontraron clientes con los datos de búsqueda proporcionados</p>
+                  }
+                </div>
+              }
+              <div class="row mt-5">
                 <div class="col text-start">
                   <button type="button" class="btn btn-success" matStepperPrevious>Atrás</button>
                 </div>
                 <div class="col text-end">
-                  <button type="button" class="btn btn-success" matStepperNext (click)="defineFormBusquedaCliente()">Siguiente</button>
+                  <button type="button" class="btn btn-success" matStepperNext>Siguiente</button>
                 </div>
               </div>
-            </div>
-          </mat-step>
-          <mat-step>
-            <ng-template matStepLabel>Datos del cliente</ng-template>
-            <div class="mb-3">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" [ngModel]="isClienteNuevo()" (ngModelChange)="isClienteNuevo.set($event)" [ngModelOptions]="{standalone: true}" [disabled]="clienteNuevo !== undefined">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Es cliente nuevo</label>
-              </div>
-            </div>
-            @if (isClienteNuevo()) {
-              <app-alta-cliente [isReservacion] = "true" (exitoCliente)="creaNuevoCliente($event)" #altaCliente/>
-              <div class="row">
-                <div class="col text-end">
-                  <button  type="button" class="btn btn-primary" (click)="altaCliente.validaFormCliente()" [disabled]="clienteNuevo !== undefined">Agregar cliente</button>
-                </div>
-              </div>
-            }@else {
-              <fieldset class="card shadow-sm">
-                <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Buscar cliente</legend>
-                <div class="card-body">
-                  <form [formGroup]="busquedaForm">
-                    <div class="row">
-                      <div class="col mb-3">
-                        <div class="form-floating-label">
-                          <input type="text" class="form-control" [class.is-valid]="isValid('nombre')" [class.is-invalid]="isFieldInvalid('nombre')"  id="nombre" formControlName="nombre" placeholder="">
-                          <label for="nombre">Nombre</label>
-                        </div>
-                        @if (isFieldInvalid('nombre')) {
-                          <small class="text-danger">
-                            Ingrese un nombre
-                          </small>
-                        }
-                      </div>
-                      <div class="col mb-3">
-                        <div class="form-floating-label">
-                          <input type="text" class="form-control" [class.is-valid]="isValid('primerAp')" [class.is-invalid]="isFieldInvalid('primerAp')"  id="primerAp" formControlName="primerAp" placeholder="">
-                          <label for="primerAp">Primer apellido</label>
-                        </div>
-                        @if (isFieldInvalid('primerAp')) {
-                          <small class="text-danger">
-                            Ingrese un apellido
-                          </small>
-                        }
-                      </div>
-                    </div>
-                  </form>
-
-                </div>
-              </fieldset>
-              <button type="button" class="btn btn-primary w-100 my-3" (click)="validaFormBusqueda()">Buscar</button>
+            </mat-step>
+            <mat-step>
               <div data-simplebar class="body-habitaciones p-2  my-3">
-                @for (cliente of clientes(); track $index) {
-                  <div class="card px-3 mb-2 shadow-sm" (click)="agregaCliente(cliente)">
-                    <div class="row align-items-center py-2">
-                      <div class="col-2 fs-3 text-center">
-                        {{cliente.idCliente}}
-                      </div>
-                      <div class="col-9">
-                        <div class="div fs-5">
-                          <span class="text-body-secondary mb-2">Nombre: </span> <span class="fw-medium">{{cliente.nombre + ' ' + cliente.primerApellido + ' ' + cliente.segundoApellido}}</span>
+                <ng-template matStepLabel>Resumen de reservación</ng-template>
+                <div class="row row-cols-1 row-cols-xl-2">
+                  <div class="col">
+                    <fieldset class="card shadow-sm px-3 pb-3">
+                      <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Datos del cliente</legend>
+                      @if (reservacion.cliente) {
+                        <div class="row row-cols-2 fs-7">
+                          <div class="col-3 text-body-secondary">Nombre:</div>
+                          <div class="col-9">{{reservacion.cliente.nombre + ' ' + reservacion.cliente.primerApellido + ' ' + reservacion.cliente.segundoApellido}}</div>
+                          <div class="col-3 text-body-secondary">Teléfono:</div>
+                          <div class="col-9">{{reservacion.cliente.telefono}}</div>
+                          <div class="col-3 text-body-secondary">Origen:</div>
+                          <div class="col-9">{{reservacion.cliente.municipio + ', ' + reservacion.cliente.estado}}</div>
                         </div>
-                        <div class="div fs-7">
-                          <span class="text-body-secondary">Origen: </span> <span class="fw-medium">{{cliente.municipio + ', ' + cliente.estado}}</span> <span class="ms-4 text-body-secondary">Contacto: </span> <span class="fw-medium">{{cliente.telefono}}</span>
-                        </div>
-                      </div>
-                    </div>
+                      }
+                    </fieldset>
                   </div>
-                }@empty {
-                  <p>No se encontraron clientes con los datos de búsqueda proporcionados</p>
-                }
-              </div>
-            }
-            <div class="row mt-5">
-              <div class="col text-start">
-                <button type="button" class="btn btn-success" matStepperPrevious>Atrás</button>
-              </div>
-              <div class="col text-end">
-                <button type="button" class="btn btn-success" matStepperNext>Siguiente</button>
-              </div>
-            </div>
-          </mat-step>
-          <mat-step>
-            <div data-simplebar class="body-habitaciones p-2  my-3">
-              <ng-template matStepLabel>Resumen de reservación</ng-template>
-              <div class="row row-cols-1 row-cols-xl-2">
-                <div class="col">
-                  <fieldset class="card shadow-sm px-3 pb-3">
-                    <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Datos del cliente</legend>
-                    @if (reservacion.cliente) {
+                  <div class="col">
+                    <fieldset class="card shadow-sm px-3 pb-3">
+                      <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Datos del vendedor</legend>
+                      @if (reservacion.empleado) {
+                        <div class="row row-cols-2 fs-7">
+                          <div class="col-3 text-body-secondary">ID:</div>
+                          <div class="col-9">{{reservacion.empleado.idEmpleado}}</div>
+                          <div class="col-3 text-body-secondary">Nombre:</div>
+                          <div class="col-9">{{reservacion.empleado.nombre}}</div>
+                          <div class="col-3 text-body-secondary">&nbsp;</div>
+                          <div class="col-9">&nbsp;</div>
+                        </div>
+                      }
+                    </fieldset>
+                  </div>
+                  <div class="col">
+                    <fieldset class="card shadow-sm px-3 pb-3">
+                      <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Datos de la reservacón</legend>
                       <div class="row row-cols-2 fs-7">
-                        <div class="col-3 text-body-secondary">Nombre:</div>
-                        <div class="col-9">{{reservacion.cliente.nombre + ' ' + reservacion.cliente.primerApellido + ' ' + reservacion.cliente.segundoApellido}}</div>
-                        <div class="col-3 text-body-secondary">Teléfono:</div>
-                        <div class="col-9">{{reservacion.cliente.telefono}}</div>
-                        <div class="col-3 text-body-secondary">Origen:</div>
-                        <div class="col-9">{{reservacion.cliente.municipio + ', ' + reservacion.cliente.estado}}</div>
+                        <div class="col-4 text-body-secondary">Fecha de entrada:</div>
+                        <div class="col-8">{{reservacion.fechaEntrada | date: 'fullDate'}}</div>
+                        <div class="col-4 text-body-secondary">Fecha de salida:</div>
+                        <div class="col-8">{{reservacion.fechaSalida | date: 'fullDate'}}</div>
                       </div>
-                    }
                   </fieldset>
                 </div>
                 <div class="col">
@@ -264,107 +292,121 @@
                                     <span class="text-body-secondary">Número de personas:</span>
                                   </div>
                                   <div class="col-6">
-                                    <span class="fw-medium">{{habitacion.noOcupante}}</span>
+                                    <span class="fw-medium">{{habitacion.noOcupantes}}</span>
                                   </div>
                                 </div>
-                                <div class="row row-cols-2 fs-7">
-                                  <div class="col col-6">
-                                    <span class="text-body-secondary">Personas extra:</span>
+                                <div class="col-9">
+                                  <div class="row row-cols-2 fs-7">
+                                    <div class="col col-6">
+                                      <span class="text-body-secondary">Número de personas:</span>
+                                    </div>
+                                    <div class="col-6">
+                                      <span class="fw-medium">{{habitacion.noOcupantes}}</span>
+                                    </div>
                                   </div>
-                                  <div class="col-6">
-                                    <span class="fw-medium">{{habitacion.noMaxExtras}}</span>
+                                  <div class="row row-cols-2 fs-7">
+                                    <div class="col col-6">
+                                      <span class="text-body-secondary">Personas extra:</span>
+                                    </div>
+                                    <div class="col-6">
+                                      <span class="fw-medium">{{habitacion.noMaxExtras}}</span>
+                                    </div>
                                   </div>
-                                </div>
 
+                                </div>
                               </div>
                             </div>
                           </div>
                         }
                       </div>
                     </div>
+                    </fieldset>
+                  </div>
+                  <div class="col">
+                    <fieldset class="card shadow-sm px-3 pb-3">
+                      <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Datos de Pago</legend>
 
-                  </fieldset>
-                </div>
-                <div class="col">
-                  <fieldset class="card shadow-sm px-3 pb-3">
-                    <legend class="float-none w-auto px-1 ms-3 fs-6 fw-semibold">Datos de Pago</legend>
+                      <div class="row row-cols-2 fs-7">
+                        <div class="col-9 text-body-secondary">Habitaciones X{{reservacion.habitaciones ? reservacion.habitaciones.length : 0}} :</div>
+                        <div class="col-3">{{getSubtotal(reservacion.habitaciones) | currency}}</div>
+                      </div>
+                      <hr>
+                      <div class="row row-cols-2 fs-7 mb-2">
+                        <div class="col-9 text-body-secondary">Subtotal:</div>
+                        <div class="col-3">{{getSubtotal(reservacion.habitaciones) | currency}}</div>
+                      </div>
+                      <div class="row row-cols-2 fs-7 mb-2">
+                        <div class="col-9 text-body-secondary">Personas extras X{{getPersonasExtras(reservacion.habitaciones)}}:</div>
+                        <div class="col-3">{{getPersonasExtrasTotal(reservacion.habitaciones) | currency}}</div>
+                      </div>
+                      <div class="row row-cols-2 fs-6 mb-2">
+                        <div class="col-9 text-body-secondary">Total:</div>
+                        <div class="col-3 fw-semibold">{{getTotal(reservacion.habitaciones) | currency}}</div>
+                      </div>
 
-                    <div class="row row-cols-2 fs-7">
-                      <div class="col-9 text-body-secondary">Habitaciones X{{reservacion.habitaciones ? reservacion.habitaciones.length : 0}} :</div>
-                      <div class="col-3">{{getSubtotal(reservacion.habitaciones) | currency}}</div>
-                    </div>
-                    <hr>
-                    <div class="row row-cols-2 fs-7 mb-2">
-                      <div class="col-9 text-body-secondary">Subtotal:</div>
-                      <div class="col-3">{{getSubtotal(reservacion.habitaciones) | currency}}</div>
-                    </div>
-                    <div class="row row-cols-2 fs-7 mb-2">
-                      <div class="col-9 text-body-secondary">Personas extras X{{getPersonasExtras(reservacion.habitaciones)}}:</div>
-                      <div class="col-3">{{getPersonasExtrasTotal(reservacion.habitaciones) | currency}}</div>
-                    </div>
-                    <div class="row row-cols-2 fs-6 mb-2">
-                      <div class="col-9 text-body-secondary">Total:</div>
-                      <div class="col-3 fw-semibold">{{getTotal(reservacion.habitaciones) | currency}}</div>
-                    </div>
-
-
-                  </fieldset>
+                    </fieldset>
+                  </div>
                 </div>
               </div>
-            </div>
-          </mat-step>
-        </mat-stepper>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetReservacion()">Cerrar</button>
-        <button type="button" class="btn btn-primary" (click)="creaReservacion()">Crear</button>
+              {{reservacion | json}}
+            </mat-step>
+          </mat-stepper>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetReservacion()">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="creaReservacion()">{{isEditing() ? 'Modificar' : 'Crear'}}</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="modal fade" id="exampleModalToggle2" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Habitación {{habitacionSelected().noHabitacion}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div>
-          <span>Costo: </span><span>{{habitacionSelected().costo}}</span>
+  <div class="modal fade" id="exampleModalToggle2" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Habitación {{habitacionSelected().noHabitacion}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div>
-          Número de ocupantes: {{reservacion.noPersonas}}
-        </div>
-        <input type="range" class="form-range" min="0" [max]="habitacionSelected().noMaxOcupante" step="1" id="customRange1" value="0" (input)="ocupantes($event)">
-        <div>
-          Número de ocupantes extra: {{reservacion.noPersonaExtra}}
-        </div>
-        <input type="range" class="form-range" min="0" [max]="habitacionSelected().noMaxExtras" step="1" id="customRange2" value="0" (input)="ocupantesExtra($event)">
-        <div>
-          Ocupantes totales: {{+reservacion.noPersonas + +reservacion.noPersonaExtra}}
-        </div>
-        <div>
-          Servicios:
-        </div>
-        <div class="row">
-          @for (servicio of habitacionSelected().servicios; track $index) {
-            <div class="col">
-              <img class="servicios" [src]="'./assets/icons/svg/' + servicio.idServicio + '.svg'" loading="lazy" [alt]="servicio.descripcion">
-            </div>
-          }
-        </div>
+        <div class="modal-body">
+          <div>
+            <span>Costo: </span><span>{{habitacionSelected().costo}}</span>
+          </div>
+          <div>
+            Número de ocupantes: {{reservacion.noPersonas}}
+          </div>
+          <input type="range" class="form-range" min="0" [max]="habitacionSelected().noMaxOcupante" step="1" id="customRange1" value="0" (input)="ocupantes($event)">
+          <div>
+            Número de ocupantes extra: {{reservacion.noPersonaExtra}}
+          </div>
+          <input type="range" class="form-range" min="0" [max]="habitacionSelected().noMaxExtras" step="1" id="customRange2" value="0" (input)="ocupantesExtra($event)">
+          <div>
+            Ocupantes totales: {{+reservacion.noPersonas + +reservacion.noPersonaExtra}}
+          </div>
+          <div>
+            Servicios:
+          </div>
+          <div class="row">
+            @for (servicio of habitacionSelected().servicios; track $index) {
+              <div class="col">
+                <img class="servicios" [src]="'./assets/icons/svg/' + servicio.idServicio + '.svg'" loading="lazy" [alt]="servicio.descripcion">
+              </div>
+            }
+          </div>
 
-      </div>
-      <div class="modal-footer">
-        @for (habitacion of reservacion.habitaciones; track $index) {
-          @if (habitacion.idHabitacion === habitacionSelected().idHabitacion) {
-            <button class="btn btn-danger" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" (click)="quitaHabitacion()">Quitar</button>
+        </div>
+        <div class="modal-footer">
+          @for (habitacion of reservacion.habitaciones; track $index) {
+            @if (habitacion.idHabitacion === habitacionSelected().idHabitacion) {
+              <button class="btn btn-danger" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" (click)="quitaHabitacion()">Quitar</button>
+            }
           }
-        }
-        <button class="btn btn-secondary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Cancelar</button>
-        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" (click)="agregaHabitacion()">Agregar</button>
+          <button class="btn btn-secondary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Cancelar</button>
+          @if (habitacionSelected().isSelected) {
+            <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" (click)="modificaHabitacion()">Modificar</button>
+          }@else {
+            <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" (click)="agregaHabitacion()">Agregar</button>
+          }
+        </div>
       </div>
     </div>
   </div>
-</div>
+}

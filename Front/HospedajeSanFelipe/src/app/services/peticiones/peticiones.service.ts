@@ -70,6 +70,11 @@ export class PeticionesService {
     );
   }
 
+  public async getSyncPeticion(url: string): Promise<any> {
+    const nuevoHeader = this.headerConfigJson();
+    return await this.httpClient.get<any>(url, nuevoHeader).toPromise();
+  }
+
   public postPeticion(url: string, parametros: any, isJsonResponse: boolean): Observable<any> {
     const nuevoHeader = isJsonResponse ? this.headerConfigJson() : this.headerConfigText();
 

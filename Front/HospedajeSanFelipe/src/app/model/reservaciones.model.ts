@@ -15,10 +15,10 @@ export class Reservacion {
   // comentario    : Comentario;
   precioEspecial: CatPrecioEspecial;
   habitaciones  : Habitacion[];
+  rhs           : any;
 }
 
 export class ReservacionRequest {
-  // idReservacion : number;
   fechaEntrada    : Date;
   fechaSalida     : Date;
   noPersonas      : number;
@@ -30,6 +30,7 @@ export class ReservacionRequest {
   idComentario    : number;
   idPrecioEspecial: number;
   habitaciones    : Habitacion[];
+  idReservacion   ?: number;
 }
 
 

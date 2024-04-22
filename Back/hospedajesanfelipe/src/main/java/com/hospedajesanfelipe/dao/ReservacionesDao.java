@@ -13,6 +13,7 @@ import com.hospedajesanfelipe.entity.ReservacionEntity;
 import com.hospedajesanfelipe.entity.ReservacionHabitacionEntity;
 import com.hospedajesanfelipe.repository.ReservacionHabitacionRepository;
 import com.hospedajesanfelipe.repository.ReservacionesRepository;
+import com.hospedajesanfelipe.vo.ReservacionHabitacionIdVO;
 
 
 @Component
@@ -90,11 +91,12 @@ public class ReservacionesDao {
 		return response;
 	}
 	
-	public ReservacionEntity updateReservaciones(ReservacionEntity reservacion) {
-		ReservacionEntity response = null;
+	@Transactional
+	public List<ReservacionHabitacionEntity> updateReservacionHabitacion(List<ReservacionHabitacionEntity> rhs) {
+		List<ReservacionHabitacionEntity> response = null;
 		
 		try {
-			response = reservacionesRepository.save(reservacion);
+			response = rhRepository.saveAll(rhs);
 		} catch (DataAccessException ex) {
 			System.out.println(ex.getMessage() + ex);
 		}
@@ -105,6 +107,14 @@ public class ReservacionesDao {
 	public void deleteReservaciones(Long idReservacion) {
 		try {
 			reservacionesRepository.deleteById(idReservacion);
+		} catch (DataAccessException ex) {
+			System.out.println(ex.getMessage() + ex);
+		}
+	}
+	
+	public void deleteReservacionHabitacionEntity(ReservacionHabitacionIdVO reservacion) {
+		try {
+			rhRepository.deleteById(reservacion);
 		} catch (DataAccessException ex) {
 			System.out.println(ex.getMessage() + ex);
 		}
