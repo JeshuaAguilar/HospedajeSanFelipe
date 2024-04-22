@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { UtilsService } from '../../../services/utils.service';
 import { AlertsService } from '../../../services/alerts.service';
 
-
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -59,6 +58,10 @@ export class LoginComponent implements OnInit {
         console.log(response);
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('user', JSON.stringify(response));
+        const userObject = JSON.parse(sessionStorage.getItem('user') || '{}');
+        // Crear objeto Login
+        const loginObject = new Login(userObject.userName, userObject.password);
+        console.log('Objeto Login:', loginObject);
         this._alertas.toastExito('¡Ha iniciado sesión correctamente!');
         this.redirectHome();
       },
@@ -77,4 +80,9 @@ export class LoginComponent implements OnInit {
   private redirectHome(): void {
     this.router.navigate(["/inicio"]);
   }
+}
+
+// Definir la clase Login
+class Login {
+  constructor(public username: string, public password: string) {}
 }

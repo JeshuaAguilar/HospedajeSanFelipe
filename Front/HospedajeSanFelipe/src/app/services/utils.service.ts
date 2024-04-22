@@ -12,18 +12,26 @@ export class UtilsService {
 
   constructor() { }
 
-  public get isLogged() : boolean {
-    if (sessionStorage.getItem("token")) {
-      return true;
-    } else {
-      return false;
-    }
+  public get isLogged(): boolean {
+    return !!sessionStorage.getItem("token");
   }
 
   public getRolUser(): string {
-    const user:LoginResponse = JSON.parse(sessionStorage.getItem("user"));
+    const user: LoginResponse = JSON.parse(sessionStorage.getItem("user"));
     const rol: CatRol = JSON.parse(`${user.rol}`);
     return rol.tipo;
+  }
+
+  public getUserName(): string {
+    const user: LoginResponse = JSON.parse(sessionStorage.getItem("user"));
+    const firstName: string = this.getFirstName(user.nombre);
+    const rol: string = this.getRolUser();
+    return `Bienvenido, ${rol} ${firstName}`;
+  }
+
+  private getFirstName(fullName: string): string {
+    // Extraer el primer nombre de la cadena del nombre completo
+    return fullName.split(' ')[0];
   }
 
   public cerrarSesion(): void {

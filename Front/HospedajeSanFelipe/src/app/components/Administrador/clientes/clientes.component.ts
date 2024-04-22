@@ -7,6 +7,8 @@ import { Clientes } from '../../../model/constantes';
 import { ClienteResponse } from '../../../model/cliente.model';
 import { AltaClienteComponent } from '../alta-cliente/alta-cliente.component';
 
+
+
 declare const bootstrap: any;
 
 @Component({
@@ -17,6 +19,8 @@ declare const bootstrap: any;
   styleUrl: './clientes.component.css'
 })
 export class ClientesComponent implements OnInit {
+
+
 
   private readonly URL_CLIENTES = `${environment.apiHost}${Clientes.CLIENTES}`;
 

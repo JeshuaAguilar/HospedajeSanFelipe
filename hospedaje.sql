@@ -111,8 +111,10 @@ CREATE TABLE IF NOT EXISTS habitaciones (
   no_camas_individuales INT UNSIGNED NOT NULL,
   no_camas_matrimoniales INT UNSIGNED NOT NULL,
   costo DECIMAL(10,2) UNSIGNED NOT NULL,
+  noMaxExtras INT UNSIGNED NOT NULL,
   fk_piso INT UNSIGNED NOT NULL,
   fk_estado INT UNSIGNED NOT NULL,
+  url VARCHAR(500) NOT NULL,
   url_foto VARCHAR(255) NOT NULL,
   PRIMARY KEY (id_habitacion),
   FOREIGN KEY (fk_piso) REFERENCES cat_pisos(id_piso)
@@ -123,12 +125,13 @@ CREATE TABLE IF NOT EXISTS habitaciones (
   ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
-INSERT INTO habitaciones (no_habitacion, no_ocupantes, no_max_ocupantes, no_camas_individuales, no_camas_matrimoniales, costo, fk_piso, fk_estado, url_foto)
+
+INSERT INTO habitaciones (no_habitacion, no_ocupantes, no_max_ocupantes, no_camas_individuales, no_camas_matrimoniales, costo, noMaxExtras, fk_piso, fk_estado, url, url_foto)
 VALUES 
-('01', 2, 2, 1, 0, 100.00, 1, 2, 'habitacion_1.jpg'),
-('02', 4, 4, 2, 1, 150.00, 2, 3, 'habitacion_2.jpg'),
-('03', 4, 5, 1, 1, 120.00, 3, 2, 'habitacion_3.jpg'),
-('04', 3, 4, 1, 1, 300.00, 3, 1, 'habitacion_4.jpg');
+('01', 2, 2, 1, 0, 100.00, 2, 1, 2, 'url_habitacion_1', 'habitacion_1.jpg'),
+('02', 4, 4, 2, 1, 150.00, 3, 2, 3, 'url_habitacion_2', 'habitacion_2.jpg'),
+('03', 4, 5, 1, 1, 120.00, 2, 3, 2, 'url_habitacion_3', 'habitacion_3.jpg'),
+('04', 3, 4, 1, 1, 300.00, 1, 3, 1, 'url_habitacion_4', 'habitacion_4.jpg');
 
 
 -- -----------------------------------------------------

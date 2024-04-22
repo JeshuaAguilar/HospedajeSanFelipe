@@ -12,41 +12,47 @@
       </button>
 
       <!-- Contenido del menú -->
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" routerLinkActive="active" routerLink="inicio">Inicio</a>
-            </li>
-            @if (_utils.getRolUser() === 'ADMIN' || _utils.getRolUser() === 'VENDEDOR') {
-              <li class="nav-item">
-                <a class="nav-link" routerLinkActive="active" routerLink="habitaciones">Habitaciones</a>
-              </li>
-            }
-            @if (_utils.getRolUser() === 'ADMIN' || _utils.getRolUser() === 'VENDEDOR') {
-              <li class="nav-item">
-                <a class="nav-link" routerLinkActive="active" routerLink="reservaciones">Reservaciones</a>
-              </li>
-            }
-            @if (_utils.getRolUser() === 'ADMIN') {
-              <li class="nav-item">
-                <a class="nav-link" routerLinkActive="active" routerLink="empleados">Empleados</a>
-              </li>
-            }
-            @if (_utils.getRolUser() === 'ADMIN') {
-              <li class="nav-item">
-                <a class="nav-link" routerLinkActive="active" routerLink="clientes">Clientes</a>
-              </li>
-            }
-            <!-- @if (_utils.getRolUser() === 'ADMIN') {
-              <li class="nav-item">
-                <a class="nav-link" routerLinkActive="active" routerLink="comentarios">Comentarios</a>
-              </li>
-            } -->
-            <li class="nav-item">
-              <a class="nav-link cerrar" (click)="_utils.cerrarSesion()">Cerrar sesión</a>
-            </li>
-          </ul>
-        </div>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="inicio">Inicio</a>
+          </li>
+          @if (_utils.getRolUser() === 'ADMIN' || _utils.getRolUser() === 'VENDEDOR') {
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="habitaciones">Habitaciones</a>
+          </li>
+          }
+          @if (_utils.getRolUser() === 'ADMIN' || _utils.getRolUser() === 'VENDEDOR') {
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="reservaciones">Reservaciones</a>
+          </li>
+          }
+          @if (_utils.getRolUser() === 'ADMIN') {
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="empleados">Empleados</a>
+          </li>
+          }
+          @if (_utils.getRolUser() === 'ADMIN') {
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="clientes">Clientes</a>
+          </li>
+          }
+          <!-- @if (_utils.getRolUser() === 'ADMIN') {
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="comentarios">Comentarios</a>
+          </li>
+          } -->
+          <li class="nav-item">
+            <a class="nav-link cerrar" (click)="_utils.cerrarSesion()">Cerrar sesión</a>
+          </li>
+        </ul>
+
+ <!-- Aquí mostramos el saludo, el rol y el nombre del usuario -->
+<span class="navbar-text">
+  {{ _utils.getUserName() }}
+</span>
+
+      </div>
     </div>
   </nav>
 }
