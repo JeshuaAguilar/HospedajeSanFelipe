@@ -12,7 +12,7 @@ import { RangeSelectionStrategyService } from '../../../services/range-selection
 import { MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
 import { HabitacionDisponibleResponse, Habitacion } from '../../../model/habitacion.model';
 import { AltaClienteComponent } from '../alta-cliente/alta-cliente.component';
@@ -42,6 +42,8 @@ export class ReservacionesComponent implements OnInit {
   private readonly URL_HABITACIONES = `${environment.apiHost}${Habitaciones.HABITACIONES}`;
   private readonly URL_RESERVACIONES = `${environment.apiHost}${Reservaciones.RESERVACIONES}`;
 
+  @ViewChild('stepper') private myStepper: MatStepper;
+
   private _peticiones = inject(PeticionesService);
   private _alertas = inject(AlertsService);
   private fomrBuilder = inject(FormBuilder);
@@ -70,6 +72,7 @@ export class ReservacionesComponent implements OnInit {
 
   public resetReservacion(): void {
     this.isEditing.set(false);
+    this.myStepper.selectedIndex = 0;
     this.selectedRangeValue = new DateRange(new Date(), new Date());;
     this.habitaciones = signal<HabitacionDisponibleResponse[]>([]);
     this.clientes = signal<Cliente[]>([]);
