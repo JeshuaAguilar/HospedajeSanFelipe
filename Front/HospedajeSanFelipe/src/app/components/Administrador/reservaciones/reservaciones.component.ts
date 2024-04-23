@@ -72,6 +72,11 @@ export class ReservacionesComponent implements OnInit {
   }
 
   public resetReservacion(): void {
+    const fechaEntrada = new Date();
+    const fechasSalida = new Date();
+
+    this.selectedRangeValue = new DateRange(fechaEntrada, fechasSalida);
+
     this.isEditing.set(false);
     this.myStepper.selectedIndex = 0;
     this.selectedRangeValue = new DateRange(new Date(), new Date());;
@@ -88,6 +93,8 @@ export class ReservacionesComponent implements OnInit {
     this.reservacion.habitaciones = [];
     this.reservacion.noPersonas = 0;
     this.reservacion.noPersonaExtra = 0;
+    this.reservacion.fechaEntrada = fechaEntrada;
+    this.reservacion.fechaSalida = fechasSalida;
 
     const empleado: LoginResponse = JSON.parse(sessionStorage.getItem('user'));
 
