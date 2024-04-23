@@ -75,7 +75,7 @@ export class InicioComponent implements OnInit {
       if (isOcupado) {
         return 'ocupado';
       } else {
-        return 'reservado';
+        return 'disponible';
       }
     } else {
       return 'disponible';
