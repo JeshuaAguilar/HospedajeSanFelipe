@@ -1,5 +1,8 @@
 package com.hospedajesanfelipe.service.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +15,20 @@ import com.hospedajesanfelipe.entity.ClienteEntity;
 import com.hospedajesanfelipe.request.ClienteRequest;
 import com.hospedajesanfelipe.response.ClienteResponse;
 import com.hospedajesanfelipe.service.ClientesService;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.HorizontalAlignment;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.VerticalAlignment;
 
 @Service
 public class ClientesServiceImpl implements ClientesService {
@@ -94,6 +111,84 @@ public class ClientesServiceImpl implements ClientesService {
 		clientesDao.deleteCliente(idCliente);
 	}
 	
+	@Override
+	public ByteArrayInputStream getClientesPdf() {
+	    List<ClienteResponse> allClientes = getAllClientes();
+	    
+	    ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+	    try (PdfWriter writer = new PdfWriter(out);
+	         PdfDocument pdf = new PdfDocument(writer);
+	         Document document = new Document(pdf)) {
+	        
+	        // Cargar la imagen del logo
+	        InputStream logoStream = getClass().getResourceAsStream("/static/images/sf.png");
+	        byte[] logoBytes = logoStream.readAllBytes();
+	        ImageData logoData = ImageDataFactory.create(logoBytes);
+	        Image logo = new Image(logoData).setWidth(50).setHeight(50);  // Ajusta el tamaño según sea necesario
+	        logo.setHorizontalAlignment(HorizontalAlignment.CENTER);
+	        document.add(logo);
+	        
+	        // Añadir el título
+	        Paragraph title = new Paragraph("Hospedaje San Felipe De Jesús")
+	            .setTextAlignment(TextAlignment.CENTER)
+	            .setFontSize(20)
+	            .setBold()
+	            .setFontColor(ColorConstants.BLACK)
+	            .setMarginBottom(20);  // Añade un margen debajo del título
+	        document.add(title);
+	        
+	        // Crear una tabla con el número correcto de columnas
+	        float[] columnWidths = {1, 3, 3, 3, 3, 3, 3};
+	        Table table = new Table(columnWidths);
+
+	        // Añadir los encabezados de la tabla
+	        table.addHeaderCell(createCell("ID", true));
+	        table.addHeaderCell(createCell("Nombre", true));
+	        table.addHeaderCell(createCell("Apellido Paterno", true));
+	        table.addHeaderCell(createCell("Apellidos Materno", true));
+	        table.addHeaderCell(createCell("Telefono", true));
+	        table.addHeaderCell(createCell("Estado", true));
+	        table.addHeaderCell(createCell("Municipio", true));
+	        
+	        // Añadir filas con los datos de los clientes
+	        for (ClienteResponse cliente : allClientes) {
+	            table.addCell(createCell(cliente.getIdCliente().toString(), false));
+	            table.addCell(createCell(cliente.getNombre(), false));
+	            table.addCell(createCell(cliente.getPrimerApellido(), false));
+	            table.addCell(createCell(cliente.getSegundoApellido(), false));
+	            table.addCell(createCell(cliente.getTelefono(), false));
+	            table.addCell(createCell(cliente.getEstado(), false));
+	            table.addCell(createCell(cliente.getMunicipio(), false));
+	        }
+
+	        // Añadir la tabla al documento
+	        document.add(table);
+
+	        // Cerrar el documento
+	        document.close();
+	        
+	        // Devolver el ByteArrayOutputStream como ByteArrayInputStream
+	        return new ByteArrayInputStream(out.toByteArray());
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}
+
+	// Método auxiliar para crear celdas
+	private Cell createCell(String content, boolean isHeader) {
+	    Cell cell = new Cell().add(new Paragraph(content));
+	    if (isHeader) {
+	        cell.setBackgroundColor(new DeviceRgb(224, 224, 224)); // Bootstrap light gray color
+	        cell.setFontColor(ColorConstants.BLACK);
+	        cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
+	    } else {
+	        cell.setFontColor(ColorConstants.BLACK);
+	    }
+	    cell.setTextAlignment(TextAlignment.CENTER);
+	    return cell;
+	}
+	
 	private ClienteEntity mapperCliente(ClienteRequest cliente) {
 		ClienteEntity clienteEntity = null;
 
@@ -145,5 +240,4 @@ public class ClientesServiceImpl implements ClientesService {
 			return actual;
 		}
 	}
-		
 }

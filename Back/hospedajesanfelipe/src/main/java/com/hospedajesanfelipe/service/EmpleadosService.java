@@ -1,5 +1,6 @@
 package com.hospedajesanfelipe.service;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import com.hospedajesanfelipe.entity.EmpleadoEntity;
@@ -41,4 +42,5 @@ public interface EmpleadosService {
 	 * No retorna nada, por eso se le pone void
 	 */
 	public void deleteEmpleado(Long idEmpleado);
+	public ByteArrayInputStream getEmpleadosPdf();
 }

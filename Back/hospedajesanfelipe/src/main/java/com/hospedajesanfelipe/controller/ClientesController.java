@@ -47,7 +47,6 @@ public class ClientesController {
 		}
 	}
 	
-	
 	@PutMapping()
 	public ResponseEntity<String> updateCliente(@RequestBody ClienteRequest cliente) {
 		
@@ -59,9 +58,6 @@ public class ClientesController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al modificar el cliente");
 		}
 	}
-	
-	
-	
 	
 	@DeleteMapping("/{idCliente}")
 	public ResponseEntity<String> deleteCliente(@PathVariable("idCliente") Long idCliente) {

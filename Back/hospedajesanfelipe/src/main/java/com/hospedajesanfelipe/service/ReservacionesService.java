@@ -1,5 +1,6 @@
 package com.hospedajesanfelipe.service;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import com.hospedajesanfelipe.entity.ReservacionEntity;
@@ -12,4 +13,5 @@ public interface ReservacionesService {
 	public ReservacionResponse saveReservaciones(ReservacionRequest reservacion);
 	public ReservacionResponse updateReservaciones(ReservacionRequest reservacionRequest);
 	public void deleteReservaciones(Long idReservacion);
+	public ByteArrayInputStream getReservacionesPdf();
 }

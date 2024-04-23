@@ -4,7 +4,7 @@ import { PeticionesService } from '../../../services/peticiones/peticiones.servi
 import { CatRol, EmpleadoRequest, EmpleadoResponse } from '../../../model/empleados';
 import { AlertsService } from '../../../services/alerts.service';
 import { environment } from '../../../../environments/environment.development';
-import { Empleados, Roles } from '../../../model/constantes';
+import { Empleados, Pdf, Roles } from '../../../model/constantes';
 import { LoadingComponent } from '../shared/loading/loading.component';
 
 declare const bootstrap: any;
@@ -27,6 +27,7 @@ export class EmpleadosComponent implements OnInit {
   Se arma la url de empleados, básicamente concatena el host + urlEmpleados
   http://localhost:8080/hospedaje/api/empleados
   */
+  private readonly URL_PDF_EMPLEADOS = `${environment.apiHost}${Pdf.PDF}${Pdf.EMPLEADOS}`;
   private readonly URL_EMPLEADOS = `${environment.apiHost}${Empleados.EMPLEADOS}`;
   private readonly URL_ROLES = `${environment.apiHost}${Roles.ROLES}`;
 
@@ -474,4 +475,25 @@ export class EmpleadosComponent implements OnInit {
    * si isFieldInvalid regresa un true, marca el input en rojo y también muestra las letras chiquitas en rojo
    * Si isFieldInvalid regresa false, marca en input en verde
    */
+
+  public descargarPdf(): void {
+    const url = `${this.URL_PDF_EMPLEADOS}`;
+    this._peticiones.generaPdf(url).subscribe({
+      next: (data: any) => {
+        const blob = new Blob([data], { type: 'application/pdf' });
+
+        const downloadURL = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = "reporte_empleados.pdf";
+        link.click();
+
+        window.URL.revokeObjectURL(downloadURL);
+      },
+      error: (err: any) => {
+        console.error(err);
+        this._alerta.error(err);
+      },
+    });
+  }
 }

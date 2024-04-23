@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { PeticionesService } from '../../../services/peticiones/peticiones.service';
 import { Reservacion, ReservacionRequest } from '../../../model/reservaciones.model';
 import { environment } from '../../../../environments/environment.development';
-import { Clientes, Empleados, Habitaciones, Reservaciones } from '../../../model/constantes';
+import { Clientes, Empleados, Habitaciones, Pdf, Reservaciones } from '../../../model/constantes';
 import { AlertsService } from '../../../services/alerts.service';
 import { CommonModule, DatePipe } from '@angular/common';
 
@@ -41,6 +41,7 @@ export class ReservacionesComponent implements OnInit {
   private readonly URL_CLIENTES = `${environment.apiHost}${Clientes.CLIENTES}`;
   private readonly URL_HABITACIONES = `${environment.apiHost}${Habitaciones.HABITACIONES}`;
   private readonly URL_RESERVACIONES = `${environment.apiHost}${Reservaciones.RESERVACIONES}`;
+  private readonly URL_PDF_RESERVACIONES = `${environment.apiHost}${Pdf.PDF}${Pdf.RESERVACIONES}`;
 
   @ViewChild('stepper') private myStepper: MatStepper;
 
@@ -537,5 +538,26 @@ export class ReservacionesComponent implements OnInit {
     } else {
       return 0;
     }
+  }
+
+  public descargarPdf(): void {
+    const url = `${this.URL_PDF_RESERVACIONES}`;
+    this._peticiones.generaPdf(url).subscribe({
+      next: (data: any) => {
+        const blob = new Blob([data], { type: 'application/pdf' });
+
+        const downloadURL = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = "reporte_reservaciones.pdf";
+        link.click();
+
+        window.URL.revokeObjectURL(downloadURL);
+      },
+      error: (err: any) => {
+        console.error(err);
+        this._alertas.error(err);
+      },
+    });
   }
 }

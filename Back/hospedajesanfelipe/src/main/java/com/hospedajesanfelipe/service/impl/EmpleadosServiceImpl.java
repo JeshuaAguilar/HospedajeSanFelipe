@@ -1,5 +1,8 @@
 package com.hospedajesanfelipe.service.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +18,20 @@ import com.hospedajesanfelipe.entity.EmpleadoEntity;
 import com.hospedajesanfelipe.request.EmpleadoRequest;
 import com.hospedajesanfelipe.response.EmpleadoResponse;
 import com.hospedajesanfelipe.service.EmpleadosService;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.HorizontalAlignment;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.VerticalAlignment;
 
 /*
  * Este servicio es el implement, y tiene que implementar la interfaz de empleados en este caso
@@ -27,7 +44,7 @@ import com.hospedajesanfelipe.service.EmpleadosService;
  * En este caso e n el controller
  */
 @Service
-public class EmpeladosServiceImpl implements EmpleadosService {
+public class EmpleadosServiceImpl implements EmpleadosService {
 
 	//Con esta anotación intectamos la clase dao para poder usar sus métodos
 	@Autowired
@@ -113,6 +130,82 @@ public class EmpeladosServiceImpl implements EmpleadosService {
 	@Override
 	public void deleteEmpleado(Long idEmpleado) {
 		empleadosDao.deleteEmpleado(idEmpleado);
+	}
+	
+	@Override
+	public ByteArrayInputStream getEmpleadosPdf() {
+	    List<EmpleadoResponse> allEmpleados = getAllEmpleados();
+	    
+	    ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+	    try (PdfWriter writer = new PdfWriter(out);
+	         PdfDocument pdf = new PdfDocument(writer);
+	         Document document = new Document(pdf)) {
+	        
+	        // Cargar la imagen del logo
+	        InputStream logoStream = getClass().getResourceAsStream("/static/images/sf.png");
+	        byte[] logoBytes = logoStream.readAllBytes();
+	        ImageData logoData = ImageDataFactory.create(logoBytes);
+	        Image logo = new Image(logoData).setWidth(50).setHeight(50);  // Ajusta el tamaño según sea necesario
+	        logo.setHorizontalAlignment(HorizontalAlignment.CENTER);
+	        document.add(logo);
+	        
+	        // Añadir el título
+	        Paragraph title = new Paragraph("Hospedaje San Felipe De Jesús")
+	            .setTextAlignment(TextAlignment.CENTER)
+	            .setFontSize(20)
+	            .setBold()
+	            .setFontColor(ColorConstants.BLACK)
+	            .setMarginBottom(20);  // Añade un margen debajo del título
+	        document.add(title);
+	        
+	        // Crear una tabla con el número correcto de columnas
+	        float[] columnWidths = {1, 3, 3, 3, 3, 3};
+	        Table table = new Table(columnWidths);
+
+	        // Añadir los encabezados de la tabla
+	        table.addHeaderCell(createCell("ID", true));
+	        table.addHeaderCell(createCell("Nombre", true));
+	        table.addHeaderCell(createCell("Apellido Paterno", true));
+	        table.addHeaderCell(createCell("Apellidos Materno", true));
+	        table.addHeaderCell(createCell("Telefono", true));
+	        table.addHeaderCell(createCell("rol", true));
+	        
+	        // Añadir filas con los datos de los clientes
+	        for (EmpleadoResponse empleado : allEmpleados) {
+	            table.addCell(createCell(empleado.getIdEmpleado().toString(), false));
+	            table.addCell(createCell(empleado.getNombre(), false));
+	            table.addCell(createCell(empleado.getPrimerApellido(), false));
+	            table.addCell(createCell(empleado.getSegundoApellido(), false));
+	            table.addCell(createCell(empleado.getNoTelefono(), false));
+	            table.addCell(createCell(empleado.getRol().getDescripcion(), false));
+	        }
+
+	        // Añadir la tabla al documento
+	        document.add(table);
+
+	        // Cerrar el documento
+	        document.close();
+	        
+	        // Devolver el ByteArrayOutputStream como ByteArrayInputStream
+	        return new ByteArrayInputStream(out.toByteArray());
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}
+
+	// Método auxiliar para crear celdas
+	private Cell createCell(String content, boolean isHeader) {
+	    Cell cell = new Cell().add(new Paragraph(content));
+	    if (isHeader) {
+	        cell.setBackgroundColor(new DeviceRgb(224, 224, 224)); // Bootstrap light gray color
+	        cell.setFontColor(ColorConstants.BLACK);
+	        cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
+	    } else {
+	        cell.setFontColor(ColorConstants.BLACK);
+	    }
+	    cell.setTextAlignment(TextAlignment.CENTER);
+	    return cell;
 	}
 	
 	private EmpleadoEntity mapperEmpeado(EmpleadoRequest empleado) {

@@ -77,8 +77,13 @@
 		    <artifactId>json</artifactId>
 		    <version>20240303</version>
 		</dependency>
-
-        
+		
+		<dependency>
+	        <groupId>com.itextpdf</groupId>
+	        <artifactId>itext7-core</artifactId>
+	        <version>7.1.16</version>
+	        <type>pom</type>
+	    </dependency>
 	</dependencies>
 
 	<build>

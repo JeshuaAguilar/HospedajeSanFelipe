@@ -38,14 +38,8 @@
             <td>{{habitacion.piso.descripcion}}</td>
             <td>{{habitacion.estado.descripcion}}</td>
             <td>
-              <div class="row gx-0">
-              <div class="col">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modificarHabitacion(habitacion.idHabitacion)">Editar</button>
-              </div>
-              <div class="col">
-                <button type="button" class="btn btn-danger"  (click)="eliminarHabitacion(habitacion.idHabitacion)">Eliminar</button>
-              </div>
-            </div>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modificarHabitacion(habitacion.idHabitacion)">Editar</button>
+              <button type="button" class="btn btn-danger"  (click)="eliminarHabitacion(habitacion.idHabitacion)">Eliminar</button>
           </td>
         </tr>
       } @empty {

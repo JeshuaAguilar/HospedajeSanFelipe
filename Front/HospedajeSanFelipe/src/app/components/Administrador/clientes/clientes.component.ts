@@ -3,7 +3,7 @@ import { PeticionesService } from '../../../services/peticiones/peticiones.servi
 import { AlertsService } from '../../../services/alerts.service';
 import { LoadingComponent } from '../shared/loading/loading.component';
 import { environment } from '../../../../environments/environment.development';
-import { Clientes } from '../../../model/constantes';
+import { Clientes, Pdf } from '../../../model/constantes';
 import { ClienteResponse } from '../../../model/cliente.model';
 import { AltaClienteComponent } from '../alta-cliente/alta-cliente.component';
 
@@ -20,9 +20,8 @@ declare const bootstrap: any;
 })
 export class ClientesComponent implements OnInit {
 
-
-
   private readonly URL_CLIENTES = `${environment.apiHost}${Clientes.CLIENTES}`;
+  private readonly URL_PDF_CLIENTES = `${environment.apiHost}${Pdf.PDF}${Pdf.CLIENTES}`;
 
   private _peticiones = inject(PeticionesService);
   private _alerta = inject(AlertsService);
@@ -66,4 +65,24 @@ export class ClientesComponent implements OnInit {
   }
 
 
+  public descargarPdf(): void {
+    const url = `${this.URL_PDF_CLIENTES}`;
+    this._peticiones.generaPdf(url).subscribe({
+      next: (data: any) => {
+        const blob = new Blob([data], { type: 'application/pdf' });
+
+        const downloadURL = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = "reporte_clientes.pdf";
+        link.click();
+
+        window.URL.revokeObjectURL(downloadURL);
+      },
+      error: (err: any) => {
+        console.error(err);
+        this._alerta.error(err);
+      },
+    });
+  }
 }

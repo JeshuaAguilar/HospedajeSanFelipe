@@ -30,6 +30,16 @@ export class PeticionesService {
     };
   }
 
+  private headerConfigBlob(): any {
+    return {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+      }),
+      responseType: 'blob' as 'blob',
+      withCredentials: true
+    };
+  }
+
   private handlePostError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
@@ -121,4 +131,9 @@ export class PeticionesService {
     return this.httpClient.post<any>(url, params, httpOptions).pipe(catchError(this.handlePostError));
   }
 
+
+  public generaPdf(url: string): Observable<any> {
+    const blobHeader = this.headerConfigBlob();
+    return this.httpClient.get(url, blobHeader);
+  }
 }
