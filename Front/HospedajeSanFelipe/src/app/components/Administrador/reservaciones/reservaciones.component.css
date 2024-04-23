@@ -57,7 +57,6 @@ button.example-custom-date-class {
   white-space: nowrap; /* Evita el salto de línea en el texto largo */
 }
 
-
-.left-prtimary {
-  border-left: 5px solid var(--bs-primary);
+.left-primary {
+  border-left: 5px solid var(--bs-primary) !important;
 }

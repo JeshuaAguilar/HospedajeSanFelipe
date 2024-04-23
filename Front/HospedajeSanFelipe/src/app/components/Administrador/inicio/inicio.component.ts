@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { HabitacionEmpleadoResponse } from '../../../model/habitacion.model';
+import { HabitacionEmpleadoResponse, ProximasReservaciones } from '../../../model/habitacion.model';
 import { environment } from '../../../../environments/environment.development';
 import { Habitaciones, Imagenes } from '../../../model/constantes';
 import { PeticionesService } from '../../../services/peticiones/peticiones.service';
@@ -30,7 +30,7 @@ export class InicioComponent implements OnInit {
 
   private getAllHabitacion(): void {
 
-    this._peticiones.getPeticion(`${this.URL_HABITACIONES}${Habitaciones.EMPLEADOS}` ).subscribe({
+    this._peticiones.getPeticion(`${this.URL_HABITACIONES}${Habitaciones.EMPLEADOS}`).subscribe({
       next: (response: HabitacionEmpleadoResponse[]) => {
         this.habitaciones = response;
         this.isLoadedHabitaciones.set(true);
@@ -54,6 +54,32 @@ export class InicioComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllHabitacion();
+  }
+
+  public getEstatusHabitacion(idHabitacion: number): string {
+    const habitacion = this.habitaciones.find((habitacion: HabitacionEmpleadoResponse) => habitacion.idHabitacion === idHabitacion);
+
+    if (habitacion.reservaciones && habitacion.reservaciones.length > 0) {
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+
+      const isOcupado: boolean = habitacion.reservaciones.some(reservacion => {
+          const entrada = new Date(reservacion.fechaEntrada);
+          entrada.setHours(0, 0, 0, 0);
+          const salida = new Date(reservacion.fechaSalida);
+          salida.setHours(0, 0, 0, 0);
+
+          return entrada <= hoy && hoy <= salida;
+      });
+
+      if (isOcupado) {
+        return 'ocupado';
+      } else {
+        return 'reservado';
+      }
+    } else {
+      return 'disponible';
+    }
   }
 }
 

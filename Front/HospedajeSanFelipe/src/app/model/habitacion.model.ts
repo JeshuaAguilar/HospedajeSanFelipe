@@ -1,5 +1,6 @@
 import { SafeUrl } from "@angular/platform-browser";
 import { CatServicios } from "./servicios.model";
+import { Reservacion } from "./reservaciones.model";
 
 export class Habitacion {
   idHabitacion : number;
@@ -78,7 +79,13 @@ export interface HabitacionEmpleadoResponse {
   piso          : CatPiso;
   estado        : CatEstadoHabitacion
   servicios     : CatServicios[];
+  reservaciones : Reservacion[];
   imagen        ?: SafeUrl;
+}
+
+export class ProximasReservaciones {
+  fechaEntrada: Date;
+  fechaSalida : Date;
 }
 
 export class HabitacionDisponibleResponse {
