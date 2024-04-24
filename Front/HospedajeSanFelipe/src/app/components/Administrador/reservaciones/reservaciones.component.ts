@@ -19,9 +19,9 @@ import { AltaClienteComponent } from '../alta-cliente/alta-cliente.component';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Cliente } from '../../../model/cliente.model';
 
-import Swal from 'sweetalert2';
 import { LoginResponse } from '../../../model/login-response';
 import { EmpleadoRequest } from '../../../model/empleados';
+import Swal from 'sweetalert2';
 
 declare var bootstrap: any;
 
