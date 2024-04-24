@@ -22,3 +22,21 @@
 .cerrar {
   cursor: pointer;
 }
+
+
+/* Estilos para la barra de navegación */
+.nav-link {
+  background-color: #c08f56; /* Cambia el color de fondo de la barra de navegación */
+}
+
+.bg-custom-color {
+  background-color: #fae6cf; /* Cambia el color de fondo de la barra de navegación */
+}
+
+
+
+/* Estilos para el texto en la barra de navegación */
+.navbar-text {
+
+  margin:.8%;/* Cambia el color de fondo de la barra de navegación */
+}

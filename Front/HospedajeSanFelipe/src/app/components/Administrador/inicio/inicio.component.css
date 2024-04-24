@@ -10,7 +10,7 @@ img {
 }
 
 .disponible {
-  box-shadow: 0 0.5rem 1rem rgba(40, 167, 69, 0.25)!important; /* Bootstrap's success color in RGB */
+  box-shadow: 0 0.5rem 2rem rgba(40, 167, 69, 0.25)!important; /* Bootstrap's success color in RGB */
 }
 
 .reservado {
@@ -23,4 +23,49 @@ img {
 
 .left-primary {
   border-left: 3px solid var(--bs-primary) !important;
+}
+
+
+
+/* Estilos para las tarjetas */
+.card {
+  margin-bottom: 20px; /* Margen inferior entre tarjetas */
+}
+
+/* Estilos para el encabezado de la tarjeta */
+.card-header {
+  background-color: #c08f56; /* Color de fondo del encabezado */
+  color: #fff; /* Color del texto del encabezado */
+}
+
+/* Estilos para el cuerpo de la tarjeta */
+.card-body {
+  padding: 0; /* Eliminar el relleno predeterminado */
+}
+
+/* Estilos para las imágenes dentro de la tarjeta */
+.card-body img {
+  width: 100%; /* Imagen ocupará el ancho completo del contenedor */
+  height: auto; /* Altura automática para mantener la proporción */
+}
+
+/* Estilos para el pie de la tarjeta */
+.card-footer {
+  background-color: #f0f0f0; /* Color de fondo del pie de la tarjeta */
+}
+
+/* Estilos para los elementos de texto en el pie de la tarjeta */
+.card-footer .text-body-secondary {
+  color: #6c757d; /* Color del texto secundario */
+}
+
+/* Estilos para las reservaciones */
+.card.mb-2.shadow-sm.left-primary {
+  margin-bottom: 20px; /* Margen inferior entre reservaciones */
+}
+
+/* Estilos para las imágenes de servicios */
+.servicios {
+  width: 30px; /* Ancho fijo para las imágenes de servicios */
+  height: 30px; /* Altura fija para las imágenes de servicios */
 }

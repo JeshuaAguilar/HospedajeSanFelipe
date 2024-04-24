@@ -1,10 +1,74 @@
+/* Estilos para el encabezado del hotel */
+header {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  background-color: rgba(255, 255, 255, 0.671);
+  padding: 1em 2em; /* Utilizamos unidades relativas para el padding */
+  border-radius: 10px;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+  width: max-content; /* Centra el encabezado */
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5em; /* Utilizamos unidades relativas para el tamaño de fuente */
+  color: #333; /* Color del texto */
+}
+
+
+
 
 .whatsapp-link {
-  position: fixed; /* Fija el elemento */
-  left: 20px; /* Lo posiciona 20px desde el borde izquierdo */
-  top: 50px; /* Lo posiciona 20px desde el borde inferior */
-  z-index: 999; /* Asegura que esté por encima de otros elementos */
+  position: fixed;
+  left: 30px;
+  top: 170px;
+  z-index: 999;
 }
+.whatsapp-link :hover{
+  background: #4ed4644f;
+
+  }
+  .btnfacebook {
+    position: fixed;
+    left: 30px;
+    top: 240px;
+    z-index: 999;
+  }
+  .btnfacebook :hover{
+    background: #ffffff71;
+
+    }
+.btnllamar{
+  text-decoration: none;
+  background: transparent;
+  padding: 10px 30px;
+  border-radius:5px;
+  transition: ease-in .45;
+  position: fixed;
+  left:2px;
+  top: 302px;
+  z-index: 999;
+}
+
+.btnllamar :hover{
+  background: #00000028;
+
+  }
+
+  .contact-container {
+    position: fixed;
+    top: 160px; /* Ajusta la posición según sea necesario */
+    left: 15px;
+    z-index: 999;
+
+  }
+
+  .contact-container p {
+    margin-bottom: 10px; /* Ajusta el espacio entre el texto y los enlaces */
+  }
 
 
 .contenedor {
@@ -25,6 +89,9 @@
   font-size: 1.5rem;
   color: white; /* Cambia el color del texto a blanco */
   border: 5px solid #ffffff;
+  text-align: center;
+  margin-bottom: 100px;
+  margin-top: 5px;
 }
 
 
@@ -33,10 +100,41 @@
   color: #fffbfb; /* Color del texto */
   font-weight: bold; /* Peso de la fuente */
   text-transform: uppercase; /* Convertir el texto a mayúsculas */
-  margin-top: 40px; /* Espacio superior */
-  margin-bottom: 20px; /* Espacio inferior */
+  margin-top:40px; /* Espacio superior */
+  margin-bottom:40px; /* Espacio inferior */
   padding: 10px 0; /* Relleno interno */
   border-bottom: 5px solid #ffffff; /* Línea inferior */
+}
+
+
+iframe {
+  border-radius: 10px; /* Añade bordes redondos */
+  transition: box-shadow 0.3s ease; /* Transición para el efecto hover */
+  margin: 20px; /* Añade márgenes */
+}
+
+iframe:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Cambia la sombra al pasar el ratón por encima */
+}
+
+.map-container {
+  position: relative;
+  border-radius: 10px; /* Añade bordes redondos */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega un efecto de sombra */
+  transition: box-shadow 0.3s ease; /* Transición para el efecto hover */
+  margin: 10px; /* Añade márgenes */
+}
+
+.map-text {
+  position: absolute;
+  top: 10px; /* Cambia la posición hacia arriba */
+  right: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px 10px;
+  border-radius: 5px;
+  width: auto;
+  height: auto;
+  display: inline-block;
 }
 
 
