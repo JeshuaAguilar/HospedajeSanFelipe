@@ -21,9 +21,10 @@ import { Cliente } from '../../../model/cliente.model';
 
 import { LoginResponse } from '../../../model/login-response';
 import { EmpleadoRequest } from '../../../model/empleados';
-import Swal from 'sweetalert2';
 
 declare var bootstrap: any;
+
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reservaciones',

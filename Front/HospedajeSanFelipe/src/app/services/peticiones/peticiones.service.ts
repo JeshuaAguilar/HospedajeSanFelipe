@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -119,7 +120,7 @@ export class PeticionesService {
   }
 
   public login(params: any): Observable<any> {
-    const url = `http://localhost:8080/hospedaje/api/empleados/login`;
+    const url = `${environment.apiHost}/hospedaje/api/empleados/login`;
 
     const httpOptions = {
       headers: new HttpHeaders({
