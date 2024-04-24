@@ -245,7 +245,7 @@ public class ReservacionesServiceImpl implements ReservacionesService {
 			
 			rh.setReservacion(reservacion);
 			rh.setHabitacion(habitacion);
-			rh.setNoPersonas(habitacion.getNoOcupante());
+			rh.setNoPersonas(habitacion.getNoOcupantes());
 			rh.setNoPersonasExtra(habitacion.getNoMaxExtras());
 			
 			rhs.add(rh);
