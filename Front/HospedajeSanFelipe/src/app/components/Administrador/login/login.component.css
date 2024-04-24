@@ -9,6 +9,12 @@ height: 100vh;
 margin: 0;
 } */
 
+.nombreH{
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
 .contenedor {
   position: relative;
   width: 100%;
@@ -88,11 +94,11 @@ button {
 }
 
 .contenedor {
-  position:fixed; /* Posición fija */
-  top: 0; /* Coloca la div en la parte superior */
-  left: 0; /* Coloca la div en el lado izquierdo */
-  width: 100%; /* Ancho del 100% */
-  z-index: -1; /* Asegura que esté detrás de otros elementos */
+  position:fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1;
 }
 
 .login-container {
@@ -105,14 +111,10 @@ button {
   height: 55%;
   width: 100%;
   border: 0.5px solid white;
-
-  /* Flexbox */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  /* Añade este margin para centrar verticalmente */
   margin: auto;
-  margin-top: 150px;
+  margin-top: 140px;
 }

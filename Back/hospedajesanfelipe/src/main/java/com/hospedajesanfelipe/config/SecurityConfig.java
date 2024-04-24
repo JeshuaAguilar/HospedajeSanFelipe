@@ -29,9 +29,14 @@ public class SecurityConfig {
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeRequests(requests -> requests
-                		.antMatchers("/hospedaje/api/imagenes/getByName/**").permitAll()
-                        .antMatchers("/hospedaje/api/habitaciones/clientes").permitAll()
-                        .antMatchers("/hospedaje/api/empleados/login").permitAll()
+                		.antMatchers(
+                				"/hospedaje/api/version",
+                				"/hospedaje/api/imagenes/getByName/**",
+                				"/hospedaje/api/habitaciones/clientes",
+                				"/hospedaje/api/empleados/login"
+                				).permitAll()
+                        .antMatchers().permitAll()
+                        .antMatchers().permitAll()
                         .anyRequest().authenticated());
     	
     	httpSecurity.addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
