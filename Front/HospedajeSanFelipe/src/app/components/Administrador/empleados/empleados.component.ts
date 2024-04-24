@@ -275,7 +275,7 @@ export class EmpleadosComponent implements OnInit {
       next: (response: string) => {
         /**
          * Una vez que el api nos responda que el empleado ya fue creado, procederemos a resetear el formulario
-         * Para que los datos que ya habíuamos escrito, se borren y el formulario quede listo para agregar o modificar algún otro empleado
+         * Para que los datos que ya habíamos escrito, se borren y el formulario quede listo para agregar o modificar algún otro empleado
          */
         this.resetForm();
 
@@ -315,7 +315,7 @@ export class EmpleadosComponent implements OnInit {
     /**
      * Este método de editar empleado, es exactamente lo mismo que el de crear empleado
      * únicamente lo que varía aquí, es que la petición al api, es de tipo PUT, y en api
-     * con esto sabe que es una edición y no un crer un nuevo empleado
+     * con esto sabe que es una edición y no un crear un nuevo empleado
      */
 
     this._peticiones.putPeticion(this.URL_EMPLEADOS, request).subscribe({
@@ -346,8 +346,8 @@ export class EmpleadosComponent implements OnInit {
    */
   public modificarEmpleado(idEmpleado: number): void {
     /**
-     * Como inicialmente en el onInit, cargamos la lista de epleados, lo qe hace esta función
-     * Es buscar el idEmpleado en la lista de empleados, y si lo encientra, guarda ese empleado en empleadoFinded
+     * Como inicialmente en el onInit, cargamos la lista de empleados, lo que hace esta función
+     * Es buscar el idEmpleado en la lista de empleados, y si lo encuentra, guarda ese empleado en empleadoFinded
      */
     const empleadoFinded = this.empleados.find((empleado: EmpleadoResponse) => idEmpleado === empleado.idEmpleado);
 
@@ -401,7 +401,7 @@ export class EmpleadosComponent implements OnInit {
       next: (response: string) => {
         /**
          * Hacemos casi lo mismo que crear y modificar empleado.
-         * Sólo que aquí únicamente mandamos llamar al método de getAllEmpleados(), par que nos actualice la tabla
+         * Sólo que aquí únicamente mandamos llamar al método de getAllEmpleados(), para que nos actualice la tabla
          * Con los empleados actuales que contiene la BD, obviamente ya no debería mostra el empleado eliminado
          */
         this.getAllEmpleados();
@@ -427,7 +427,7 @@ export class EmpleadosComponent implements OnInit {
       /*Recibe un objeto de tipo CatRol, en este caso, es el mismo que el del CatRolEntity del api */
       next: (response: CatRol[]) => {
         /**
-         * También se creó una variable global de roles, par poderlos mostrar en pantalla
+         * También se creó una variable global de roles, para poderlos mostrar en pantalla
          * Y se le pasan los valores que vienen del api, que aquí están en el response
          */
         this.roles = response;
